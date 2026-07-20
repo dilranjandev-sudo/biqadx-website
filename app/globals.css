@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void: #0b0e14;
+  --graphite: #1a1f2b;
+  --paper: #f5f3ee;
+  --signal: #e8ecef;
+  --ink: #0b0e14;
+
+  --prism-1: #6ee7f0;
+  --prism-2: #a78bfa;
+  --prism-3: #f2c879;
+  --prism-gradient: linear-gradient(
+    120deg,
+    var(--prism-1) 0%,
+    var(--prism-2) 50%,
+    var(--prism-3) 100%
+  );
+
+  --border-dark: rgba(232, 236, 239, 0.12);
+  --border-light: rgba(11, 14, 20, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* No CSS smooth-scroll — Lenis owns smooth scrolling; setting both fights. */
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--signal);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Visible keyboard focus everywhere (brief §8). */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--prism-1);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--graphite);
+  color: var(--signal);
+  padding: 0.5rem 0.875rem;
+  border-radius: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+::selection {
+  background: var(--prism-2);
+  color: var(--void);
+}
+
+@layer components {
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.7rem 1.35rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    background: var(--signal);
+    color: var(--void);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .btn-primary:hover {
+    background: #ffffff;
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.7rem 1.35rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    border: 1px solid var(--border-dark);
+    color: var(--signal);
+    background: transparent;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .btn-outline:hover {
+    border-color: rgba(232, 236, 239, 0.5);
+    background: rgba(232, 236, 239, 0.05);
+  }
+
+  /* Ink variants for Paper-toned subpages. */
+  .btn-ink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.7rem 1.35rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    background: var(--ink);
+    color: var(--paper);
+    transition: background-color 0.2s ease;
+  }
+  .btn-ink:hover {
+    background: #000000;
+  }
+  .btn-ink-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.7rem 1.35rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    border: 1px solid var(--border-light);
+    color: var(--ink);
+    background: transparent;
+    transition: border-color 0.2s ease;
+  }
+  .btn-ink-outline:hover {
+    border-color: rgba(11, 14, 20, 0.5);
+  }
+
+  /* Form controls on Paper surfaces. */
+  .input {
+    width: 100%;
+    border-radius: 0.6rem;
+    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0.7rem 0.9rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .input::placeholder {
+    color: rgba(11, 14, 20, 0.4);
+  }
+  .input[aria-invalid="true"] {
+    border-color: rgba(11, 14, 20, 0.55);
+  }
+}
+
+/* Prism accent as text (light-refraction moment only). */
+.prism-text {
+  background: var(--prism-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Cinematic hero motion (SpaceX-style): slow push-in + a prism light sweep.
+   Neutralized under prefers-reduced-motion by the block below. */
+@keyframes heroZoom {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.14);
+  }
+}
+@keyframes heroSweep {
+  0% {
+    transform: translateX(-140%) skewX(-14deg);
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.55;
+  }
+  60% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(240%) skewX(-14deg);
+    opacity: 0;
+  }
+}
+.hero-kenburns {
+  animation: heroZoom 18s ease-in-out infinite alternate;
+  transform-origin: 60% 55%;
+  will-change: transform;
+}
+.hero-sweep {
+  animation: heroSweep 9s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Reduced-motion: neutralize animation/scrub site-wide (brief §2, §8). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
