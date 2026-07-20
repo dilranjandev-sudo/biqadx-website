@@ -136,13 +136,13 @@ export function ImmersiveHero({
       >
         <Container className="grid w-full items-center gap-10 py-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="mb-5 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/50">
+            <p className="mb-5 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
               {eyebrow}
             </p>
             <h1 className="font-display text-4xl font-bold leading-[1.04] tracking-tightest text-signal sm:text-5xl">
               {title}
             </h1>
-            <p className="mt-6 max-w-xl font-body text-base leading-relaxed text-signal/70 sm:text-lg">
+            <p className="mt-6 max-w-xl font-body text-base leading-relaxed text-signal/75 sm:text-lg">
               {lead}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">

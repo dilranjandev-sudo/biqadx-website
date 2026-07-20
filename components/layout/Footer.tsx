@@ -61,14 +61,14 @@ export function Footer() {
               </span>
               <StagePill />
             </div>
-            <p className="mt-4 max-w-xs font-mono text-[0.68rem] uppercase leading-relaxed tracking-[0.14em] text-signal/40">
+            <p className="mt-4 max-w-xs font-mono text-[0.66rem] uppercase leading-relaxed tracking-[0.2em] text-signal/60">
               India-based deep-tech healthcare R&amp;D
             </p>
           </div>
 
           {[platform, company, connect].map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <h3 className="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-signal/40">
+              <h3 className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
                 {col.title}
               </h3>
               <ul className="mt-4 space-y-2.5">
@@ -76,7 +76,7 @@ export function Footer() {
                   <li key={link.label + link.href}>
                     <Link
                       href={link.href}
-                      className="font-body text-sm text-signal/65 transition-colors hover:text-signal"
+                      className="font-body text-sm text-signal/75 transition-colors hover:text-signal"
                     >
                       {link.label}
                     </Link>
@@ -97,7 +97,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="font-mono text-[0.66rem] text-signal/45 transition-colors hover:text-signal"
+                      className="font-mono text-[0.66rem] text-signal/60 transition-colors hover:text-signal"
                     >
                       {link.label}
                     </Link>

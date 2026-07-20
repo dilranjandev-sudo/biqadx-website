@@ -9,11 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        void: "var(--void)",
-        graphite: "var(--graphite)",
-        paper: "var(--paper)",
-        signal: "var(--signal)",
-        ink: "var(--ink)",
+        // Built from the bare-channel vars in globals.css, not from the hex ones:
+        // a var holding a complete colour cannot take an alpha modifier, so
+        // `text-signal/45` and `bg-void/90` used to render at full strength.
+        void: "rgb(var(--void-rgb) / <alpha-value>)",
+        graphite: "rgb(var(--graphite-rgb) / <alpha-value>)",
+        paper: "rgb(var(--paper-rgb) / <alpha-value>)",
+        signal: "rgb(var(--signal-rgb) / <alpha-value>)",
+        ink: "rgb(var(--ink-rgb) / <alpha-value>)",
         prism: {
           1: "var(--prism-1)",
           2: "var(--prism-2)",

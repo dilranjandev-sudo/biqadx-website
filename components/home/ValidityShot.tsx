@@ -65,7 +65,7 @@ export function ValidityShot() {
                 className="h-1.5 w-1.5 shrink-0 rounded-full"
                 style={{ background: "var(--prism-gradient)" }}
               />
-              <span className="font-mono text-[0.56rem] uppercase tracking-[0.13em] text-signal/85 sm:text-[0.6rem]">
+              <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/85">
                 {c}
               </span>
             </motion.li>
@@ -73,7 +73,7 @@ export function ValidityShot() {
         </ul>
         <motion.p
           variants={reduce ? undefined : line}
-          className="mt-4 border-t border-signal/15 pt-3 font-mono text-[0.56rem] uppercase leading-relaxed tracking-[0.13em] text-signal/60 sm:text-[0.6rem]"
+          className="mt-4 border-t border-signal/15 pt-3 font-mono text-[0.6rem] uppercase leading-relaxed tracking-[0.16em] text-signal/60"
         >
           Output released only in the authorized validity state
         </motion.p>

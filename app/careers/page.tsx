@@ -1,9 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { MediaBand } from "@/components/ui/MediaBand";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { FigureBand } from "@/components/ui/FigureBand";
+import { ContentSection } from "@/components/ui/ContentSection";
+import { VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -36,71 +38,76 @@ const HOW = [
 export default function CareersPage() {
   return (
     <>
-      <PageHero kicker="Careers & Talent" title="Build the measurement system, not just the prototype.">
+      <PageHero
+        kicker="Careers & Talent"
+        title="Build the measurement system, not just the prototype."
+      >
         A multidisciplinary R&amp;D culture for difficult healthcare engineering —
         for people who document assumptions, test failure modes and distinguish a
         promising concept from verified evidence.
       </PageHero>
 
-      <MediaBand
-        src="/images/careers-craft.png"
-        alt="Extreme macro: a droplet of fluid meeting the iridescent nanostructured surface of a thin card."
-        width={1536}
-        height={1024}
-        caption="Illustrative"
+      <FigureBand
+        id="careers-craft"
+        alt="Close work at a research bench — a component being aligned by hand under a bright task light."
+        caption="Illustrative — engineering work"
+        label="Figure 01"
+        priority
       />
 
-      <PaperSection>
+      <ContentSection no="01 / 03" title="Talent areas" divider={false}>
         <Reveal>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">Talent areas</h2>
-        </Reveal>
-        <Reveal>
-          <ul className="mt-8 flex flex-wrap gap-2.5">
+          <ul className="flex flex-wrap gap-2">
             {TALENT.map((t) => (
-              <li key={t} className="rounded-full border border-[var(--border-light)] px-4 py-2 font-mono text-[0.64rem] uppercase tracking-[0.1em] text-ink/65">
+              <li
+                key={t}
+                className="rounded-full border border-[var(--border-light)] px-3.5 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-ink/75"
+              >
                 {t}
               </li>
             ))}
           </ul>
         </Reveal>
-      </PaperSection>
+      </ContentSection>
 
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div>
-            <Reveal>
-              <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">How we work</h2>
-            </Reveal>
-            <ul className="mt-6 space-y-2.5">
-              {HOW.map((h, i) => (
-                <Reveal key={h} delay={i * 0.04}>
-                  <li className="flex gap-3 border-t border-ink/15 pt-2.5 font-body text-sm text-ink/75">
-                    <span aria-hidden="true" className="font-mono text-ink/35">·</span>
-                    {h}
-                  </li>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
-          <Reveal delay={0.08}>
-            <div className="rounded-xl border border-[var(--border-light)] bg-white/50 p-6">
-              <h2 className="font-display text-xl font-bold tracking-tight text-ink">Talent interest</h2>
-              <p className="mt-3 font-body leading-relaxed text-ink/70">
-                Specific openings are published only when formally approved. General
-                inquiries should include your area of interest, background, portfolio
-                or publications, location, availability, and the problem you are best
-                equipped to solve.
-              </p>
-              <Link href="/contact" className="btn-ink mt-6">
-                Submit a talent-interest inquiry
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </PaperSection>
+      <ContentSection no="02 / 03" title="How we work">
+        <ul>
+          {HOW.map((h, i) => (
+            <li key={h}>
+              <ScrollReveal delay={i * 0.05}>
+                <div className="flex gap-5 border-b border-ink/12 py-4 first:pt-0">
+                  <span className="font-mono text-[0.6rem] tracking-[0.16em] text-ink/65">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-body text-sm leading-relaxed text-ink/75">{h}</span>
+                </div>
+              </ScrollReveal>
+            </li>
+          ))}
+        </ul>
+      </ContentSection>
+
+      <ContentSection
+        no="03 / 03"
+        title="Talent interest"
+        intro="Specific openings are published only when formally approved."
+      >
+        <Reveal>
+          <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
+            General inquiries should include your area of interest, background,
+            portfolio or publications, location, availability, and the problem you
+            are best equipped to solve.
+          </p>
+          <Link href="/contact" className="btn-ink mt-8">
+            Submit a talent-interest inquiry
+          </Link>
+        </Reveal>
+      </ContentSection>
 
       <VoidBand>
-        <Link href="/about" className="btn-outline">Learn about BIQADX</Link>
+        <Link href="/about" className="btn-outline">
+          Learn about BIQADX
+        </Link>
       </VoidBand>
     </>
   );

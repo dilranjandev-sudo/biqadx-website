@@ -48,8 +48,8 @@ export function MeasurementChain() {
 
   return (
     <section className="border-t border-[var(--border-dark)] bg-void">
-      <Container className="py-20 sm:py-28">
-        <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-signal/45">
+      <Container className="py-24 sm:py-32">
+        <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
           How it works
         </p>
         <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">
@@ -74,9 +74,9 @@ export function MeasurementChain() {
             {STEPS.map((step) => (
               <motion.li key={step.k} className="flex flex-col items-center text-center" variants={reduce ? undefined : node}>
                 <Dot />
-                <p className="mt-5 font-mono text-[0.66rem] uppercase tracking-[0.16em] text-signal/40">{step.k}</p>
+                <p className="mt-5 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">{step.k}</p>
                 <p className="mt-2 font-display text-lg leading-tight text-signal">{step.t}</p>
-                <p className="mt-2 font-body text-sm leading-relaxed text-signal/60">{step.s}</p>
+                <p className="mt-2 font-body text-sm leading-relaxed text-signal/75">{step.s}</p>
               </motion.li>
             ))}
           </ol>
@@ -102,9 +102,9 @@ export function MeasurementChain() {
                 <span className="absolute -left-8 top-0.5">
                   <Dot />
                 </span>
-                <p className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-signal/40">{step.k}</p>
+                <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">{step.k}</p>
                 <p className="mt-1 font-display text-lg leading-tight text-signal">{step.t}</p>
-                <p className="mt-1 font-body text-sm leading-relaxed text-signal/60">{step.s}</p>
+                <p className="mt-1 font-body text-sm leading-relaxed text-signal/75">{step.s}</p>
               </motion.li>
             ))}
           </ol>

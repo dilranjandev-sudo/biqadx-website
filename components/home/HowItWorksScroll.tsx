@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Container } from "@/components/ui/Container";
 import { useLenis } from "@/components/motion/LenisProvider";
 import { motionDisabled } from "@/lib/motion";
 
@@ -10,37 +9,49 @@ const SLIDES = [
   {
     img: "/images/seq-1-sample.png",
     title: "Apply the sample.",
-    alt: "A gloved hand releasing a clear droplet from a pipette onto the iridescent nanostructured surface of a thin card.",
+    alt: "A gloved hand releasing a clear droplet from a pipette onto the micro-textured surface of a thin card resting on a dark steel bench, the analyzer out of focus behind.",
   },
   {
     img: "/images/seq-2-seat.png",
     title: "Seat the card.",
-    alt: "A gloved hand sliding a thin iridescent card into the front slot of a matte-black analyzer.",
+    alt: "A gloved hand sliding the card into the open loading port of the off-white benchtop analyzer, its touchscreen dark.",
   },
   {
     img: "/images/seq-3-interrogate.png",
     title: "The surface is interrogated.",
-    alt: "The seated card inside the analyzer, a blade of light grazing its engineered surface beneath the reading optics.",
+    alt: "The seated card under an optical objective ringed by an illuminated white collar, a narrow band of cyan-violet structural colour raised across the card's textured face.",
   },
   {
     img: "/images/seq-4-validate.png",
     title: "The system checks itself.",
-    alt: "An inspection objective over the card's geometric alignment and reference features during a self-check.",
+    alt: "The objective stepped across to the card's reference row and registration cutout, a tight pool of cool light beneath it.",
   },
   {
-    img: "/images/seq-5-result.png",
+    // NOTE: the supplied seq-5-result.png cannot ship — it shows a full interface
+    // with a green tick, "PASS", and an invented inspection summary (uniformity,
+    // contrast, defect count). Result screens and fabricated data are both barred
+    // (CLAUDE.md, image rules). Standing in with the enclosed-machine shot, which
+    // carries the same "nothing is released" reading and stays on-message.
+    // Replace once a compliant step-5 frame exists — screen dark, nothing shown.
+    img: "/images/omega-exterior.png",
     title: "Released only when valid.",
-    alt: "The card resting in the analyzer with a single neutral status light, a gloved hand stepping back.",
+    alt: "The analyzer standing closed and quiet on a dark bench, its touchscreen dark and nothing displayed.",
   },
 ];
 
 const HEIGHT_VH = 560;
 
 /**
- * "See it work" — a pinned scroll sequence that continuously cross-fades a
- * consistent set of real photos with a slow Ken Burns zoom, and clean numbered
- * captions that slide up on each step. No progress chrome — the photography
- * carries it. GSAP scrub; reduced-motion → first frame + a plain step list.
+ * "See it work" — a pinned sequence viewer. The five frames cross-fade inside a
+ * held stage as the section is scrubbed, with the step caption set on the
+ * photograph itself. GSAP scrub; reduced-motion → first frame + a plain step list.
+ *
+ * The stage holds 3:2 because the sequence photography is 3:2: filling the
+ * viewport with `object-cover` cropped 13% away on desktop and 69% on a phone,
+ * cutting the pipette, the card and the objective — the subject of every frame —
+ * out of shot. It is sized off the viewport *height* (`86svh * 1.5`) rather than
+ * the container width, so it runs as wide as it can while still fitting on screen
+ * at that aspect, and grows on taller displays.
  */
 export function HowItWorksScroll() {
   const outerRef = useRef<HTMLElement>(null);
@@ -86,11 +97,13 @@ export function HowItWorksScroll() {
         onUpdate: (self: any) => {
           const p = self.progress as number;
           const pos = p * (n - 1);
-          const zoom = (1.06 + 0.14 * p).toFixed(4);
           imgRefs.current.forEach((el, i) => {
             if (!el) return;
-            el.style.opacity = String(Math.max(0, 1 - Math.abs(pos - i)));
-            el.style.transform = `scale(${zoom})`;
+            const d = Math.abs(pos - i);
+            el.style.opacity = String(Math.max(0, 1 - d));
+            // Each frame settles as it becomes the active one, rather than the
+            // whole stage zooming — the photograph stays fully in view.
+            el.style.transform = `scale(${(1 + 0.05 * Math.min(1, d)).toFixed(4)})`;
           });
           const active = Math.min(n - 1, Math.round(pos));
           if (active !== lastActive) {
@@ -116,7 +129,8 @@ export function HowItWorksScroll() {
     return () => {
       killed = true;
       if (off) off();
-      if (stRef.current) stRef.current.getAll().forEach((t: { kill: () => void }) => t.kill());
+      if (stRef.current)
+        stRef.current.getAll().forEach((t: { kill: () => void }) => t.kill());
     };
   }, [lenis]);
 
@@ -127,69 +141,111 @@ export function HowItWorksScroll() {
       style={animated ? { height: `${HEIGHT_VH}vh` } : undefined}
       aria-label="How it works"
     >
-      <div className={animated ? "sticky top-0 h-[100svh] overflow-hidden" : "relative min-h-[80vh] overflow-hidden"}>
-        {SLIDES.map((s, i) => (
-          <div
-            key={s.img}
-            ref={(el) => {
-              imgRefs.current[i] = el;
-            }}
-            className="absolute inset-0 will-change-transform"
-            style={{ opacity: i === 0 ? 1 : 0, transform: "scale(1.06)" }}
-          >
-            <Image src={s.img} alt={s.alt} fill priority={i === 0} sizes="100vw" className="object-cover" />
-          </div>
-        ))}
+      <div
+        className={
+          animated
+            ? "sticky top-0 flex h-[100svh] items-center justify-center px-4 sm:px-6"
+            : "relative px-4 py-20 sm:px-6"
+        }
+      >
+        {/* Stage — sized off the viewport height so it runs as wide as it can at
+            3:2 and still fit on screen. It sits outside Container deliberately:
+            the content grid would cap it at 1152px and waste width on the large,
+            tall displays where this sequence reads best. */}
         <div
-          aria-hidden="true"
-          className="absolute inset-0"
+          className="relative overflow-hidden rounded-xl border border-[var(--border-dark)] bg-graphite/30"
           style={{
-            background:
-              "linear-gradient(180deg, rgba(11,14,20,0.55) 0%, rgba(11,14,20,0.12) 40%, rgba(11,14,20,0.92) 100%)",
+            width: "min(calc(100vw - 2rem), calc(86svh * 1.5), 1600px)",
+            aspectRatio: "3 / 2",
           }}
-        />
+        >
+          {SLIDES.map((s, i) => (
+            <div
+              key={s.img}
+              ref={(el) => {
+                imgRefs.current[i] = el;
+              }}
+              className="absolute inset-0 will-change-transform"
+              style={{ opacity: i === 0 ? 1 : 0, transform: "scale(1)" }}
+            >
+              <Image
+                src={s.img}
+                alt={s.alt}
+                fill
+                priority={i === 0}
+                sizes="(min-width: 1024px) 1400px, 100vw"
+                className="object-cover"
+              />
+            </div>
+          ))}
 
-        <div className="relative flex h-full min-h-[80vh] items-end">
-          <Container className="pb-16 sm:pb-24">
-            <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-signal/55">
-              See it work
-            </p>
+          {/* Scrims — the label and caption sit on the photograph, so each
+                needs its own ground rather than relying on what is behind it. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-1/4"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(11,14,20,0.75) 0%, rgba(11,14,20,0) 100%)",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(11,14,20,0) 0%, rgba(11,14,20,0.72) 55%, rgba(11,14,20,0.92) 100%)",
+            }}
+          />
 
+          <p className="absolute left-6 top-5 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/75 sm:left-10 sm:top-8">
+            See it work
+          </p>
+
+          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
             {animated ? (
-              <div className="relative mt-5 h-28 sm:h-32">
-                {SLIDES.map((s, i) => (
-                  <div
-                    key={s.title}
-                    ref={(el) => {
-                      capRefs.current[i] = el;
-                    }}
-                    className="absolute inset-0"
-                    style={{
-                      opacity: i === 0 ? 1 : 0,
-                      transform: i === 0 ? "translateY(0)" : "translateY(16px)",
-                      transition: "opacity 0.55s ease, transform 0.55s ease",
-                    }}
-                  >
-                    <h2 className="flex max-w-3xl items-baseline gap-4 font-display text-3xl font-bold leading-tight tracking-tightest text-signal sm:text-5xl">
-                      <span className="font-mono text-lg font-normal text-signal/35 sm:text-2xl">
+              <>
+                <div className="relative h-20 sm:h-24">
+                  {SLIDES.map((s, i) => (
+                    <div
+                      key={s.title}
+                      ref={(el) => {
+                        capRefs.current[i] = el;
+                      }}
+                      className="absolute inset-x-0 bottom-0"
+                      style={{
+                        opacity: i === 0 ? 1 : 0,
+                        transform:
+                          i === 0 ? "translateY(0)" : "translateY(16px)",
+                        transition: "opacity 0.55s ease, transform 0.55s ease",
+                      }}
+                    >
+                      <span className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      {s.title}
-                    </h2>
-                  </div>
-                ))}
-              </div>
+                      <h2 className="mt-3 font-display text-2xl font-bold leading-[1.1] tracking-tightest text-signal sm:text-4xl">
+                        {s.title}
+                      </h2>
+                    </div>
+                  ))}
+                </div>
+              </>
             ) : (
-              <ol className="mt-5 space-y-2">
+              <ol className="space-y-2">
                 {SLIDES.map((s, i) => (
-                  <li key={s.title} className="font-display text-2xl font-bold tracking-tight text-signal sm:text-3xl">
-                    <span className="mr-3 font-mono text-base text-signal/40">{String(i + 1).padStart(2, "0")}</span>
+                  <li
+                    key={s.title}
+                    className="font-display text-xl font-bold tracking-tight text-signal sm:text-2xl"
+                  >
+                    <span className="mr-3 font-mono text-base text-signal/60">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     {s.title}
                   </li>
                 ))}
               </ol>
             )}
-          </Container>
+          </div>
         </div>
       </div>
     </section>

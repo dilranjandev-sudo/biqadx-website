@@ -24,14 +24,14 @@ function Field({
     <div>
       <label
         htmlFor={id}
-        className="block font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ink/55"
+        className="block font-mono text-[0.66rem] uppercase tracking-[0.2em] text-ink/65"
       >
         {label}
-        {optional && <span className="ml-2 text-ink/35">optional</span>}
+        {optional && <span className="ml-2 text-ink/65">optional</span>}
       </label>
       <div className="mt-2">{children}</div>
       {error && (
-        <p id={`${id}-error`} role="alert" className="mt-1.5 font-body text-sm text-ink/80">
+        <p id={`${id}-error`} role="alert" className="mt-1.5 font-body text-sm text-ink/75">
           {error}
         </p>
       )}
@@ -181,7 +181,7 @@ export function ContactForm() {
       </label>
 
       {formError && (
-        <p role="alert" className="font-body text-sm text-ink/80">
+        <p role="alert" className="font-body text-sm text-ink/75">
           {formError}
         </p>
       )}

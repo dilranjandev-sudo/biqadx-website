@@ -11,7 +11,7 @@ export function StageBadges({ className = "" }: { className?: string }) {
       {stage.badges.map((badge, i) => (
         <li
           key={badge}
-          className="flex items-center font-mono text-[0.68rem] uppercase tracking-[0.16em] text-signal/60"
+          className="flex items-center font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60"
         >
           {i > 0 && (
             <span aria-hidden="true" className="mr-3 text-signal/25">

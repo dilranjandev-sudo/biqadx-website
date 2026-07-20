@@ -109,7 +109,7 @@ export function CardScrollScene() {
       >
         <Container>
           <div className="mx-auto max-w-md text-center">
-            <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-signal/45">
+            <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
               See it work
             </p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">

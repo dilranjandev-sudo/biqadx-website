@@ -70,7 +70,7 @@ export function ScopeStats() {
               className="absolute inset-0 opacity-[0.16]"
               style={{ background: "var(--prism-gradient)" }}
             />
-            <span className="absolute left-4 top-4 font-mono text-[0.54rem] uppercase tracking-[0.22em] text-signal/40">
+            <span className="absolute left-4 top-4 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
               home-scope.png
             </span>
           </div>
@@ -94,7 +94,7 @@ export function ScopeStats() {
                 <span className="block font-display text-2xl font-bold leading-none tracking-tightest text-signal sm:text-4xl">
                   {s.kind === "num" ? <CountUp to={s.to} prefix={s.prefix} /> : s.text}
                 </span>
-                <span className="mt-2 block font-mono text-[0.5rem] uppercase leading-relaxed tracking-[0.16em] text-signal/55 sm:text-[0.56rem]">
+                <span className="mt-2 block font-mono text-[0.6rem] uppercase leading-relaxed tracking-[0.16em] text-signal/60">
                   {s.label}
                 </span>
               </div>
@@ -103,7 +103,7 @@ export function ScopeStats() {
         </div>
       </div>
 
-      <p className="mx-auto mt-6 max-w-lg text-center font-body text-xs leading-relaxed text-signal/35">
+      <p className="mx-auto mt-6 max-w-lg text-center font-body text-xs leading-relaxed text-signal/75">
         Research scope — the assay menu is not finalized, and every method and assay
         requires method-specific validation.
       </p>

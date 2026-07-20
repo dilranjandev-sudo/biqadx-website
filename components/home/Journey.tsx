@@ -1,107 +1,155 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/motion/Reveal";
-import { ValidityShot } from "./ValidityShot";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { useAnimate } from "@/components/motion/useAnimate";
+import { ValidityGate } from "./ValidityGate";
 
-function Chapter({
-  index,
-  kicker,
-  title,
-  lead,
-  linkHref,
-  linkLabel,
-  flip,
-  children,
+/**
+ * "Why it works" — three wide cinematic bands, each uncovered by a scan wipe as
+ * it enters, with the picture drifting inside the held frame as it passes.
+ *
+ * The layout is deliberately unlike its neighbours: the platform section above
+ * uses alternating 4:3 rows and the research section uses a sticky split, so
+ * repeating either shape here flattened the back half of the page into one
+ * rhythm. Wide 21:9 bands with the text set beneath read as chapters rather than
+ * as more product rows.
+ *
+ * The wipe is the section's own idea rather than decoration — this is a company
+ * whose instrument reads a surface by scanning light across it, so the image is
+ * revealed the same way. It runs through ScrollReveal, so a frame that never
+ * animates is simply visible rather than stuck hidden.
+ */
+
+const CHAPTERS = [
+  {
+    index: "01",
+    kicker: "The science",
+    title: "The cartridge is part of the instrument.",
+    lead: "An engineered surface finer than a wavelength of light — doing the measurement, not decorating it.",
+    href: "/metasurface-diagnostics",
+    linkLabel: "Explore the science",
+    img: "/images/metasurface-macro.png",
+    alt: "Macro of a nanostructured surface showing structural colour shifting across the texture.",
+  },
+  {
+    index: "02",
+    kicker: "The trust",
+    title: "A number appears only when it's valid.",
+    lead: "Identity, seating and controls must all pass — otherwise the result is withheld.",
+    href: "/quality-validation",
+    linkLabel: "Quality & validation",
+    img: "/images/why-validate.png",
+    alt: "A card held in a precision fixture as a focused light probe scans along its reference edge during a self-check.",
+  },
+  {
+    index: "03",
+    kicker: "The mission",
+    title: "For where diagnostic delay matters most.",
+    lead: "Quality-gated measurement, engineered to move closer to the point of care.",
+    href: "/impact",
+    linkLabel: "Intended impact",
+    img: "/images/impact-reach.png",
+    alt: "A community health worker sitting with a family in a rural Indian setting at dusk.",
+  },
+];
+
+const SPRING = { stiffness: 120, damping: 28, mass: 0.4 };
+
+/**
+ * Wide band with continuous scroll motion: the picture drifts vertically inside
+ * the held frame, and settles from 1.18 to 1.0 as the band reaches the middle of
+ * the viewport, then eases back out. The scale is what gives the section depth —
+ * each chapter appears to come forward as you reach it and recede as you leave.
+ *
+ * Both are transform-only and never affect opacity or clipping, so a band whose
+ * motion never runs is simply a still photograph rather than a missing one.
+ */
+function Band({
+  src,
+  alt,
+  animate,
+  position,
 }: {
-  index: string;
-  kicker: string;
-  title: string;
-  lead: string;
-  linkHref: string;
-  linkLabel: string;
-  flip?: boolean;
-  children: ReactNode;
+  src: string;
+  alt: string;
+  animate: boolean;
+  position?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [34, -34]);
+  const y = useSpring(
+    useTransform(scrollYProgress, [0, 1], ["9%", "-9%"]),
+    SPRING,
+  );
+  const scale = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [1.18, 1.0, 1.18]),
+    SPRING,
+  );
 
   return (
-    <div ref={ref} className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-      {/* Visual — dominant, framed, with a soft prism edge-glow */}
-      <div className={flip ? "lg:order-2 lg:col-span-7" : "lg:order-1 lg:col-span-7"}>
-        <motion.div style={{ y: reduce ? 0 : y }} className="relative">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-8 -top-8 -z-10 h-28 rounded-full opacity-20 blur-3xl"
-            style={{ background: "var(--prism-gradient)" }}
-          />
-          {children}
-        </motion.div>
-      </div>
-
-      {/* Text — minimal; index numeral sits inline as a header accent (no overlap) */}
-      <div className={flip ? "lg:order-1 lg:col-span-5" : "lg:order-2 lg:col-span-5"}>
-        <Reveal>
-          <div>
-            <div className="flex items-baseline gap-4">
-              <span
-                aria-hidden="true"
-                className="select-none font-display text-5xl font-bold leading-none tracking-tightest sm:text-6xl"
-                style={{ color: "rgba(232, 236, 239, 0.22)" }}
-              >
-                {index}
-              </span>
-              <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/45">
-                {kicker}
-              </p>
-            </div>
-            <h3 className="mt-6 font-display text-3xl font-bold leading-[1.08] tracking-tightest text-signal sm:text-[2.5rem]">
-              {title}
-            </h3>
-            <p className="mt-4 max-w-sm font-body leading-relaxed text-signal/65">{lead}</p>
-            <Link
-              href={linkHref}
-              className="mt-7 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal/85 transition-colors hover:text-signal"
-            >
-              {linkLabel}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path
-                  d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-          </div>
-        </Reveal>
-      </div>
+    <div
+      ref={ref}
+      className="relative aspect-[16/9] overflow-hidden rounded-xl border border-[var(--border-dark)] bg-graphite/30 sm:aspect-[21/9]"
+    >
+      <motion.div
+        className="absolute inset-0 will-change-transform"
+        style={animate ? { y, scale } : { y: 0, scale: 1 }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(min-width: 1024px) 1100px, 100vw"
+          className={`object-cover ${position ?? ""}`}
+        />
+      </motion.div>
     </div>
   );
 }
 
-const frame =
-  "overflow-hidden rounded-2xl border border-[var(--border-dark)] bg-graphite/30";
+/**
+ * The chapter's text, drifting at a slower rate than its photograph above it.
+ * The difference between the two rates is the effect: the band and its caption
+ * separate slightly as they pass, which reads as depth rather than as a slide.
+ */
+function ChapterText({
+  children,
+  animate,
+}: {
+  children: React.ReactNode;
+  animate: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useSpring(useTransform(scrollYProgress, [0, 1], [26, -26]), SPRING);
 
-/** The science → the trust → the mission — one idea, three premium image-led
- *  chapters. Text pared to a line each; visuals carry the weight. */
+  return (
+    <div ref={ref}>
+      <motion.div style={animate ? { y } : { y: 0 }}>{children}</motion.div>
+    </div>
+  );
+}
+
 export function Journey() {
+  const animate = useAnimate();
+
   return (
     <section className="bg-void">
       <Container className="py-24 sm:py-32">
         <Reveal>
-          <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/45">
+          <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
             Why it works
           </p>
           <h2 className="mt-3 max-w-xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">
@@ -109,57 +157,76 @@ export function Journey() {
           </h2>
         </Reveal>
 
-        <div className="mt-16 space-y-24 sm:mt-24 sm:space-y-36">
-          <Chapter
-            index="01"
-            kicker="The science"
-            title="The cartridge is part of the instrument."
-            lead="An engineered surface finer than a wavelength of light — doing the measurement, not decorating it."
-            linkHref="/metasurface-diagnostics"
-            linkLabel="Explore the science"
-          >
-            <figure className={frame}>
-              <Image
-                src="/images/metasurface-macro.png"
-                alt="Macro of a nanostructured surface showing structural colour — cyan, violet and amber shifting across the texture."
-                width={1448}
-                height={1086}
-                sizes="(min-width: 1024px) 620px, 100vw"
-                className="w-full"
-              />
-            </figure>
-          </Chapter>
+        <div className="mt-14 space-y-20 sm:mt-20 sm:space-y-28">
+          {CHAPTERS.map((c) => (
+            <article key={c.index} className="group">
+              <ScrollReveal variant="wipe">
+                <Band
+                  src={c.img}
+                  alt={c.alt}
+                  animate={animate}
+                  position={
+                    c.index === "03" ? "object-[center_35%]" : undefined
+                  }
+                />
+              </ScrollReveal>
 
-          <Chapter
-            index="02"
-            kicker="The trust"
-            title="A number appears only when it's valid."
-            lead="Identity, seating and controls must all pass — otherwise the result is withheld."
-            linkHref="/quality-validation"
-            linkLabel="Quality & validation"
-            flip
-          >
-            <ValidityShot />
-          </Chapter>
+              <ChapterText animate={animate}>
+                <div className="mt-7 grid gap-6 lg:grid-cols-12 lg:gap-14">
+                  <div className="lg:col-span-7">
+                    <div className="flex items-center gap-4">
+                      <span
+                        aria-hidden="true"
+                        className="font-display text-xl font-bold leading-none tracking-tightest text-signal/30"
+                      >
+                        {c.index}
+                      </span>
+                      <span className="h-px w-10 bg-signal/20" />
+                      <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
+                        {c.kicker}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 max-w-2xl font-display text-2xl font-bold leading-[1.1] tracking-tightest text-signal sm:text-[2rem]">
+                      {c.title}
+                    </h3>
+                  </div>
 
-          <Chapter
-            index="03"
-            kicker="The mission"
-            title="For where diagnostic delay matters most."
-            lead="Quality-gated measurement, engineered to move closer to the point of care."
-            linkHref="/impact"
-            linkLabel="Intended impact"
-          >
-            <figure className={`${frame} relative aspect-[16/10]`}>
-              <Image
-                src="/images/impact-reach.png"
-                alt="A community health worker with a family in a rural Indian setting, holding a small portable device."
-                fill
-                sizes="(min-width: 1024px) 620px, 100vw"
-                className="object-cover object-[center_35%]"
-              />
-            </figure>
-          </Chapter>
+                  <div className="lg:col-span-5">
+                    <p className="max-w-md font-body leading-relaxed text-signal/75">
+                      {c.lead}
+                    </p>
+                    <Link
+                      href={c.href}
+                      className="mt-5 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal/85 transition-colors hover:text-signal"
+                    >
+                      {c.linkLabel}
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden="true"
+                        className="transition-transform duration-300 group-hover:translate-x-0.5"
+                      >
+                        <path
+                          d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
+                          stroke="currentColor"
+                          strokeWidth="1.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </ChapterText>
+            </article>
+          ))}
+        </div>
+
+        {/* The gate itself, stated once beneath all three — the section's conclusion. */}
+        <div className="mt-16 sm:mt-20">
+          <ValidityGate />
         </div>
       </Container>
     </section>

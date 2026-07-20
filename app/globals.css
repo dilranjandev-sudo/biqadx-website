@@ -9,6 +9,17 @@
   --signal: #e8ecef;
   --ink: #0b0e14;
 
+  /* Same five colours as bare channels. Tailwind cannot apply an alpha modifier
+     to a variable holding a complete colour — `text-signal/75` silently dropped
+     the /45 and rendered at full strength — so the tokens in tailwind.config.ts
+     are built from these with `rgb(... / <alpha-value>)` instead. The hex vars
+     above stay for the places that reference them directly in CSS. */
+  --void-rgb: 11 14 20;
+  --graphite-rgb: 26 31 43;
+  --paper-rgb: 245 243 238;
+  --signal-rgb: 232 236 239;
+  --ink-rgb: 11 14 20;
+
   --prism-1: #6ee7f0;
   --prism-2: #a78bfa;
   --prism-3: #f2c879;
@@ -21,6 +32,7 @@
 
   --border-dark: rgba(232, 236, 239, 0.12);
   --border-light: rgba(11, 14, 20, 0.12);
+
 }
 
 * {
@@ -211,6 +223,82 @@ body {
 .hero-sweep {
   animation: heroSweep 9s ease-in-out infinite;
   animation-delay: 2s;
+}
+
+/* Headlines: condensed Plex set in caps — the engineering-drawing register.
+   Only headings are affected; `font-display` is also used on numerals and figures,
+   which stay as they are. The site's `tracking-tightest` (-0.04em) is deliberately
+   overridden here: that fits sentence-case display type, but condensed capitals
+   collide at it and need close to normal tracking to stay legible. */
+h1.font-display,
+h2.font-display,
+h3.font-display {
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+
+/* Page-hero entrance. Deliberately CSS, not JS: this carries the <h1> on every
+   subpage, so it must never depend on an animation frame ever being served. If
+   the animation does not run, `both` leaves the element at its natural, visible
+   position. The reduced-motion block at the end of this file collapses these to
+   an instant cut. */
+@keyframes riseIn {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.rise-in {
+  animation: riseIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Scroll reveals (components/motion/ScrollReveal.tsx).
+   Default = visible. `.rv-armed` is added by JS only when motion is permitted,
+   `.rv-in` plays it back. Content is therefore visible unless JS has explicitly
+   taken responsibility for revealing it. */
+.rv-armed.rv-up {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.rv-armed.rv-mask {
+  transform: translateY(110%);
+}
+/* A scan passing across the frame — the picture is uncovered left to right. */
+.rv-armed.rv-wipe {
+  clip-path: inset(0 100% 0 0);
+}
+.rv-armed.rv-in.rv-wipe {
+  animation: wipeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0s) both;
+}
+@keyframes wipeIn {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.rv-armed.rv-in.rv-up {
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0s) both;
+}
+.rv-armed.rv-in.rv-mask {
+  animation: riseIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0s) both;
 }
 
 /* Reduced-motion: neutralize animation/scrub site-wide (brief §2, §8). */

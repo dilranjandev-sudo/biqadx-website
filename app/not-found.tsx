@@ -11,13 +11,13 @@ export default function NotFound() {
   return (
     <section className="bg-void">
       <Container className="flex min-h-[60vh] flex-col justify-center py-24">
-        <p className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-signal/45">
+        <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
           404
         </p>
         <h1 className="mt-4 font-display text-4xl font-bold tracking-tightest text-signal sm:text-6xl">
           This page went off the surface.
         </h1>
-        <p className="mt-5 font-body text-lg text-signal/70">Let&apos;s get you back.</p>
+        <p className="mt-5 font-body text-lg text-signal/75">Let&apos;s get you back.</p>
 
         <nav aria-label="Recovery links" className="mt-8 flex flex-wrap gap-3">
           <Link href="/" className="btn-primary">
@@ -40,7 +40,7 @@ export default function NotFound() {
             name="q"
             type="search"
             placeholder="Search"
-            className="w-full rounded-full border border-[var(--border-dark)] bg-graphite px-4 py-2.5 font-body text-sm text-signal placeholder:text-signal/40"
+            className="w-full rounded-full border border-[var(--border-dark)] bg-graphite px-4 py-2.5 font-body text-sm text-signal placeholder:text-signal/75"
           />
           <button type="submit" className="btn-outline">
             Search

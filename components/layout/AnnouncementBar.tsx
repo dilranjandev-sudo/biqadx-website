@@ -11,7 +11,7 @@ export function AnnouncementBar() {
   return (
     <div className="relative border-b border-[var(--border-dark)] bg-graphite">
       <div className="mx-auto flex max-w-content items-center justify-center px-10 py-2">
-        <p className="text-center font-mono text-[0.68rem] uppercase tracking-[0.16em] text-signal/70">
+        <p className="text-center font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/75">
           {announcement}
         </p>
         <button

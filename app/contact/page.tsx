@@ -30,14 +30,16 @@ export default function ContactPage() {
             <dl className="space-y-4">
               {INFO.map((i) => (
                 <div key={i.label} className="border-t border-[var(--border-light)] pt-4">
-                  <dt className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink/45">
+                  <dt className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-ink/65">
                     {i.label}
                   </dt>
-                  <dd className="mt-1.5 font-body text-ink/80">{i.value}</dd>
+                  <dd className="mt-1.5 font-body text-ink/75">{i.value}</dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-8 rounded-lg border border-[var(--border-light)] bg-black/[0.03] p-4 font-body text-sm leading-relaxed text-ink/65">
+            {/* Footnote, not a callout box — it sits beside a form the reader is
+                already filling in, and matches the stage notice elsewhere. */}
+            <p className="mt-8 border-t border-[var(--border-light)] pt-5 font-body text-xs leading-relaxed text-ink/65">
               {contact.privacyNote}
             </p>
           </div>

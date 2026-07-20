@@ -1,6 +1,23 @@
-"use client";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+/**
+ * The validity gate, set as a statement with its conditions listed against it.
+ *
+ * The previous version made the four conditions the subject and left the actual
+ * claim — that nothing is released outside the authorized state — as a small
+ * mono line underneath. That is backwards: the restraint *is* the point of the
+ * section, and the four conditions are what support it. So the statement leads at
+ * display size and the conditions sit beside it as a ledger.
+ *
+ * It also drops the four separate rails that read as unconnected dashes rather
+ * than as one chain. A single divider between the claim and its conditions does
+ * the same job honestly.
+ *
+ * Deliberately no pass/fail state anywhere: no ticks, no green, no "PASS". This
+ * describes the structure of the gate, not the result of a run. Showing an
+ * outcome here would be the same fabricated-result problem that got imagery
+ * rejected (CLAUDE.md — no result readouts, no invented data).
+ */
 
 const CONDITIONS = [
   "Cartridge identity",
@@ -9,91 +26,59 @@ const CONDITIONS = [
   "Internal controls",
 ];
 
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.16, delayChildren: 0.1 } },
-};
-const item: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-const dot: Variants = {
-  hidden: { scale: 0, opacity: 0 },
-  show: { scale: 1, opacity: 1, transition: { duration: 0.4, ease: [0.2, 0.9, 0.3, 1.2] } },
-};
-
-/** Validity gate — an instrument-style readout: each condition satisfies in
- *  sequence (a prism node lights), and only then does the gated output release.
- *  Reduced-motion → shown resolved and static. */
 export function ValidityGate() {
-  const reduce = useReducedMotion();
-
   return (
-    <motion.div
-      className="rounded-2xl border border-[var(--border-dark)] bg-graphite/40 p-6 sm:p-8"
-      variants={container}
-      initial={reduce ? false : "hidden"}
-      whileInView={reduce ? undefined : "show"}
-      viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+    <section
+      aria-label="Validity gate"
+      className="overflow-hidden rounded-xl border border-[var(--border-dark)] bg-graphite/20"
     >
-      {/* Header */}
-      <motion.div
-        variants={reduce ? undefined : item}
-        className="flex items-center justify-between border-b border-[var(--border-dark)] pb-4"
-      >
-        <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-signal/55">
-          Validity gate
-        </span>
-        <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-signal/35">
-          All must pass
-        </span>
-      </motion.div>
+      <div className="grid lg:grid-cols-12">
+        {/* The claim */}
+        <div className="p-6 sm:p-10 lg:col-span-6 lg:py-12">
+          <ScrollReveal>
+            <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
+              The validity gate
+            </p>
+          </ScrollReveal>
 
-      {/* Conditions */}
-      <ul className="mt-5 space-y-1">
-        {CONDITIONS.map((c, i) => (
-          <motion.li
-            key={c}
-            variants={reduce ? undefined : item}
-            className="flex items-center justify-between gap-4 py-2.5"
-          >
-            <span className="flex items-center gap-3">
-              <span className="font-mono text-[0.6rem] text-signal/30">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="font-body text-sm text-signal/80">{c}</span>
+          <h3 className="mt-6 max-w-md font-display text-xl font-bold leading-[1.2] tracking-tightest text-signal sm:text-2xl">
+            <span className="block overflow-hidden pb-[0.08em]">
+              <ScrollReveal as="span" variant="mask" className="block">
+                Output released only in the
+              </ScrollReveal>
             </span>
-            <span className="flex items-center gap-2.5">
-              <span className="font-mono text-[0.56rem] uppercase tracking-[0.16em] text-signal/40">
-                Met
-              </span>
-              <motion.span
-                variants={reduce ? undefined : dot}
-                className="h-2 w-2 rounded-full"
-                style={{ background: "var(--prism-gradient)" }}
-              />
+            <span className="block overflow-hidden pb-[0.08em]">
+              <ScrollReveal as="span" variant="mask" delay={0.08} className="block">
+                authorized validity state
+              </ScrollReveal>
             </span>
-          </motion.li>
-        ))}
-      </ul>
+          </h3>
+        </div>
 
-      {/* Gated output — releases last, once every condition has passed */}
-      <motion.div
-        variants={reduce ? undefined : item}
-        className="mt-5 flex items-center gap-3 rounded-xl border border-[var(--border-dark)] bg-void/50 px-4 py-4"
-      >
-        <motion.span
-          variants={reduce ? undefined : dot}
-          className="h-2.5 w-2.5 shrink-0 rounded-full"
-          style={{
-            background: "var(--prism-gradient)",
-            boxShadow: "0 0 14px rgba(167, 139, 250, 0.55)",
-          }}
-        />
-        <span className="font-mono text-[0.62rem] uppercase leading-relaxed tracking-[0.14em] text-signal/70">
-          Output released only in the authorized validity state
-        </span>
-      </motion.div>
-    </motion.div>
+        {/* The conditions it depends on */}
+        <div className="border-t border-[var(--border-dark)] px-6 pb-6 sm:px-10 sm:pb-10 lg:col-span-6 lg:border-l lg:border-t-0 lg:py-12 lg:pb-12">
+          <ScrollReveal>
+            <p className="pt-6 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60 lg:pt-0">
+              Conditions
+            </p>
+          </ScrollReveal>
+
+          <ul className="mt-4">
+            {CONDITIONS.map((c, i) => (
+              <li key={c}>
+                <ScrollReveal delay={0.06 * i}>
+                  <div className="flex items-baseline gap-5 border-b border-[var(--border-dark)] py-3.5 last:border-b-0">
+                    <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/60">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-body text-sm text-signal">{c}</span>
+                  </div>
+                </ScrollReveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
   );
 }

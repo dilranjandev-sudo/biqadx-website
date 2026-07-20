@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
+import { ContentSection } from "@/components/ui/ContentSection";
+import { VoidBand } from "@/components/ui/PaperSection";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Insights",
@@ -37,51 +38,55 @@ const ARTICLES = [
 export default function InsightsPage() {
   return (
     <>
-      <PageHero kicker="Insights & Research" title="Metasurface diagnostics, explained with engineering discipline.">
+      <PageHero
+        kicker="Insights & Research"
+        title="Metasurface diagnostics, explained with engineering discipline."
+      >
         Perspectives for partners, researchers and engineers — separating
         established science, BIQADX engineering targets, unresolved risks and the
         evidence still required.
       </PageHero>
 
-      <PaperSection>
-        <Reveal>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">Editorial pillars</h2>
-        </Reveal>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ContentSection no="01 / 02" title="Editorial pillars" divider={false}>
+        <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           {PILLARS.map((p, i) => (
-            <Reveal key={p.t} delay={(i % 3) * 0.05}>
-              <div className="h-full rounded-xl border border-[var(--border-light)] p-5">
-                <h3 className="font-display text-base font-bold tracking-tight text-ink">{p.t}</h3>
-                <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">{p.d}</p>
+            <ScrollReveal key={p.t} delay={(i % 2) * 0.06}>
+              <div className="h-full border-t border-ink/15 pt-4">
+                <h3 className="font-display text-base font-bold leading-tight tracking-tight text-ink">
+                  {p.t}
+                </h3>
+                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">{p.d}</p>
               </div>
-            </Reveal>
+            </ScrollReveal>
           ))}
         </div>
-      </PaperSection>
+      </ContentSection>
 
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <Reveal>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">Planned articles</h2>
-          <p className="mt-3 max-w-2xl font-body leading-relaxed text-ink/70">
-            Each begins with a stage statement and identifies which claims are
-            background, engineering targets or validated company data. This section
-            goes live as articles are published.
-          </p>
-        </Reveal>
-        <ol className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
+      <ContentSection
+        no="02 / 02"
+        title="Planned articles"
+        intro="Each begins with a stage statement and identifies which claims are background, engineering targets or validated company data. This section goes live as articles are published."
+      >
+        <ol>
           {ARTICLES.map((a, i) => (
-            <Reveal key={a} delay={(i % 4) * 0.03}>
-              <li className="flex items-baseline gap-4 py-4">
-                <span className="font-mono text-[0.7rem] text-ink/35">{String(i + 1).padStart(2, "0")}</span>
-                <span className="font-display text-lg leading-snug text-ink/85">{a}</span>
-              </li>
-            </Reveal>
+            <li key={a}>
+              <ScrollReveal delay={Math.min(i, 5) * 0.04}>
+                <div className="flex gap-5 border-b border-ink/12 py-4 first:pt-0">
+                  <span className="font-mono text-[0.6rem] tracking-[0.16em] text-ink/65">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-body text-sm leading-relaxed text-ink/75">{a}</span>
+                </div>
+              </ScrollReveal>
+            </li>
           ))}
         </ol>
-      </PaperSection>
+      </ContentSection>
 
       <VoidBand>
-        <Link href="/contact" className="btn-primary">Propose a joint technical article</Link>
+        <Link href="/contact" className="btn-primary">
+          Propose a joint technical article
+        </Link>
       </VoidBand>
     </>
   );

@@ -5,11 +5,26 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { nav } from "@/lib/copy";
 
+/**
+ * Site header.
+ *
+ * Set as flat text with a hairline active marker rather than as rounded pills:
+ * pills read as app chrome, and this is the masthead of an instrument company.
+ * Dropdowns open on hover with a short intent delay — and still on click, on
+ * Enter and on arrow keys — so a pointer user never has to click to look, while
+ * keyboard and touch keep an explicit toggle.
+ *
+ * The Platform group runs to eight pages, so its panel is two columns; a single
+ * narrow list of eight was taller than it was readable. No invented descriptions
+ * accompany the links — copy on this site is compliance-reviewed, so the nav
+ * shows the page names it actually has.
+ */
 export function Nav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<number | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const hoverTimer = useRef<number | undefined>(undefined);
 
   // Close everything on route change.
   useEffect(() => {
@@ -34,59 +49,102 @@ export function Nav() {
     };
   }, [openGroup]);
 
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+
+  // Small delays either side: opening instantly on a passing cursor feels
+  // twitchy, and closing instantly makes the gap to the panel unreachable.
+  const hoverOpen = (gi: number) => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setOpenGroup(gi), 90);
+  };
+  const hoverClose = () => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setOpenGroup(null), 160);
+  };
+
+  const itemBase =
+    "relative inline-flex items-center gap-1.5 px-3 py-2 font-body text-sm transition-colors";
+  const marker =
+    "after:absolute after:inset-x-3 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-signal after:transition-transform after:duration-300 after:content-['']";
+
   return (
     <header
-      className="sticky top-0 z-50 border-b border-[var(--border-dark)] backdrop-blur"
-      style={{ backgroundColor: "rgba(11, 14, 20, 0.92)" }}
+      className="sticky top-0 z-50 border-b border-[var(--border-dark)] bg-void/90 backdrop-blur"
     >
       <nav
         ref={navRef}
         aria-label="Main navigation"
-        className="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3 sm:px-6"
+        className="mx-auto flex h-16 max-w-content items-center justify-between gap-6 px-4 sm:h-[4.5rem] sm:px-6"
       >
-        <div className="flex items-center">
-          <Link href="/" className="font-display text-lg font-bold tracking-tightest text-signal">
-            {nav.brand}
-          </Link>
-        </div>
+        <Link
+          href="/"
+          className="font-display text-base font-bold uppercase tracking-[0.06em] text-signal transition-opacity hover:opacity-80 sm:text-lg"
+        >
+          {nav.brand}
+        </Link>
 
         {/* Desktop */}
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden h-full items-center lg:flex">
           {nav.groups.map((group, gi) => {
             const active = group.items.some((i) => i.href === pathname);
             const isOpen = openGroup === gi;
+            const wide = group.items.length > 5;
             return (
-              <div key={group.label} className="relative">
+              <div
+                key={group.label}
+                className="relative flex h-full items-center"
+                onMouseEnter={() => hoverOpen(gi)}
+                onMouseLeave={hoverClose}
+              >
                 <button
                   type="button"
                   aria-haspopup="true"
                   aria-expanded={isOpen}
                   onClick={() => setOpenGroup(isOpen ? null : gi)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 font-body text-sm transition-colors ${
-                    active || isOpen ? "text-signal" : "text-signal/70 hover:text-signal"
+                  className={`${itemBase} ${marker} ${
+                    active || isOpen
+                      ? "text-signal after:scale-x-100"
+                      : "text-signal/75 hover:text-signal"
                   }`}
                 >
                   {group.label}
                   <svg
-                    className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-                    width="11"
-                    height="11"
+                    className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    width="10"
+                    height="10"
                     viewBox="0 0 12 12"
                     fill="none"
                     aria-hidden="true"
                   >
-                    <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path
+                      d="M2.5 4.5L6 8l3.5-3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
                   </svg>
                 </button>
-                {isOpen && (
-                  <div className="absolute left-0 top-full z-10 w-64 pt-2">
-                    <div className="rounded-xl border border-[var(--border-dark)] bg-graphite p-2 shadow-xl">
+
+                <div
+                  className={`absolute left-0 top-full z-10 pt-3 transition-all duration-200 ${
+                    isOpen
+                      ? "visible translate-y-0 opacity-100"
+                      : "invisible -translate-y-1 opacity-0"
+                  }`}
+                >
+                  <div
+                    className={`rounded-lg border border-[var(--border-dark)] bg-graphite p-2 ${
+                      wide ? "w-[32rem]" : "w-60"
+                    }`}
+                  >
+                    <div className={wide ? "grid grid-cols-2 gap-x-1" : ""}>
                       {group.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
+                          tabIndex={isOpen ? undefined : -1}
                           aria-current={item.href === pathname ? "page" : undefined}
-                          className={`block rounded-lg px-3 py-2 font-body text-sm transition-colors ${
+                          className={`block rounded px-3 py-2 font-body text-sm transition-colors ${
                             item.href === pathname
                               ? "bg-signal/10 text-signal"
                               : "text-signal/75 hover:bg-signal/5 hover:text-signal"
@@ -97,7 +155,7 @@ export function Nav() {
                       ))}
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
@@ -109,15 +167,17 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? "page" : undefined}
-                className={`rounded-full px-3 py-2 font-body text-sm transition-colors ${
-                  active ? "text-signal" : "text-signal/70 hover:text-signal"
+                className={`${itemBase} ${marker} ${
+                  active ? "text-signal after:scale-x-100" : "text-signal/75 hover:text-signal"
                 }`}
               >
                 {link.label}
               </Link>
             );
           })}
-          <Link href={nav.cta.href} className="btn-primary ml-1">
+
+          <span aria-hidden="true" className="mx-4 h-5 w-px bg-signal/20" />
+          <Link href={nav.cta.href} className="btn-primary">
             {nav.cta.label}
           </Link>
         </div>
@@ -125,7 +185,7 @@ export function Nav() {
         {/* Mobile toggle */}
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded p-1.5 text-signal lg:hidden"
+          className="-mr-1.5 inline-flex items-center justify-center rounded p-1.5 text-signal lg:hidden"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
@@ -133,9 +193,19 @@ export function Nav() {
         >
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
             {mobileOpen ? (
-              <path d="M4 4l14 14M18 4L4 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path
+                d="M4 4l14 14M18 4L4 18"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
             ) : (
-              <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path
+                d="M3 6h16M3 11h16M3 16h16"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
             )}
           </svg>
         </button>
@@ -143,39 +213,49 @@ export function Nav() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div id="mobile-menu" className="max-h-[80vh] overflow-y-auto border-t border-[var(--border-dark)] bg-void lg:hidden">
-          <div className="mx-auto flex max-w-content flex-col gap-1 px-4 py-4 sm:px-6">
+        <div
+          id="mobile-menu"
+          className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-[var(--border-dark)] bg-void lg:hidden"
+        >
+          <div className="mx-auto max-w-content px-4 py-6 sm:px-6">
             {nav.groups.map((group) => (
-              <div key={group.label} className="mb-2">
-                <p className="px-2 pt-1 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-signal/40">
+              <div key={group.label} className="mb-7">
+                <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
                   {group.label}
                 </p>
-                {group.items.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`rounded px-2 py-2 font-body text-base ${
-                      item.href === pathname ? "text-signal" : "text-signal/70"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                <div className="mt-3 flex flex-col">
+                  {group.items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      aria-current={item.href === pathname ? "page" : undefined}
+                      className={`border-b border-[var(--border-dark)] py-3 font-body text-base ${
+                        item.href === pathname ? "text-signal" : "text-signal/75"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             ))}
-            <div className="my-1 h-px bg-[var(--border-dark)]" />
-            {nav.links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`rounded px-2 py-2.5 font-body text-base ${
-                  link.href === pathname ? "text-signal" : "text-signal/70"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <Link href={nav.cta.href} className="btn-primary mt-3 w-full">
+
+            <div className="flex flex-col">
+              {nav.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={link.href === pathname ? "page" : undefined}
+                  className={`border-b border-[var(--border-dark)] py-3 font-body text-base ${
+                    link.href === pathname ? "text-signal" : "text-signal/75"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <Link href={nav.cta.href} className="btn-primary mt-6 w-full">
               {nav.cta.label}
             </Link>
           </div>

@@ -22,13 +22,13 @@ export function HomeSystem({
       <Container className="py-20 sm:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <div>
-            <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-signal/45">
+            <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
               {kicker}
             </p>
             <h2 className="mt-4 max-w-md font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">
               {title}
             </h2>
-            <p className="mt-5 max-w-md font-mono text-[0.68rem] uppercase leading-relaxed tracking-[0.14em] text-signal/55">
+            <p className="mt-5 max-w-md font-mono text-[0.66rem] uppercase leading-relaxed tracking-[0.2em] text-signal/60">
               {note}
             </p>
           </div>
@@ -84,11 +84,11 @@ export function HomeSystem({
                 <span className="font-display text-lg font-bold tracking-tight text-signal">
                   {p.name}
                 </span>
-                <span className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-signal/45">
+                <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
                   {p.tag}
                 </span>
               </div>
-              <p className="mt-3 font-body text-sm leading-relaxed text-signal/65">{p.line}</p>
+              <p className="mt-3 font-body text-sm leading-relaxed text-signal/75">{p.line}</p>
             </Link>
           ))}
         </div>

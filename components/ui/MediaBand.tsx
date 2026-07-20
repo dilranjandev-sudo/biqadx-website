@@ -30,7 +30,7 @@ export function MediaBand({
             className={`mx-auto w-full ${max} rounded-xl border border-[var(--border-dark)]`}
           />
           {caption && (
-            <figcaption className="mt-3 text-center font-mono text-[0.62rem] uppercase tracking-[0.14em] text-signal/45">
+            <figcaption className="mt-3 text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
               {caption}
             </figcaption>
           )}

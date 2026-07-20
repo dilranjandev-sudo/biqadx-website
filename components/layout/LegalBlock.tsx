@@ -6,10 +6,10 @@ import { stage, footer } from "@/lib/copy";
 export function LegalBlock({ className = "" }: { className?: string }) {
   return (
     <div className={`max-w-4xl ${className}`}>
-      <p className="font-mono text-[0.68rem] leading-relaxed text-signal/50">
+      <p className="font-mono text-[0.66rem] leading-relaxed text-signal/60">
         {stage.shortDisclaimer}
       </p>
-      <p className="mt-3 font-mono text-[0.68rem] leading-relaxed text-signal/45">
+      <p className="mt-3 font-mono text-[0.66rem] leading-relaxed text-signal/60">
         {footer.entity}{" "}
         <Link
           href={footer.disclaimerHref}

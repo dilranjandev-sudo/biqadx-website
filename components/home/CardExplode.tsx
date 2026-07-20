@@ -56,7 +56,7 @@ export function CardExplode() {
               className="absolute inset-x-0 top-0 h-[2px]"
               style={{ background: "var(--prism-gradient)", opacity: i === 1 ? 0.85 : 0.25 }}
             />
-            <span className="pl-4 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-signal/60">
+            <span className="pl-4 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
               {z}
             </span>
           </motion.div>
