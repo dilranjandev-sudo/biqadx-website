@@ -40,11 +40,11 @@ const PARTS = [
 export function PlatformShowcase() {
   return (
     <section className="bg-void">
-      <Container className="py-24 sm:py-32">
+      <Container className="py-20 sm:py-28">
         <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
           The platform
         </p>
-        <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">
+        <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-[2.5rem]">
           One platform. Three cooperating parts.
         </h2>
         <p className="mt-4 max-w-xl font-body leading-relaxed text-signal/75">
@@ -78,7 +78,7 @@ export function PlatformShowcase() {
                     <span className="font-mono text-[0.66rem] tracking-[0.2em] text-signal/60">
                       {String(i + 1).padStart(2, "0")} / 03
                     </span>
-                    <h3 className="mt-3 font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">
+                    <h3 className="mt-3 font-display text-2xl font-bold tracking-tightest text-signal sm:text-[2rem]">
                       {p.name}
                     </h3>
                     <p className="mt-1 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">

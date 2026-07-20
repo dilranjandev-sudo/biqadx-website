@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { PlatformPage, type PlatformBlock } from "@/components/platform/PlatformPage";
+import {
+  PlatformPage,
+  type PlatformBlock,
+} from "@/components/platform/PlatformPage";
 
 export const metadata: Metadata = {
   title: "METACARD Cartridge",
@@ -13,24 +16,56 @@ const BLOCKS: PlatformBlock[] = [
     title: "Public architecture",
     cols: 3,
     items: [
-      { t: "Optical substrate & surfaces", d: "Local coupling, filtering, wavefront, resonance and reference functions." },
-      { t: "Microfluidic network", d: "Channels, vents, stops, chambers and waste containment route sample and reagents." },
-      { t: "Analytical interfaces", d: "Reaction wells, dried reagents, electrode arrays and ion-selective regions." },
-      { t: "Calibration & QC regions", d: "On-card intensity, wavelength, optical and electrical references." },
-      { t: "Identity & control profile", d: "Machine-readable identity binds family, lot, method and quality limits to the card." },
-      { t: "Sealing & containment", d: "Bonded layers isolate fluid paths and contain used sample." },
+      {
+        t: "Optical substrate & surfaces",
+        d: "Local coupling, filtering, wavefront, resonance and reference functions.",
+      },
+      {
+        t: "Microfluidic network",
+        d: "Channels, vents, stops, chambers and waste containment route sample and reagents.",
+      },
+      {
+        t: "Analytical interfaces",
+        d: "Reaction wells, dried reagents, electrode arrays and ion-selective regions.",
+      },
+      {
+        t: "Calibration & QC regions",
+        d: "On-card intensity, wavelength, optical and electrical references.",
+      },
+      {
+        t: "Identity & control profile",
+        d: "Machine-readable identity binds family, lot, method and quality limits to the card.",
+      },
+      {
+        t: "Sealing & containment",
+        d: "Bonded layers isolate fluid paths and contain used sample.",
+      },
     ],
   },
-  { kind: "band", id: "metacard-use", alt: "A gloved hand seating a thin iridescent card into the analyzer's slot." },
+  {
+    kind: "band",
+    id: "metacard-use",
+    alt: "A gloved hand seating a thin iridescent card into the analyzer's slot.",
+  },
   {
     kind: "chips",
     title: "Functional zone concepts",
     intro:
       "The engineering baseline organizes the card into roughly twenty-one optical, sensing, calibration and identity zone concepts — an architecture, not a claim that every cartridge contains every zone.",
     items: [
-      "Antireflection coupling", "Diffraction", "Cavity", "Collection", "Fluorescence filtering",
-      "Time-resolved fluorescence", "Plasmonic sensing", "Computational imaging", "Electrochemical",
-      "Ion-selective", "Raman enhancement", "Calibration references", "Physical authentication",
+      "Antireflection coupling",
+      "Diffraction",
+      "Cavity",
+      "Collection",
+      "Fluorescence filtering",
+      "Time-resolved fluorescence",
+      "Plasmonic sensing",
+      "Computational imaging",
+      "Electrochemical",
+      "Ion-selective",
+      "Raman enhancement",
+      "Calibration references",
+      "Physical authentication",
     ],
   },
   {
@@ -59,8 +94,7 @@ const BLOCKS: PlatformBlock[] = [
   {
     kind: "note",
     title: "Why the card and reader must be co-designed",
-    body:
-      "A cartridge optical zone cannot be specified independently of source wavelength, angle, polarization, numerical aperture, detector response, thermal state, fluid refractive index and surface chemistry. METACARD and OMEGA-PRO are designed as a cooperative measurement system with explicit interface controls.",
+    body: "A cartridge optical zone cannot be specified independently of source wavelength, angle, polarization, numerical aperture, detector response, thermal state, fluid refractive index and surface chemistry. METACARD and OMEGA-PRO are designed as a cooperative measurement system with explicit interface controls.",
   },
 ];
 
@@ -69,8 +103,12 @@ export default function MetacardPage() {
     <PlatformPage
       kicker="METACARD Cartridge"
       title="A diagnostic cartridge designed as a measurement system."
-      lead="Not passive packaging — the cartridge defines part of the optical and analytical transfer function, read by the analyzer through a fixed, calibrated geometry."
-      heroImage={{ id: "metacard-hero", alt: "Concept render of the METACARD cartridge and a macro of its nanostructured surface.", caption: "Illustrative — concept render" }}
+      lead="Not packaging. The card defines part of the measurement itself."
+      heroImage={{
+        id: "metacard-hero",
+        alt: "Concept render of the METACARD cartridge and a macro of its nanostructured surface.",
+        caption: "Illustrative — concept render",
+      }}
       blocks={BLOCKS}
       primary={{ label: "Explore OMEGA-PRO", href: "/omega-pro" }}
       secondary={{ label: "Discuss cartridge development", href: "/partners" }}

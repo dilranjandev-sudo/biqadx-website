@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { FigureBand } from "@/components/ui/FigureBand";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
@@ -15,11 +14,26 @@ export const metadata: Metadata = {
 };
 
 const PRINCIPLES = [
-  { t: "Reusable precision, disposable contact path", d: "Keep expensive optics and electronics in the serviceable analyzer; limit the disposable to sample-contact and assay functions." },
-  { t: "Material efficiency", d: "Reduce unnecessary polymer mass, excess packaging and redundant components where safety allows." },
-  { t: "Design for containment", d: "Keep used sample and reagents sealed after testing; support safe disposal." },
-  { t: "Manufacturing yield", d: "Improve process capability and inspection so defects are caught early." },
-  { t: "Responsible material research", d: "Evaluate medical-grade, bio-based or degradable directions through real testing." },
+  {
+    t: "Reusable precision, disposable contact path",
+    d: "Keep expensive optics and electronics in the serviceable analyzer; limit the disposable to sample-contact and assay functions.",
+  },
+  {
+    t: "Material efficiency",
+    d: "Reduce unnecessary polymer mass, excess packaging and redundant components where safety allows.",
+  },
+  {
+    t: "Design for containment",
+    d: "Keep used sample and reagents sealed after testing; support safe disposal.",
+  },
+  {
+    t: "Manufacturing yield",
+    d: "Improve process capability and inspection so defects are caught early.",
+  },
+  {
+    t: "Responsible material research",
+    d: "Evaluate medical-grade, bio-based or degradable directions through real testing.",
+  },
 ];
 
 export default function SustainabilityPage() {
@@ -28,21 +42,17 @@ export default function SustainabilityPage() {
       <PageHero
         kicker="Sustainability"
         title="Diagnostic access should not ignore material responsibility."
+        image="sustainability-film"
       >
-        Point-of-care testing reduces travel and lab burden, but disposables create
-        waste. We consider lifecycle responsibility alongside analytical performance
-        and patient safety.
+        Testing closer to care cuts travel and lab burden. Disposables create
+        waste. Both are design constraints.
       </PageHero>
 
-      <FigureBand
-        id="sustainability-film"
-        alt="Roll-to-roll manufacturing: a thin flexible film with a light-diffracting micro-pattern moving over rollers."
-        caption="Illustrative — roll-to-roll film"
-        label="Figure 01"
-        priority
-      />
-
-      <ContentSection no="01 / 03" title="Platform-level principles" divider={false}>
+      <ContentSection
+        no="01 / 03"
+        title="Platform-level principles"
+        divider={false}
+      >
         <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           {PRINCIPLES.map((p, i) => (
             <ScrollReveal key={p.t} delay={(i % 2) * 0.06}>
@@ -50,7 +60,9 @@ export default function SustainabilityPage() {
                 <h3 className="font-display text-base font-bold leading-tight tracking-tight text-ink">
                   {p.t}
                 </h3>
-                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">{p.d}</p>
+                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">
+                  {p.d}
+                </p>
               </div>
             </ScrollReveal>
           ))}
@@ -60,10 +72,10 @@ export default function SustainabilityPage() {
       <ContentSection no="02 / 03" title="Eco-Labware research direction">
         <Reveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
-            Sustainable consumable concepts based on polymer blends and redesign.
-            Biodegradability, compostability, recyclability, bio-based content and
-            reduced material use are distinct — none is claimed without standardized
-            testing and certification.
+            Sustainable consumable concepts based on polymer blends and
+            redesign. Biodegradability, compostability, recyclability, bio-based
+            content and reduced material use are distinct — none is claimed
+            without standardized testing and certification.
           </p>
         </Reveal>
       </ContentSection>

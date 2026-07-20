@@ -29,7 +29,10 @@ export default function ContactPage() {
           <div>
             <dl className="space-y-4">
               {INFO.map((i) => (
-                <div key={i.label} className="border-t border-[var(--border-light)] pt-4">
+                <div
+                  key={i.label}
+                  className="border-t border-[var(--border-light)] pt-4"
+                >
                   <dt className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-ink/65">
                     {i.label}
                   </dt>

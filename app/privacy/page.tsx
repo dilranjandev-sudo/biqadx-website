@@ -4,7 +4,8 @@ import { DraftNotice } from "@/components/ui/DraftNotice";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "What BIQADX collects, and how it is used. Draft — pending counsel review.",
+  description:
+    "What BIQADX collects, and how it is used. Draft — pending counsel review.",
 };
 
 export default function PrivacyPage() {

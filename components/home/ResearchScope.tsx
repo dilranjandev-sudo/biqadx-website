@@ -103,7 +103,7 @@ export function ResearchScope() {
 
   return (
     <section ref={sectionRef} className="bg-void" aria-label="Research scope">
-      <Container className="py-24 sm:py-32">
+      <Container className="py-20 sm:py-28">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           {/* Headline column — pins while the plates travel past */}
           <div className="lg:col-span-5">
@@ -114,7 +114,7 @@ export function ResearchScope() {
                 Research · Prototype · Engineering Development
               </p>
 
-              <h1 className="mt-7 font-display text-[2rem] font-bold leading-[1.08] tracking-tightest text-signal sm:text-[2.75rem]">
+              <h1 className="mt-7 font-display text-[2.25rem] font-bold leading-[1.04] tracking-tightest text-signal sm:text-[3.25rem]">
                 {HEADLINE.map((line, i) => (
                   <span key={line} className="block overflow-hidden pb-[0.08em]">
                     <ScrollReveal as="span" variant="mask" delay={i * 0.09} className="block">
@@ -137,7 +137,7 @@ export function ResearchScope() {
 
           {/* Plate sheet */}
           <div className="lg:col-span-7">
-            <ul className="space-y-20 sm:space-y-28">
+            <ul className="space-y-16 sm:space-y-20">
               {PLATES.map((p, i) => (
                 <Plate key={p.index} plate={p} eager={i === 0} animate={animate} />
               ))}
@@ -172,7 +172,7 @@ function Plate({
         {/* Index rule — plate number, subject, hairline */}
         <div className="flex items-center gap-4">
           <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/60">
-            PLATE {plate.index}
+            {plate.index} / 03
           </span>
           <span className="h-px flex-1 bg-signal/15" />
           <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">

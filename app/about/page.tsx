@@ -15,11 +15,26 @@ export const metadata: Metadata = {
 };
 
 const THESIS = [
-  { title: "Clinic-first", line: "Design around limited space, power, maintenance capacity, operator time and follow-up windows." },
-  { title: "Cartridge intelligence", line: "Move optical, fluidic, sensing, calibration and identity functions into the consumable where it creates a measurable advantage." },
-  { title: "Reusable precision", line: "Keep controlled illumination, detection, motion, thermal management and safety in a serviceable analyzer." },
-  { title: "Evidence before promotion", line: "Advance statements only to the level demonstrated by simulation, component, cartridge and analytical evidence." },
-  { title: "Responsible scale-up", line: "Design for manufacturability, quality control, traceability and lifecycle impact from the beginning." },
+  {
+    title: "Clinic-first",
+    line: "Design around limited space, power, maintenance capacity, operator time and follow-up windows.",
+  },
+  {
+    title: "Cartridge intelligence",
+    line: "Move optical, fluidic, sensing, calibration and identity functions into the consumable where it creates a measurable advantage.",
+  },
+  {
+    title: "Reusable precision",
+    line: "Keep controlled illumination, detection, motion, thermal management and safety in a serviceable analyzer.",
+  },
+  {
+    title: "Evidence before promotion",
+    line: "Advance statements only to the level demonstrated by simulation, component, cartridge and analytical evidence.",
+  },
+  {
+    title: "Responsible scale-up",
+    line: "Design for manufacturability, quality control, traceability and lifecycle impact from the beginning.",
+  },
 ];
 
 const FOUNDERS = [
@@ -41,26 +56,19 @@ export default function AboutPage() {
       <PageHero
         kicker="About BIQADX"
         title="Building diagnostic intelligence around the real constraints of care."
+        image="about-bench"
       >
-        A founder-led Indian deep-tech healthcare company working across diagnostic
-        cartridges, nanophotonics, microfluidics, sensing, analyzer engineering,
-        embedded control, software quality systems and sustainable medical innovation.
+        A founder-led Indian deep-tech healthcare company — cartridges, optics,
+        analyzer engineering and software quality, under one roof.
       </PageHero>
-
-      <FigureBand
-        id="about-bench"
-        alt="A deep-tech research bench: optics, a microfluidic chip and control electronics under soft light."
-        caption="Illustrative — research bench"
-        label="Figure 01"
-        priority
-      />
 
       <ContentSection no="01 / 05" title="Our mission" divider={false}>
         <Reveal>
           <p className="max-w-2xl font-display text-2xl font-medium leading-snug tracking-tight text-ink sm:text-[1.75rem]">
-            Make reliable diagnostic capability more accessible to clinics, community
-            facilities and decentralized care — while preserving the evidence, quality
-            controls and regulatory discipline healthcare requires.
+            Make reliable diagnostic capability more accessible to clinics,
+            community facilities and decentralized care — while preserving the
+            evidence, quality controls and regulatory discipline healthcare
+            requires.
           </p>
         </Reveal>
       </ContentSection>
@@ -76,7 +84,9 @@ export default function AboutPage() {
                 <h3 className="mt-1 font-display text-base font-bold leading-tight tracking-tight text-ink">
                   {t.title}
                 </h3>
-                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">{t.line}</p>
+                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">
+                  {t.line}
+                </p>
               </div>
             </ScrollReveal>
           ))}
@@ -87,7 +97,7 @@ export default function AboutPage() {
         id="about-clinic-first"
         alt="A health worker seated at a plain table in a modest community health room, daylight from a window beside her, a small dark instrument on the table with its screen off."
         caption="Illustrative — intended setting"
-        label="Figure 02"
+        label="Figure 01"
       />
 
       <ContentSection no="03 / 05" title="Founders" divider={false}>
@@ -101,7 +111,9 @@ export default function AboutPage() {
                 <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-ink/65">
                   {f.role}
                 </p>
-                <p className="mt-3 font-body text-sm leading-relaxed text-ink/75">{f.line}</p>
+                <p className="mt-3 font-body text-sm leading-relaxed text-ink/75">
+                  {f.line}
+                </p>
               </div>
             </ScrollReveal>
           ))}
@@ -115,11 +127,11 @@ export default function AboutPage() {
       >
         <Reveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
-            The company is building controlled design baselines, cartridge and reader
-            prototypes, manufacturing plans, validation strategies, software
-            architecture, quality logic and partner networks. It is not presenting the
-            METACARD–OMEGA-PRO platform as a clinically validated or commercially
-            available product.
+            The company is building controlled design baselines, cartridge and
+            reader prototypes, manufacturing plans, validation strategies,
+            software architecture, quality logic and partner networks. It is not
+            presenting the METACARD–OMEGA-PRO platform as a clinically validated
+            or commercially available product.
           </p>
         </Reveal>
       </ContentSection>
@@ -127,11 +139,12 @@ export default function AboutPage() {
       <ContentSection no="05 / 05" title="Long-term direction">
         <Reveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
-            A portfolio of validated cartridge families that share common analyzer
-            infrastructure while using assay-specific fluidics, reagents, sensing zones
-            and control profiles — intended to support chemistry, immunoassay,
-            electrolyte, coagulation, imaging, molecular and advanced optical
-            measurements, without pretending every method fits one identical consumable.
+            A portfolio of validated cartridge families that share common
+            analyzer infrastructure while using assay-specific fluidics,
+            reagents, sensing zones and control profiles — intended to support
+            chemistry, immunoassay, electrolyte, coagulation, imaging, molecular
+            and advanced optical measurements, without pretending every method
+            fits one identical consumable.
           </p>
         </Reveal>
       </ContentSection>

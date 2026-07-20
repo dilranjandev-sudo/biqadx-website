@@ -23,9 +23,17 @@ const APPROVED = [
 ];
 
 const AVOID = [
-  "Clinically proven", "Approved", "Launched", "Available for hospitals",
-  "Market-ready", "Laboratory replacement", "Guaranteed accuracy",
-  "Instant diagnosis", "AI doctor", "Mass-produced", "Fully biodegradable",
+  "Clinically proven",
+  "Approved",
+  "Launched",
+  "Available for hospitals",
+  "Market-ready",
+  "Laboratory replacement",
+  "Guaranteed accuracy",
+  "Instant diagnosis",
+  "AI doctor",
+  "Mass-produced",
+  "Fully biodegradable",
 ];
 
 const BOILERPLATE =
@@ -53,7 +61,9 @@ export default function MediaPage() {
 
       <ContentSection no="02 / 04" title="Approved boilerplate">
         <Reveal>
-          <p className="max-w-2xl font-body leading-relaxed text-ink/75">{BOILERPLATE}</p>
+          <p className="max-w-2xl font-body leading-relaxed text-ink/75">
+            {BOILERPLATE}
+          </p>
         </Reveal>
       </ContentSection>
 

@@ -11,19 +11,25 @@ import { useAnimate } from "@/components/motion/useAnimate";
 import { ValidityGate } from "./ValidityGate";
 
 /**
- * "Why it works" — three wide cinematic bands, each uncovered by a scan wipe as
- * it enters, with the picture drifting inside the held frame as it passes.
+ * "Why it works" — three full-bleed chapters, each a screen tall.
  *
- * The layout is deliberately unlike its neighbours: the platform section above
- * uses alternating 4:3 rows and the research section uses a sticky split, so
- * repeating either shape here flattened the back half of the page into one
- * rhythm. Wide 21:9 bands with the text set beneath read as chapters rather than
- * as more product rows.
+ * This is the closing argument of the page, so it is the one section that gives
+ * up the content grid entirely: edge to edge, no card, no rounded corner, no
+ * hairline. Every other section on Home is held inside a frame of some kind, so
+ * dropping the frame here is what marks these three as the conclusion rather than
+ * three more rows.
  *
- * The wipe is the section's own idea rather than decoration — this is a company
- * whose instrument reads a surface by scanning light across it, so the image is
- * revealed the same way. It runs through ScrollReveal, so a frame that never
- * animates is simply visible rather than stuck hidden.
+ * Each chapter holds its picture still while you scroll through it — the image
+ * counter-travels against the page, so it reads as a held shot rather than
+ * something sliding past. The copy rises in once as the chapter arrives.
+ *
+ * The section above it, "See it work", travels sideways on a rail. Holding still
+ * and going deep here is the deliberate opposite — the page stops advancing and
+ * starts arguing.
+ *
+ * Every motion is transform and opacity only, and every neutral state is the
+ * finished state, so a chapter whose scrub never runs is a full-strength still
+ * photograph with its copy on it, not a blank screen.
  */
 
 const CHAPTERS = [
@@ -56,88 +62,129 @@ const CHAPTERS = [
     linkLabel: "Intended impact",
     img: "/images/impact-reach.png",
     alt: "A community health worker sitting with a family in a rural Indian setting at dusk.",
+    position: "object-[center_35%]",
   },
 ];
 
-const SPRING = { stiffness: 120, damping: 28, mass: 0.4 };
+const SPRING = { stiffness: 110, damping: 26, mass: 0.35 };
 
-/**
- * Wide band with continuous scroll motion: the picture drifts vertically inside
- * the held frame, and settles from 1.18 to 1.0 as the band reaches the middle of
- * the viewport, then eases back out. The scale is what gives the section depth —
- * each chapter appears to come forward as you reach it and recede as you leave.
- *
- * Both are transform-only and never affect opacity or clipping, so a band whose
- * motion never runs is simply a still photograph rather than a missing one.
- */
-function Band({
-  src,
-  alt,
+function Chapter({
+  chapter,
   animate,
-  position,
+  right,
 }: {
-  src: string;
-  alt: string;
+  chapter: (typeof CHAPTERS)[number];
   animate: boolean;
-  position?: string;
+  right: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
+
+  // The picture moves against the page — roughly a fifth of the travel — so the
+  // frame appears held while the chapter passes through it.
   const y = useSpring(
-    useTransform(scrollYProgress, [0, 1], ["9%", "-9%"]),
+    useTransform(scrollYProgress, [0, 1], ["-11%", "11%"]),
     SPRING,
   );
   const scale = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [1.18, 1.0, 1.18]),
+    useTransform(scrollYProgress, [0, 0.5, 1], [1.12, 1.0, 1.12]),
     SPRING,
   );
 
   return (
     <div
       ref={ref}
-      className="relative aspect-[16/9] overflow-hidden rounded-xl border border-[var(--border-dark)] bg-graphite/30 sm:aspect-[21/9]"
+      className="relative h-[100svh] min-h-[520px] w-full overflow-hidden"
     >
       <motion.div
-        className="absolute inset-0 will-change-transform"
+        className="absolute inset-[-8%] will-change-transform"
         style={animate ? { y, scale } : { y: 0, scale: 1 }}
       >
         <Image
-          src={src}
-          alt={alt}
+          src={chapter.img}
+          alt={chapter.alt}
           fill
-          sizes="(min-width: 1024px) 1100px, 100vw"
-          className={`object-cover ${position ?? ""}`}
+          sizes="100vw"
+          className={`object-cover ${chapter.position ?? ""}`}
         />
       </motion.div>
-    </div>
-  );
-}
 
-/**
- * The chapter's text, drifting at a slower rate than its photograph above it.
- * The difference between the two rates is the effect: the band and its caption
- * separate slightly as they pass, which reads as depth rather than as a slide.
- */
-function ChapterText({
-  children,
-  animate,
-}: {
-  children: React.ReactNode;
-  animate: boolean;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useSpring(useTransform(scrollYProgress, [0, 1], [26, -26]), SPRING);
+      {/* Two scrims: one up from the base, one in from the side the copy is on. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(11,14,20,0.5) 0%, rgba(11,14,20,0.18) 34%, rgba(11,14,20,0.86) 80%, rgba(11,14,20,0.97) 100%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `linear-gradient(${
+            right ? "270deg" : "90deg"
+          }, rgba(11,14,20,0.8) 0%, rgba(11,14,20,0.4) 58%, rgba(11,14,20,0) 100%)`,
+        }}
+      />
 
-  return (
-    <div ref={ref}>
-      <motion.div style={animate ? { y } : { y: 0 }}>{children}</motion.div>
+      <div
+        className={`absolute inset-x-0 bottom-0 flex px-4 pb-16 sm:px-10 sm:pb-24 ${
+          right ? "justify-end" : "justify-start"
+        }`}
+      >
+        {/* The copy enters through ScrollReveal, not through the scrub.
+            Scrub-bound opacity was tried and reverted: it made the copy fade out
+            again as the chapter left, which looked right, but it also meant the
+            text sat at opacity 0 in every state where the scrub never ran. A
+            reveal fires once, holds its visible end state, and has a timeout
+            backstop — so the worst case here is a still frame with legible copy
+            on it, never an empty screen. */}
+        <ScrollReveal variant="up" className="max-w-md">
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal">
+              {chapter.index} / 03
+            </span>
+            <span aria-hidden="true" className="h-px w-10 bg-signal/30" />
+            <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal">
+              {chapter.kicker}
+            </span>
+          </div>
+
+          <h3 className="mt-5 font-display text-[1.7rem] font-bold leading-[1.06] tracking-tightest text-signal sm:text-[2.5rem]">
+            {chapter.title}
+          </h3>
+          <p className="mt-4 font-body text-sm leading-relaxed text-signal/85 sm:text-base">
+            {chapter.lead}
+          </p>
+
+          <Link
+            href={chapter.href}
+            className="group mt-6 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal underline decoration-signal/40 underline-offset-4 transition-colors hover:decoration-signal"
+          >
+            {chapter.linkLabel}
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              <path
+                d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </ScrollReveal>
+      </div>
     </div>
   );
 }
@@ -147,87 +194,30 @@ export function Journey() {
 
   return (
     <section className="bg-void">
-      <Container className="py-24 sm:py-32">
+      <Container className="pb-14 pt-20 sm:pb-16 sm:pt-28">
         <Reveal>
           <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
             Why it works
           </p>
-          <h2 className="mt-3 max-w-xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-4xl">
+          <h2 className="mt-3 max-w-xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-[2.5rem]">
             Science, trust, and reach.
           </h2>
         </Reveal>
+      </Container>
 
-        <div className="mt-14 space-y-20 sm:mt-20 sm:space-y-28">
-          {CHAPTERS.map((c) => (
-            <article key={c.index} className="group">
-              <ScrollReveal variant="wipe">
-                <Band
-                  src={c.img}
-                  alt={c.alt}
-                  animate={animate}
-                  position={
-                    c.index === "03" ? "object-[center_35%]" : undefined
-                  }
-                />
-              </ScrollReveal>
+      {/* Full-bleed from here — deliberately outside the content grid. */}
+      {CHAPTERS.map((c, i) => (
+        <Chapter
+          key={c.index}
+          chapter={c}
+          animate={animate}
+          right={i % 2 === 1}
+        />
+      ))}
 
-              <ChapterText animate={animate}>
-                <div className="mt-7 grid gap-6 lg:grid-cols-12 lg:gap-14">
-                  <div className="lg:col-span-7">
-                    <div className="flex items-center gap-4">
-                      <span
-                        aria-hidden="true"
-                        className="font-display text-xl font-bold leading-none tracking-tightest text-signal/30"
-                      >
-                        {c.index}
-                      </span>
-                      <span className="h-px w-10 bg-signal/20" />
-                      <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
-                        {c.kicker}
-                      </span>
-                    </div>
-                    <h3 className="mt-4 max-w-2xl font-display text-2xl font-bold leading-[1.1] tracking-tightest text-signal sm:text-[2rem]">
-                      {c.title}
-                    </h3>
-                  </div>
-
-                  <div className="lg:col-span-5">
-                    <p className="max-w-md font-body leading-relaxed text-signal/75">
-                      {c.lead}
-                    </p>
-                    <Link
-                      href={c.href}
-                      className="mt-5 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal/85 transition-colors hover:text-signal"
-                    >
-                      {c.linkLabel}
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        aria-hidden="true"
-                        className="transition-transform duration-300 group-hover:translate-x-0.5"
-                      >
-                        <path
-                          d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              </ChapterText>
-            </article>
-          ))}
-        </div>
-
-        {/* The gate itself, stated once beneath all three — the section's conclusion. */}
-        <div className="mt-16 sm:mt-20">
-          <ValidityGate />
-        </div>
+      {/* The gate itself, stated once beneath all three — the section's conclusion. */}
+      <Container className="pb-4 pt-20 sm:pt-28">
+        <ValidityGate />
       </Container>
     </section>
   );

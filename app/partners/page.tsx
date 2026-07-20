@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { FigureBand } from "@/components/ui/FigureBand";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
@@ -15,15 +14,42 @@ export const metadata: Metadata = {
 };
 
 const AREAS = [
-  { title: "Nanofabrication & nanoimprint", line: "Master fabrication, replication, optical metrology, polymer tooling and yield." },
-  { title: "Optical coatings & micro-optics", line: "Thin-film filters, gratings, microlenses and laser-compatible materials." },
-  { title: "Microfluidics & manufacturing", line: "Molding, lamination, reagent deposition, electrode printing and inspection." },
-  { title: "Assay development", line: "Clinical chemistry, immunoassay, electrolyte, coagulation, molecular, advanced sensing." },
-  { title: "Analyzer engineering", line: "Optomechanics, spectrometers, imaging, low-noise electronics, thermal, safety, EMC." },
-  { title: "Software & data systems", line: "Embedded control, reconstruction, quality logic, cybersecurity, regulated lifecycle." },
-  { title: "Clinical & regulatory", line: "Intended-use, protocols, comparators, risk, QMS, biocompatibility, submissions." },
-  { title: "Funding & incubation", line: "Non-dilutive grants, deep-tech incubation, strategic and milestone-based investment." },
-  { title: "Public-health implementation", line: "Workflow studies for primary care and decentralized diagnostic networks." },
+  {
+    title: "Nanofabrication & nanoimprint",
+    line: "Master fabrication, replication, optical metrology, polymer tooling and yield.",
+  },
+  {
+    title: "Optical coatings & micro-optics",
+    line: "Thin-film filters, gratings, microlenses and laser-compatible materials.",
+  },
+  {
+    title: "Microfluidics & manufacturing",
+    line: "Molding, lamination, reagent deposition, electrode printing and inspection.",
+  },
+  {
+    title: "Assay development",
+    line: "Clinical chemistry, immunoassay, electrolyte, coagulation, molecular, advanced sensing.",
+  },
+  {
+    title: "Analyzer engineering",
+    line: "Optomechanics, spectrometers, imaging, low-noise electronics, thermal, safety, EMC.",
+  },
+  {
+    title: "Software & data systems",
+    line: "Embedded control, reconstruction, quality logic, cybersecurity, regulated lifecycle.",
+  },
+  {
+    title: "Clinical & regulatory",
+    line: "Intended-use, protocols, comparators, risk, QMS, biocompatibility, submissions.",
+  },
+  {
+    title: "Funding & incubation",
+    line: "Non-dilutive grants, deep-tech incubation, strategic and milestone-based investment.",
+  },
+  {
+    title: "Public-health implementation",
+    line: "Workflow studies for primary care and decentralized diagnostic networks.",
+  },
 ];
 
 const INCLUDE = [
@@ -41,21 +67,17 @@ export default function PartnersPage() {
       <PageHero
         kicker="Partners & Collaboration"
         title="Collaborate on responsible metasurface diagnostic innovation."
+        image="partners-bench"
       >
-        The platform requires coordinated expertise across nanofabrication,
-        microfluidics, optics, assay science, electronics, software, manufacturing,
-        quality, clinical validation and regulation.
+        No one discipline builds this. Nanofabrication, optics, assay science,
+        manufacturing, quality and validation — together.
       </PageHero>
 
-      <FigureBand
-        id="partners-bench"
-        alt="Engineering collaboration: hands with tweezers holding an optic and a microfluidic chip over technical drawings."
-        caption="Illustrative — engineering concept"
-        label="Figure 01"
-        priority
-      />
-
-      <ContentSection no="01 / 03" title="Priority collaboration areas" divider={false}>
+      <ContentSection
+        no="01 / 03"
+        title="Priority collaboration areas"
+        divider={false}
+      >
         <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           {AREAS.map((a, i) => (
             <ScrollReveal key={a.title} delay={(i % 2) * 0.06}>
@@ -63,7 +85,9 @@ export default function PartnersPage() {
                 <h3 className="font-display text-base font-bold leading-tight tracking-tight text-ink">
                   {a.title}
                 </h3>
-                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">{a.line}</p>
+                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">
+                  {a.line}
+                </p>
               </div>
             </ScrollReveal>
           ))}
@@ -79,7 +103,9 @@ export default function PartnersPage() {
                   <span className="font-mono text-[0.6rem] tracking-[0.16em] text-ink/65">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="font-body text-sm leading-relaxed text-ink/75">{it}</span>
+                  <span className="font-body text-sm leading-relaxed text-ink/75">
+                    {it}
+                  </span>
                 </div>
               </ScrollReveal>
             </li>
@@ -95,9 +121,9 @@ export default function PartnersPage() {
         <Reveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             We do not invite clinical procurement, patient sample submission or
-            routine product demonstrations. Public discussion covers mission, stage,
-            high-level architecture and validation philosophy; detailed engineering
-            requires confidentiality agreements.
+            routine product demonstrations. Public discussion covers mission,
+            stage, high-level architecture and validation philosophy; detailed
+            engineering requires confidentiality agreements.
           </p>
           <Link href="/contact" className="btn-ink mt-8">
             Start a collaboration inquiry
@@ -111,8 +137,8 @@ export default function PartnersPage() {
 
       <VoidBand>
         <p className="mx-auto max-w-3xl font-display text-2xl leading-snug tracking-tight text-signal sm:text-4xl">
-          Engineering the diagnostic surface — with partners who build evidence, not
-          hype.
+          Engineering the diagnostic surface — with partners who build evidence,
+          not hype.
         </p>
       </VoidBand>
     </>

@@ -12,12 +12,30 @@ export const metadata: Metadata = {
 };
 
 const PILLARS = [
-  { t: "Metasurface science", d: "Wavefront engineering, spectral filtering, plasmonics, SERS, computational optics, references." },
-  { t: "Cartridge engineering", d: "Microfluidics, materials, bonding, surface chemistry, reagent integration, metrology." },
-  { t: "Analyzer systems", d: "Illumination, detection, thermal control, seating, motion, electronics, safety." },
-  { t: "Quality & validation", d: "Evidence layers, repeatability, controls, uncertainty, analytical validation." },
-  { t: "Diagnostic access", d: "Clinic-first workflows, decentralized testing, India-specific infrastructure." },
-  { t: "Responsible innovation", d: "AI governance, sustainability, patent honesty and public claims." },
+  {
+    t: "Metasurface science",
+    d: "Wavefront engineering, spectral filtering, plasmonics, SERS, computational optics, references.",
+  },
+  {
+    t: "Cartridge engineering",
+    d: "Microfluidics, materials, bonding, surface chemistry, reagent integration, metrology.",
+  },
+  {
+    t: "Analyzer systems",
+    d: "Illumination, detection, thermal control, seating, motion, electronics, safety.",
+  },
+  {
+    t: "Quality & validation",
+    d: "Evidence layers, repeatability, controls, uncertainty, analytical validation.",
+  },
+  {
+    t: "Diagnostic access",
+    d: "Clinic-first workflows, decentralized testing, India-specific infrastructure.",
+  },
+  {
+    t: "Responsible innovation",
+    d: "AI governance, sustainability, patent honesty and public claims.",
+  },
 ];
 
 const ARTICLES = [
@@ -42,8 +60,7 @@ export default function InsightsPage() {
         kicker="Insights & Research"
         title="Metasurface diagnostics, explained with engineering discipline."
       >
-        Perspectives for partners, researchers and engineers — separating
-        established science, BIQADX engineering targets, unresolved risks and the
+        Separating established science, our engineering targets, and the
         evidence still required.
       </PageHero>
 
@@ -55,7 +72,9 @@ export default function InsightsPage() {
                 <h3 className="font-display text-base font-bold leading-tight tracking-tight text-ink">
                   {p.t}
                 </h3>
-                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">{p.d}</p>
+                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">
+                  {p.d}
+                </p>
               </div>
             </ScrollReveal>
           ))}
@@ -75,7 +94,9 @@ export default function InsightsPage() {
                   <span className="font-mono text-[0.6rem] tracking-[0.16em] text-ink/65">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="font-body text-sm leading-relaxed text-ink/75">{a}</span>
+                  <span className="font-body text-sm leading-relaxed text-ink/75">
+                    {a}
+                  </span>
                 </div>
               </ScrollReveal>
             </li>

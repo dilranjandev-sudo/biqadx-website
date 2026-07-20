@@ -4,7 +4,8 @@ import { DraftNotice } from "@/components/ui/DraftNotice";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description: "Terms of use for the BIQADX website. Draft — pending counsel review.",
+  description:
+    "Terms of use for the BIQADX website. Draft — pending counsel review.",
 };
 
 export default function TermsPage() {

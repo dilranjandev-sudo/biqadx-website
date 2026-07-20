@@ -62,10 +62,13 @@ export function Nav() {
     hoverTimer.current = window.setTimeout(() => setOpenGroup(null), 160);
   };
 
+  // `nav-item` carries the right-to-left hover fill (globals.css); `marker` is the
+  // hairline that stays lit for the current section. They are separate signals —
+  // one is "you are pointing at this", the other "you are here".
   const itemBase =
-    "relative inline-flex items-center gap-1.5 px-3 py-2 font-body text-sm transition-colors";
+    "nav-item inline-flex items-center gap-1.5 px-3.5 py-2 font-body text-sm transition-colors duration-300";
   const marker =
-    "after:absolute after:inset-x-3 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-signal after:transition-transform after:duration-300 after:content-['']";
+    "after:absolute after:inset-x-3.5 after:bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-signal after:transition-transform after:duration-300 after:content-['']";
 
   return (
     <header
@@ -100,6 +103,8 @@ export function Nav() {
                   type="button"
                   aria-haspopup="true"
                   aria-expanded={isOpen}
+                  // Keeps the fill lit while this group's panel is open.
+                  data-open={isOpen ? "true" : undefined}
                   onClick={() => setOpenGroup(isOpen ? null : gi)}
                   className={`${itemBase} ${marker} ${
                     active || isOpen
@@ -144,10 +149,13 @@ export function Nav() {
                           href={item.href}
                           tabIndex={isOpen ? undefined : -1}
                           aria-current={item.href === pathname ? "page" : undefined}
-                          className={`block rounded px-3 py-2 font-body text-sm transition-colors ${
+                          // Current page keeps the fill on, so "you are here"
+                          // survives the pointer leaving.
+                          data-open={item.href === pathname ? "true" : undefined}
+                          className={`nav-item nav-sub block px-3 py-2 font-body text-sm transition-colors duration-300 ${
                             item.href === pathname
-                              ? "bg-signal/10 text-signal"
-                              : "text-signal/75 hover:bg-signal/5 hover:text-signal"
+                              ? "text-signal"
+                              : "text-signal/75 hover:text-signal"
                           }`}
                         >
                           {item.label}

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { FigureBand } from "@/components/ui/FigureBand";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
@@ -15,16 +14,47 @@ export const metadata: Metadata = {
 };
 
 const DISCIPLINES = [
-  { t: "Nanophotonic design", d: "Electromagnetic modeling, optical constants, tolerance, resonance and throughput." },
-  { t: "Microfabrication & replication", d: "Mastering, nanoimprint, molding, thin-film deposition, etching and printing." },
-  { t: "Microfluidics & surface chemistry", d: "Wetting, capillary transport, valves, reagent deposition and immobilization." },
-  { t: "Analyzer systems engineering", d: "Optics, mechanics, electronics, thermal, safety, motion, metrology, serviceability." },
-  { t: "Software & quality engineering", d: "Configuration control, traceability, calibration, audit logs and cybersecurity." },
-  { t: "Manufacturing transfer", d: "Drawings, tolerances, BOM/AVL control, process FMEA, IQ/OQ/PQ and lot release." },
+  {
+    t: "Nanophotonic design",
+    d: "Electromagnetic modeling, optical constants, tolerance, resonance and throughput.",
+  },
+  {
+    t: "Microfabrication & replication",
+    d: "Mastering, nanoimprint, molding, thin-film deposition, etching and printing.",
+  },
+  {
+    t: "Microfluidics & surface chemistry",
+    d: "Wetting, capillary transport, valves, reagent deposition and immobilization.",
+  },
+  {
+    t: "Analyzer systems engineering",
+    d: "Optics, mechanics, electronics, thermal, safety, motion, metrology, serviceability.",
+  },
+  {
+    t: "Software & quality engineering",
+    d: "Configuration control, traceability, calibration, audit logs and cybersecurity.",
+  },
+  {
+    t: "Manufacturing transfer",
+    d: "Drawings, tolerances, BOM/AVL control, process FMEA, IQ/OQ/PQ and lot release.",
+  },
 ];
 
-const PUBLIC = ["Mission & high-level architecture", "Stage & general science", "Broad measurement methods", "Partnership needs", "Validation philosophy"];
-const CONTROLLED = ["Detailed drawings & zone layouts", "Algorithms & thresholds", "Assay formulations", "Supplier files & cost models", "Risk analyses", "Patent-sensitive embodiments"];
+const PUBLIC = [
+  "Mission & high-level architecture",
+  "Stage & general science",
+  "Broad measurement methods",
+  "Partnership needs",
+  "Validation philosophy",
+];
+const CONTROLLED = [
+  "Detailed drawings & zone layouts",
+  "Algorithms & thresholds",
+  "Assay formulations",
+  "Supplier files & cost models",
+  "Risk analyses",
+  "Patent-sensitive embodiments",
+];
 
 export default function IpEngineeringPage() {
   return (
@@ -32,33 +62,21 @@ export default function IpEngineeringPage() {
       <PageHero
         kicker="IP & Engineering"
         title="Protecting the architecture while proving the engineering."
+        image="ip-nanofab"
       >
-        Patent development is one part of the R&amp;D process — not a substitute for
-        experimental evidence, regulatory review or product validation.
+        Patent work is part of R&amp;D — not a substitute for evidence.
       </PageHero>
 
-      <FigureBand
-        id="ip-nanofab"
-        alt="A nanoimprint tool pressing a fine micro-pattern into a wafer under instrument light."
-        caption="Illustrative — nanoimprint concept"
-        label="Figure 01"
-        priority
-      />
-
-      <ContentSection
-        no="01 / 04"
-        title="Public IP position"
-        divider={false}
-      >
+      <ContentSection no="01 / 04" title="Public IP position" divider={false}>
         <Reveal>
           {/* TODO(verify): specific application numbers, dates, inventors and legal
               status published only after official-record and patent-agent
               verification. */}
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             Active Indian patent and patent-development work spans biodegradable
-            consumables, modular analyzers, adaptive sample processing, multi-fluid
-            interfaces, multimodal analytical systems, immune-state sensing and
-            metasurface-integrated cartridge–reader architectures.
+            consumables, modular analyzers, adaptive sample processing,
+            multi-fluid interfaces, multimodal analytical systems, immune-state
+            sensing and metasurface-integrated cartridge–reader architectures.
           </p>
         </Reveal>
       </ContentSection>
@@ -70,9 +88,9 @@ export default function IpEngineeringPage() {
       >
         <Reveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
-            It does not mean the patent is granted, the claims are valid over prior
-            art, the technology has been manufactured, the assay works clinically,
-            the device is approved, or a product is available.
+            It does not mean the patent is granted, the claims are valid over
+            prior art, the technology has been manufactured, the assay works
+            clinically, the device is approved, or a product is available.
           </p>
         </Reveal>
       </ContentSection>
@@ -85,7 +103,9 @@ export default function IpEngineeringPage() {
                 <h3 className="font-display text-base font-bold leading-tight tracking-tight text-ink">
                   {d.t}
                 </h3>
-                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">{d.d}</p>
+                <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/65">
+                  {d.d}
+                </p>
               </div>
             </ScrollReveal>
           ))}

@@ -268,6 +268,43 @@ h3.font-display {
   animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Nav items — a fill that sweeps in from the right on hover and continues out to
+   the left on leave, so the motion reads as one direction rather than as a box
+   appearing and disappearing.
+
+   The fill is a pseudo-element behind the label, not a background on the item
+   itself: animating `background` cannot be composited, and a transform can. The
+   label brightens at the same time, so the item gains contrast on hover rather
+   than losing it to a competing panel. Reduced motion collapses the transition
+   via the global media query, leaving a plain instant fill. */
+.nav-item {
+  position: relative;
+  isolation: isolate;
+}
+.nav-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 4px;
+  background: rgb(var(--signal-rgb) / 0.1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-item:hover::before,
+.nav-item:focus-visible::before,
+.nav-item[data-open="true"]::before {
+  transform: scaleX(1);
+  transform-origin: right;
+}
+
+/* Same sweep inside the dropdown panels, tinted for the lighter surface. */
+.nav-sub::before {
+  background: rgb(var(--signal-rgb) / 0.08);
+  border-radius: 4px;
+}
+
 /* Scroll reveals (components/motion/ScrollReveal.tsx).
    Default = visible. `.rv-armed` is added by JS only when motion is permitted,
    `.rv-in` plays it back. Content is therefore visible unless JS has explicitly

@@ -138,23 +138,22 @@ export function PlatformPage({
   const sectionTotal = blocks.filter((b) => b.kind !== "band").length;
   let paperIndex = 0;
   let figureIndex = 0;
-  let bandIndex = 1; // the signature band is Figure 01
+  // The signature image now opens the page inside the hero, so in-page bands
+  // number from Figure 01.
+  let bandIndex = 0;
 
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
     <>
-      <PageHero kicker={kicker} title={title}>
+      <PageHero
+        kicker={kicker}
+        title={title}
+        image={heroImage.id}
+        imageAlt={heroImage.alt}
+      >
         {lead}
       </PageHero>
-
-      <FigureBand
-        id={heroImage.id}
-        alt={heroImage.alt}
-        caption={heroImage.caption}
-        label="Figure 01"
-        priority
-      />
 
       {blocks.map((b, bi) => {
         if (b.kind === "band") {

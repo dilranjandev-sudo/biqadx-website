@@ -186,7 +186,7 @@ export const contactCategories = [
 export const contact = {
   hero: {
     title: "Contact BIQADX",
-    lead: "For investment, research, engineering, manufacturing, assay, validation, regulatory, media or talent inquiries, reach BIQADX through the official company channel.",
+    lead: "One official channel — for investment, research, engineering, media or talent.",
   },
   success: "Thank you — your message is on its way. We'll be in touch.",
   location: "New Delhi, India",
