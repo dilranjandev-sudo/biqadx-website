@@ -76,7 +76,11 @@ Pages use `<ImageSlot id="…" alt="…" ratio="16/9" />`. If `lib/images.ts` ha
 image renders; otherwise a labelled placeholder shows. **To wire an owner-supplied image:**
 1. Copy the PNG into `public/images/`.
 2. Add one line to `lib/images.ts`: `"<id>": { src: "/images/<file>.png", alt: "…", caption: "…" }`.
-3. Rebuild + restart the prod server.
+3. If it is a **hero** image, set its `brightness` too — run `node scripts/hero-exposure.mjs`
+   and copy the recommended value. Hero photos arrive anywhere from mean level 24 to 109, so
+   `PageHero` exposes each one individually; one shared multiplier either leaves the dark frames
+   dark or blows the bright ones to white. Re-check hero text contrast after changing it.
+4. Rebuild + restart the prod server.
 `IMAGE_MANIFEST.md` = the list of images still to generate, each with a compliant, paste-ready prompt.
 The owner generates images and hands them back by filename.
 

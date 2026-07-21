@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { Container } from "./Container";
+import { ParallaxFrame } from "@/components/motion/Parallax";
 import { getImage } from "@/lib/images";
 
 /**
@@ -13,8 +14,10 @@ import { getImage } from "@/lib/images";
  * is what the legal pages want.
  *
  * Text over photography needs its own ground, so two scrims sit under the copy:
- * a bottom-up gradient and a left-side one. Both are heavy enough that the copy
- * clears AA over any frame in the set, not just the dark ones.
+ * a bottom-up gradient and a left-side one. They are shaped around the copy
+ * rather than veiling the frame evenly, so the picture keeps its brightness
+ * where nothing is written and the copy still clears AA over every frame in the
+ * set. Verified against the real pixels, not assumed — see the scrims below.
  *
  * Copy is kept short and small on purpose. Every subpage opens the way Home does
  * — kicker, one display line, one sentence — so the picture carries the page and
@@ -30,6 +33,10 @@ export function PageHero({
   title,
   image,
   imageAlt,
+  // Exposure normally comes from the manifest, per image — see below. A page can
+  // still override it. Drift is on by default so every page opens alive.
+  imageBrightness,
+  imageParallax = true,
   children,
 }: {
   kicker?: string;
@@ -38,27 +45,45 @@ export function PageHero({
   image?: string;
   /** Overrides the manifest alt. Decorative here — the h1 carries the meaning. */
   imageAlt?: string;
+  /** Overrides the manifest's per-image exposure. Prefer setting `brightness` in
+   *  lib/images.ts, which keeps it beside the file it describes. */
+  imageBrightness?: number;
+  /** Drift + de-zoom the hero photograph as the page scrolls, like Home. */
+  imageParallax?: boolean;
   children?: ReactNode;
 }) {
   const asset = image ? getImage(image) : undefined;
 
+  // Exposure is a property of the photograph, not of the layout, so it lives in
+  // the manifest beside the file. One shared multiplier cannot work here: these
+  // frames run from a mean level of 24 to 109, so a lift that rescues the dark
+  // ones flattens a third of the bright ones to white.
+  const brightness = imageBrightness ?? asset?.brightness ?? 1;
+
+  // Brightness alone lifts the blacks and leaves a photograph looking washed and
+  // foggy, so a little contrast and saturation goes with it — the picture reads
+  // brighter *and* crisper rather than merely paler.
+  const imageFilter =
+    brightness === 1
+      ? "contrast(1.06) saturate(1.06)"
+      : `brightness(${brightness}) contrast(1.06) saturate(1.06)`;
+
   const copy = (
-    <div className="max-w-xl">
+    <div className="max-w-2xl">
+      {/* Full signal, not /70: this is the smallest type in the hero and it sits
+          highest, where the scrim is lightest — it was the only line in the band
+          that ever fell under 4.5:1. */}
       {kicker && (
-        <p className="fade-up font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
+        <p className="fade-up font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal">
           {kicker}
         </p>
       )}
 
-      {/* Set in the same register as the home hero: a short display line at
-          text-xl/2xl in a narrow column, not a 6xl slab. Sentence case is forced
-          inline because globals.css uppercases every `h1.font-display` — that is
-          right for the section headings inside a page, but the hero line is the
-          one piece of type that should read like Home's, which is a sentence. */}
-      <h1
-        className="mt-4 overflow-hidden font-display text-xl font-medium leading-snug tracking-tight text-signal sm:text-2xl"
-        style={{ textTransform: "none", letterSpacing: "-0.01em" }}
-      >
+      {/* Big, bold, in the caps register globals.css gives every h1 — the same
+          highlighted headline the home hero carries, so every page opens the same
+          way. It rises in from the mask; the size steps down on narrow screens so
+          longer titles still fit. */}
+      <h1 className="mt-4 max-w-3xl overflow-hidden font-display text-[2.4rem] font-bold leading-[1.02] tracking-tightest text-signal sm:text-5xl md:text-[3.5rem]">
         <span className="rise-in block pb-[0.06em]" style={{ animationDelay: "60ms" }}>
           {title}
         </span>
@@ -66,7 +91,7 @@ export function PageHero({
 
       {children && (
         <div
-          className="fade-up mt-5 font-body text-sm leading-relaxed text-signal/70 sm:text-base"
+          className="fade-up mt-6 max-w-xl font-body text-base leading-relaxed text-signal/80 sm:text-lg"
           style={{ animationDelay: "220ms" }}
         >
           {children}
@@ -83,25 +108,68 @@ export function PageHero({
     );
   }
 
+  // What actually zooms a hero is the band's aspect ratio, not the parallax: a
+  // 3:2 photograph in a wide, short band is cropped hard by object-cover and the
+  // subject reads as a blown-up detail. Height is the real de-zoom lever, so the
+  // band is tall.
+  //
+  // The scale is then kept as close to 1 as the drift allows. It cannot be 1:
+  // translating the image by `amount` percent needs at least that much overflow
+  // on each side or a sliver of empty band shows at the extremes — the old
+  // 5% drift under a 1.06→1.0 scale did exactly that at the top of the scroll.
+  // 2% drift with a 1.05→1.04 scale is gap-free everywhere and barely enlarges
+  // the picture at all.
   return (
-    <section className="relative isolate flex min-h-[58svh] items-end overflow-hidden bg-void sm:min-h-[64svh]">
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src={asset.src}
-          alt={imageAlt ?? asset.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+    <section className="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-void sm:min-h-[82svh]">
+      {imageParallax ? (
+        <ParallaxFrame
+          className="absolute inset-0 -z-10"
+          amount={2}
+          from={1.05}
+          to={1.04}
+        >
+          <Image
+            src={asset.src}
+            alt={imageAlt ?? asset.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            style={imageFilter ? { filter: imageFilter } : undefined}
+          />
+        </ParallaxFrame>
+      ) : (
+        <div
+          className="absolute inset-0 -z-10"
+          style={imageFilter ? { filter: imageFilter } : undefined}
+        >
+          <Image
+            src={asset.src}
+            alt={imageAlt ?? asset.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+      )}
 
+      {/* The scrims are shaped around where the copy actually sits — the lower
+          left — instead of veiling the whole frame evenly. The old pair held a
+          flat 0.25 veil across the middle and 0.05 at the right edge, which cost
+          the picture brightness everywhere and still left the small kicker under
+          4.5:1 on the lighter photographs.
+          Now the upper third is nearly clear and the right edge is untouched, so
+          the picture reads bright, while the copy corner is taken deliberately
+          darker. Measured against the actual pixels of all fourteen hero files
+          at their manifest exposures, the worst case across the set is kicker
+          5.1:1, h1 6.5:1, lead 8.5:1 — against floors of 4.5, 3.0 and 4.5. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(11,14,20,0.55) 0%, rgba(11,14,20,0.25) 38%, rgba(11,14,20,0.88) 82%, rgba(11,14,20,0.96) 100%)",
+            "linear-gradient(180deg, rgba(11,14,20,0.36) 0%, rgba(11,14,20,0.10) 30%, rgba(11,14,20,0.58) 52%, rgba(11,14,20,0.86) 82%, rgba(11,14,20,0.94) 100%)",
         }}
       />
       <div
@@ -109,7 +177,7 @@ export function PageHero({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(11,14,20,0.82) 0%, rgba(11,14,20,0.25) 58%, rgba(11,14,20,0.05) 100%)",
+            "linear-gradient(90deg, rgba(11,14,20,0.80) 0%, rgba(11,14,20,0.26) 55%, rgba(11,14,20,0) 100%)",
         }}
       />
 

@@ -72,11 +72,94 @@ carries the meaning, so it is marked `aria-hidden` in the markup.
 
 ---
 
+## Home hero — 3 slides (highest-value images on the site)
+
+The home hero auto-advances through three full-bleed slides. It currently borrows
+`howitworks-seat`, `metasurface-macro` and `seq-3-interrogate` — two of which are
+flagged (wrong device; full rainbow). These three replace them and are built for
+the hero specifically.
+
+Wire by editing the `HERO.images` array in [app/page.tsx](app/page.tsx) and adding
+each id to `lib/images.ts`. Keep them in this order — science → machine →
+measurement.
+
+### HERO COMPOSITION — read this first, it matters more than the subject
+
+The hero copy sits **lower-left**, and the scrims are built so the **right side of
+the frame stays bright and fully visible** — the subject must live there, like a
+planet on the right of a black field.
+
+- **Very wide, cinematic. Generate 2400×1350 (16:9)** or wider.
+- **The subject sits in the RIGHT HALF** and is the bright, sharp focal point.
+  Clearly lit, fully visible, surrounded by space.
+- **The LOWER-LEFT THIRD must be near-black, empty and quiet** — headline,
+  sub-line and button sit there. No object, no bright edge, no detail in the
+  lower-left.
+- **One directional key light from the upper right**; the left falls off into
+  darkness naturally. Deep, calm, spacious.
+
+Prepend the house style from [IMAGE_PROMPTS_HOME.md](IMAGE_PROMPTS_HOME.md) §1 and
+append its negative prompt; paste the DEVICE and CARTRIDGE blocks from §2 where
+noted. Same instrument, same card, same lighting family across all three.
+
+### 1. `hero-surface` — the science
+
+```
+[HOUSE STYLE] [CARTRIDGE] [HERO COMPOSITION]
+
+An extreme macro of the blank cartridge's engineered surface. The card is angled so
+it recedes toward the lower-left into shadow, while its upper-right face catches a
+grazing light that raises the narrow cyan-to-violet sheen across the micro-texture.
+The sharp focal detail is upper-right; the surface softens and darkens toward the
+lower-left. A scientific still, not a glamour shot. Narrow cyan→violet only, never a
+full spectrum.
+
+[NEGATIVE PROMPT]
+```
+
+### 2. `hero-analyzer` — the machine
+
+```
+[HOUSE STYLE] [DEVICE] [HERO COMPOSITION]
+
+The closed analyzer standing on a dark bench, shot front three-quarter so the
+machine occupies the right half of the frame — its off-white housing, brushed frame
+members and teal-sealed access door catching the key light from the upper right. The
+touchscreen is dark and switched off. The bench and air to the left fall away into
+unlit black. Panels shut, nothing operating, no hands.
+
+[NEGATIVE PROMPT]
+```
+
+### 3. `hero-interrogate` — the measurement
+
+```
+[HOUSE STYLE] [DEVICE] [CARTRIDGE] [HERO COMPOSITION]
+
+Tight interior — nothing but the measurement station, placed in the right half of
+the frame. A black anodised optical objective ringed by an illuminated white light
+collar hovers over the seated cartridge on its pale nest; a narrow blade of cool
+light grazes the card and raises a thin cyan-violet line where it strikes.
+Everything to the left and below falls into deep shadow and blur. No hands, no
+visible mechanism, frame or wiring.
+
+[NEGATIVE PROMPT]
+```
+
+**Check before accepting each:** subject clearly in the right half; lower-left
+near-black and empty; the machine is the same off-white-and-teal instrument, closed;
+the card carries the chamfered corner + circular cutout; narrow cyan→violet sheen,
+no full rainbow; no text, screen content, logos or lit readouts anywhere.
+
+---
+
 ## Four page heroes still to make
 
-`/faq`, `/insights`, `/media` and `/contact` have no image that genuinely belongs
-to them. Rather than reuse an unrelated one, they open on a plain band until these
-exist.
+`/insights` and `/media` still open on a plain band. **`/faq` and `/contact` now
+carry interim heroes** — they borrow `hero-surface` and `hero-analyzer` (the two
+frames the home slider no longer cycles). The dedicated `faq-hero` and
+`contact-hero` prompts below replace those when generated; wiring is one line each
+in `lib/images.ts`.
 
 ### Composition rules for heroes — these matter more than the subject
 
@@ -95,19 +178,21 @@ Prepend the house style and append the negative prompt from
 [IMAGE_PROMPTS_HOME.md](IMAGE_PROMPTS_HOME.md) §1; paste the DEVICE and CARTRIDGE
 blocks from §2 wherever hardware appears.
 
-### `faq-plain` — `/faq`
+### `faq-hero` — `/faq`
 
 The FAQ exists to say plainly what the platform is and is not. So: the objects
-themselves, unstaged, nothing happening.
+themselves, unstaged, nothing happening. Hero-composed — subject right, lower-left
+dark for the copy.
 
 ```
-[HOUSE STYLE] [DEVICE] [CARTRIDGE]
+[HOUSE STYLE — override the lighting: single key from the upper right, the left
+falling into darkness] [DEVICE] [CARTRIDGE] [HERO COMPOSITION]
 
-The closed instrument and a single blank cartridge resting on a dark steel bench,
-side by side, at rest. Nothing is being operated — no hands, no light beam, no
-door open, no indicator lit. Shot square-on from a low angle, quiet and plain,
-like a record photograph rather than a product hero. The right two-thirds carry
-the objects; the lower-left falls into empty unlit bench.
+The closed instrument and a single blank cartridge resting side by side on a dark
+steel bench, at rest. Nothing is being operated — no hands, no light beam, door
+shut, screen dark. A quiet record photograph rather than a product hero. The
+objects occupy the right half, catching the key light; the bench to the lower-left
+falls into unlit near-black.
 
 [NEGATIVE PROMPT]
 ```
@@ -145,19 +230,27 @@ Objects sit right of centre; the lower-left is unbroken dark background.
 [NEGATIVE PROMPT]
 ```
 
-### `contact-bench` — `/contact`
+### `contact-hero` — `/contact`
 
-Collaboration inquiries. An open, waiting workspace — not people, not a meeting.
+Collaboration inquiries. Deliberately made **distinct from the FAQ shot** — where
+FAQ is a dark studio "record photograph", Contact is a soft, daylit, open
+workspace that reads as an invitation. Same machine and card, different mood.
+Hero-composed — subject right, lower-left dark for the copy.
 
 ```
-[HOUSE STYLE]
+[HOUSE STYLE — override: calm documentary interior, 50mm, f/2.8, soft natural
+daylight from the right, the left falling gently into shadow, warm-neutral and
+inviting] [DEVICE] [CARTRIDGE] [HERO COMPOSITION]
 
-An empty research bench early in the day: an optical breadboard with a few unused
-mounts on it, a stool pushed slightly back, tools laid out in order, soft daylight
-entering from one side. Nobody in frame. Calm and unoccupied — a workspace ready
-for someone rather than mid-experiment. The lower-left is empty bench in shadow.
+The closed analyzer at rest on a clean, light workbench in an uncluttered, softly-
+lit room, a single blank cartridge on the bench beside it and a plain empty stool
+pulled up as if waiting for someone. Nobody in frame, nothing operating, screen
+dark. The room beyond is quiet and thrown out of focus — plain walls, no clutter.
+An open, ready workspace inviting an approach. The analyzer sits right of centre in
+the daylight, the stool and cartridge nearer the middle; the lower-left is empty
+bench surface and shadow.
 
-[NEGATIVE PROMPT]
+[NEGATIVE PROMPT + no people, no faces, no hands, no signage]
 ```
 
 **Legal pages stay plain deliberately** — `/privacy`, `/terms`, `/cookies`,
