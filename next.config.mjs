@@ -11,6 +11,13 @@ const nextConfig = {
   //   3. point the contact form at a third-party service (e.g. Formspree).
   //
   // output: 'export',
+  // Static generation forks one worker per core. On a low-RAM machine that many
+  // concurrent Node processes exhausts system memory and the build dies with
+  // "Zone Allocation failed" long before any single heap is full. Two workers
+  // build all 32 pages comfortably.
+  experimental: {
+    cpus: 2,
+  },
   images: {
     // Enable when a Cloudinary MCP / account is wired in for image delivery:
     // remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com' }],
