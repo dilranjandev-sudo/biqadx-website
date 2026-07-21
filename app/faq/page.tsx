@@ -1,9 +1,9 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { PageHero } from "@/components/ui/PageHero";
-import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
+import Image from "next/image";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { FaqItem } from "@/components/faq/FaqItem";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -97,67 +97,104 @@ const GROUPS = [
   },
 ];
 
-function Question({ q, a }: { q: string; a: string }) {
-  return (
-    <details className="group border-b border-ink/12">
-      <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-4 font-display text-base font-bold leading-snug tracking-tight text-ink [&::-webkit-details-marker]:hidden">
-        {q}
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          aria-hidden="true"
-          className="mt-1 shrink-0 text-ink/65 transition-transform duration-300 group-open:rotate-45"
-        >
-          <path
-            d="M8 3v10M3 8h10"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      </summary>
-      <p className="max-w-2xl pb-5 pr-10 font-body text-sm leading-relaxed text-ink/75">
-        {a}
-      </p>
-    </details>
-  );
-}
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function FaqPage() {
   return (
-    <>
-      <PageHero kicker="FAQ" title="Frequently asked questions about BIQADX." />
+    <section className="relative isolate overflow-clip bg-void">
+      {/* The photograph is held fixed behind the whole page — the questions scroll
+          over it. A sticky layer with a negative margin equal to its own height
+          pins the image to the viewport while contributing no height of its own,
+          so the copy sits directly on the picture.
+          The image is the closed analyzer with a blank card at rest: its left
+          side falls to near-black — exactly where the copy sits — while the
+          machine catches the light on the right. So the scrims can stay light and
+          the picture reads bright, yet every line still clears AA. */}
+      <div className="pointer-events-none sticky top-0 -z-10 -mb-[100svh] h-[100svh] overflow-hidden">
+        <Image
+          src="/images/faq-hero.png"
+          alt=""
+          aria-hidden="true"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          style={{ filter: "brightness(1.2)" }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(11,14,20,0.32) 0%, rgba(11,14,20,0.3) 45%, rgba(11,14,20,0.55) 100%)",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(11,14,20,0.72) 0%, rgba(11,14,20,0.34) 48%, rgba(11,14,20,0) 100%)",
+          }}
+        />
+      </div>
 
-      {GROUPS.map((g, gi) => (
-        <ContentSection
-          key={g.title}
-          no={`${String(gi + 1).padStart(2, "0")} / ${String(GROUPS.length).padStart(2, "0")}`}
-          title={g.title}
-          intro={g.intro}
-          divider={gi > 0}
+      <Container className="relative py-24 sm:py-32">
+        {/* Title, on the picture */}
+        <Reveal>
+          <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/70">
+            FAQ
+          </p>
+        </Reveal>
+        <h1
+          className="mt-4 max-w-3xl font-display text-[2.4rem] font-bold leading-[1.02] tracking-tightest text-signal sm:text-5xl md:text-[3.5rem]"
+          style={{ textShadow: "0 1px 14px rgba(11,14,20,0.6)" }}
         >
-          <div>
-            {g.items.map((item, i) => (
-              <ScrollReveal key={item.q} delay={Math.min(i, 4) * 0.04}>
-                <Question {...item} />
-              </ScrollReveal>
-            ))}
-          </div>
-        </ContentSection>
-      ))}
+          Frequently asked questions.
+        </h1>
+        <p
+          className="mt-6 max-w-xl font-body text-base leading-relaxed text-signal/85 sm:text-lg"
+          style={{ textShadow: "0 1px 10px rgba(11,14,20,0.55)" }}
+        >
+          What we are, and what we are not.
+        </p>
 
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/contact" className="btn-primary">
-            Contact BIQADX
-          </Link>
-          <Link href="/legal/development-stage" className="btn-outline">
-            Read the full disclaimer
-          </Link>
+        {/* Groups — questions set directly on the photograph */}
+        <div className="mt-16 max-w-2xl space-y-14 sm:mt-20 sm:space-y-16">
+          {GROUPS.map((g, gi) => (
+            <div key={g.title}>
+              <Reveal>
+                <div className="flex items-center gap-4">
+                  <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/70">
+                    {pad(gi + 1)} / {pad(GROUPS.length)}
+                  </span>
+                  <span aria-hidden="true" className="h-px w-8 bg-signal/30" />
+                </div>
+                <h2
+                  className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight text-signal sm:text-[1.75rem]"
+                  style={{ textShadow: "0 1px 10px rgba(11,14,20,0.55)" }}
+                >
+                  {g.title}
+                </h2>
+                <p
+                  className="mt-3 max-w-md font-body text-sm leading-relaxed text-signal/75"
+                  style={{ textShadow: "0 1px 8px rgba(11,14,20,0.5)" }}
+                >
+                  {g.intro}
+                </p>
+              </Reveal>
+
+              <div className="mt-6">
+                {g.items.map((item, i) => (
+                  <ScrollReveal key={item.q} delay={Math.min(i, 4) * 0.05}>
+                    <FaqItem {...item} tone="dark" />
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      </VoidBand>
-    </>
+      </Container>
+    </section>
   );
 }

@@ -112,15 +112,35 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div role="status" className="rounded-xl border border-[var(--border-light)] bg-white/60 p-8">
-        <p className="font-display text-xl leading-snug text-ink">{contact.success}</p>
+      <div
+        role="status"
+        className="rounded-2xl border border-[var(--border-light)] bg-white/60 p-8 sm:p-10"
+      >
+        <span
+          aria-hidden="true"
+          className="block h-[3px] w-12 rounded-full"
+          style={{ background: "var(--prism-gradient)" }}
+        />
+        <p className="mt-5 font-display text-xl leading-snug text-ink">
+          {contact.success}
+        </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-6">
-      <div className="hidden" aria-hidden="true">
+    <div className="rounded-2xl border border-[var(--border-light)] bg-white/60 p-6 sm:p-8">
+      <div className="mb-7 flex items-baseline justify-between border-b border-[var(--border-light)] pb-5">
+        <h2 className="font-display text-lg font-bold tracking-tight text-ink">
+          Send an inquiry
+        </h2>
+        <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-ink/50">
+          All in confidence
+        </span>
+      </div>
+
+      <form onSubmit={onSubmit} noValidate className="space-y-6">
+        <div className="hidden" aria-hidden="true">
         <label>
           Company
           <input type="text" name="company" tabIndex={-1} autoComplete="off" />
@@ -128,25 +148,44 @@ export function ContactForm() {
       </div>
 
       <Field id="enquiryType" label="Inquiry category" error={errors.enquiryType}>
-        <select
-          id="enquiryType"
-          name="enquiryType"
-          required
-          aria-required="true"
-          aria-invalid={errors.enquiryType ? "true" : undefined}
-          aria-describedby={errors.enquiryType ? "enquiryType-error" : undefined}
-          defaultValue=""
-          className="input"
-        >
-          <option value="" disabled>
-            Select one
-          </option>
-          {contactCategories.map((t) => (
-            <option key={t} value={t}>
-              {t}
+        {/* Custom chevron — the browser's default select arrow is the biggest
+            "generic form" tell; appearance-none hands it to us. */}
+        <div className="relative">
+          <select
+            id="enquiryType"
+            name="enquiryType"
+            required
+            aria-required="true"
+            aria-invalid={errors.enquiryType ? "true" : undefined}
+            aria-describedby={errors.enquiryType ? "enquiryType-error" : undefined}
+            defaultValue=""
+            className="input cursor-pointer appearance-none pr-10"
+          >
+            <option value="" disabled>
+              Select one
             </option>
-          ))}
-        </select>
+            {contactCategories.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+          <svg
+            aria-hidden="true"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink/50"
+          >
+            <path
+              d="M2.5 4.5L6 8l3.5-3.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
       </Field>
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -186,9 +225,14 @@ export function ContactForm() {
         </p>
       )}
 
-      <button type="submit" className="btn-ink" disabled={status === "submitting"}>
-        {status === "submitting" ? "Sending…" : "Send inquiry"}
-      </button>
-    </form>
+        <button
+          type="submit"
+          className="btn-ink w-full sm:w-auto"
+          disabled={status === "submitting"}
+        >
+          {status === "submitting" ? "Sending…" : "Send inquiry"}
+        </button>
+      </form>
+    </div>
   );
 }

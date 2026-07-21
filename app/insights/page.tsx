@@ -58,10 +58,9 @@ export default function InsightsPage() {
     <>
       <PageHero
         kicker="Insights & Research"
-        title="Metasurface diagnostics, explained with engineering discipline."
+        title="The science, without the hype."
       >
-        Separating established science, our engineering targets, and the
-        evidence still required.
+        What is established, what we are targeting, and the difference.
       </PageHero>
 
       <ContentSection no="01 / 02" title="Editorial pillars" divider={false}>

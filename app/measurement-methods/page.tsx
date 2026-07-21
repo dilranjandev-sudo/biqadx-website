@@ -76,11 +76,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "methods-mid",
-    alt: "Macro of a nanostructured surface showing structural colour across the texture.",
-  },
-  {
     kind: "chips",
     title: "Research extensions",
     intro:
@@ -98,8 +93,8 @@ export default function MeasurementMethodsPage() {
   return (
     <PlatformPage
       kicker="Measurement Methods"
-      title="One platform architecture, multiple measurement physics."
-      lead="Not every assay is forced into one signal type. Shared mechanics, different physics."
+      title="One platform, several physics."
+      lead="Shared mechanics. Different measurement."
       heroImage={{
         id: "methods-optics",
         alt: "A spectrometer, fluorescence and imaging optics on a dark bench, thin beams of coloured light passing through.",

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { nav } from "@/lib/copy";
+import { useLenis } from "@/components/motion/LenisProvider";
 
 /**
  * Site header.
@@ -23,8 +24,29 @@ export function Nav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<number | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const hoverTimer = useRef<number | undefined>(undefined);
+  const lenis = useLenis();
+
+  // The header is transparent over the page's dark hero and only takes its solid
+  // bar once you scroll — so the top of every page reads as one image, but the
+  // light nav text still gets a dark ground the moment it would cross onto light
+  // content. Driven off Lenis when it is running (native scroll events are muted
+  // under smooth scroll), with a plain window fallback.
+  useEffect(() => {
+    const update = (y: number) => setScrolled(y > 8);
+    update(window.scrollY);
+    if (lenis) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const on = (l: any) => update(l?.scroll ?? window.scrollY);
+      lenis.on("scroll", on);
+      return () => lenis.off("scroll", on);
+    }
+    const onScroll = () => update(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [lenis]);
 
   // Close everything on route change.
   useEffect(() => {
@@ -66,13 +88,17 @@ export function Nav() {
   // hairline that stays lit for the current section. They are separate signals —
   // one is "you are pointing at this", the other "you are here".
   const itemBase =
-    "nav-item inline-flex items-center gap-1.5 px-3.5 py-2 font-body text-sm transition-colors duration-300";
+    "nav-item inline-flex items-center gap-1.5 px-3.5 py-2 font-body text-sm font-medium transition-colors duration-300";
   const marker =
     "after:absolute after:inset-x-3.5 after:bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-signal after:transition-transform after:duration-300 after:content-['']";
 
   return (
     <header
-      className="sticky top-0 z-50 border-b border-[var(--border-dark)] bg-void/90 backdrop-blur"
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled || mobileOpen
+          ? "border-[var(--border-dark)] bg-void/90 backdrop-blur"
+          : "border-transparent bg-transparent"
+      }`}
     >
       <nav
         ref={navRef}
@@ -109,7 +135,7 @@ export function Nav() {
                   className={`${itemBase} ${marker} ${
                     active || isOpen
                       ? "text-signal after:scale-x-100"
-                      : "text-signal/75 hover:text-signal"
+                      : "text-signal/90 hover:text-signal"
                   }`}
                 >
                   {group.label}
@@ -155,7 +181,7 @@ export function Nav() {
                           className={`nav-item nav-sub block px-3 py-2 font-body text-sm transition-colors duration-300 ${
                             item.href === pathname
                               ? "text-signal"
-                              : "text-signal/75 hover:text-signal"
+                              : "text-signal/90 hover:text-signal"
                           }`}
                         >
                           {item.label}
@@ -176,7 +202,7 @@ export function Nav() {
                 href={link.href}
                 aria-current={active ? "page" : undefined}
                 className={`${itemBase} ${marker} ${
-                  active ? "text-signal after:scale-x-100" : "text-signal/75 hover:text-signal"
+                  active ? "text-signal after:scale-x-100" : "text-signal/90 hover:text-signal"
                 }`}
               >
                 {link.label}
@@ -185,7 +211,10 @@ export function Nav() {
           })}
 
           <span aria-hidden="true" className="mx-4 h-5 w-px bg-signal/20" />
-          <Link href={nav.cta.href} className="btn-primary">
+          <Link
+            href={nav.cta.href}
+            className="inline-flex items-center gap-1.5 rounded-full border border-signal/40 px-5 py-2 font-body text-sm font-semibold text-signal transition-colors duration-300 hover:border-signal hover:bg-signal/10"
+          >
             {nav.cta.label}
           </Link>
         </div>
@@ -238,7 +267,7 @@ export function Nav() {
                       href={item.href}
                       aria-current={item.href === pathname ? "page" : undefined}
                       className={`border-b border-[var(--border-dark)] py-3 font-body text-base ${
-                        item.href === pathname ? "text-signal" : "text-signal/75"
+                        item.href === pathname ? "text-signal" : "text-signal/90"
                       }`}
                     >
                       {item.label}
@@ -255,7 +284,7 @@ export function Nav() {
                   href={link.href}
                   aria-current={link.href === pathname ? "page" : undefined}
                   className={`border-b border-[var(--border-dark)] py-3 font-body text-base ${
-                    link.href === pathname ? "text-signal" : "text-signal/75"
+                    link.href === pathname ? "text-signal" : "text-signal/90"
                   }`}
                 >
                   {link.label}
@@ -263,7 +292,10 @@ export function Nav() {
               ))}
             </div>
 
-            <Link href={nav.cta.href} className="btn-primary mt-6 w-full">
+            <Link
+              href={nav.cta.href}
+              className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-signal/40 px-5 py-3 font-body text-sm font-semibold text-signal transition-colors duration-300 hover:border-signal hover:bg-signal/10"
+            >
               {nav.cta.label}
             </Link>
           </div>

@@ -44,8 +44,10 @@ export default function MediaPage() {
     <>
       <PageHero
         kicker="Media & Public Information"
-        title="BIQADX media and public information."
-      />
+        title="Media and public information."
+      >
+        Approved wording, and what must not be written.
+      </PageHero>
 
       <ContentSection
         no="01 / 04"

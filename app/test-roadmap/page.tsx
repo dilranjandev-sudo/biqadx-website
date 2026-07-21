@@ -47,11 +47,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "roadmap-mid",
-    alt: "A card resting in the analyzer with a single neutral status light after a run.",
-  },
-  {
     kind: "list",
     title: "How assays enter the roadmap",
     items: [
@@ -76,8 +71,8 @@ export default function TestRoadmapPage() {
   return (
     <PlatformPage
       kicker="Test & Assay Roadmap"
-      title="A broad test roadmap, built one validated method at a time."
-      lead="Roughly 200 candidate assays across cartridge families — a long-term menu, not a claim that any of them works yet."
+      title="One validated method at a time."
+      lead="Roughly 200 candidate assays — none validated yet."
       heroImage={{
         id: "roadmap-families",
         alt: "An array of different card-format cartridges laid out on a dark bench, each catching an iridescent sheen.",

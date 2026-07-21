@@ -2,10 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 export const metadata: Metadata = {
   title: "Partners & Collaboration",
@@ -66,11 +65,10 @@ export default function PartnersPage() {
     <>
       <PageHero
         kicker="Partners & Collaboration"
-        title="Collaborate on responsible metasurface diagnostic innovation."
+        title="Build this with us."
         image="partners-bench"
       >
-        No one discipline builds this. Nanofabrication, optics, assay science,
-        manufacturing, quality and validation — together.
+        No one discipline builds this alone.
       </PageHero>
 
       <ContentSection
@@ -130,10 +128,6 @@ export default function PartnersPage() {
           </Link>
         </Reveal>
       </ContentSection>
-
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <DevNotice />
-      </PaperSection>
 
       <VoidBand>
         <p className="mx-auto max-w-3xl font-display text-2xl leading-snug tracking-tight text-signal sm:text-4xl">

@@ -36,11 +36,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "quality-validate",
-    alt: "A card held in a precision fixture as a light probe scans its reference edge during a self-check.",
-  },
-  {
     kind: "grid",
     title: "On-card reference strategy",
     cols: 3,
@@ -87,8 +82,8 @@ export default function QualityValidationPage() {
   return (
     <PlatformPage
       kicker="Quality, Calibration & Validation"
-      title="A diagnostic claim must follow the evidence."
-      lead="Generating a signal is easy. Knowing when to trust it is the work."
+      title="The claim follows the evidence."
+      lead="Knowing when to trust a signal is the work."
       heroImage={{
         id: "quality-metrology",
         alt: "An optical inspection microscope over an iridescent card on a precision stage, verifying geometry under controlled light.",

@@ -1,12 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { FigureBand } from "@/components/ui/FigureBand";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 export const metadata: Metadata = {
   title: { absolute: "About BIQADX | Deep-Tech Diagnostic R&D" },
@@ -55,11 +53,10 @@ export default function AboutPage() {
     <>
       <PageHero
         kicker="About BIQADX"
-        title="Building diagnostic intelligence around the real constraints of care."
+        title="Built around the constraints of care."
         image="about-bench"
       >
-        A founder-led Indian deep-tech healthcare company — cartridges, optics,
-        analyzer engineering and software quality, under one roof.
+        An India-based deep-tech healthcare R&amp;D company.
       </PageHero>
 
       <ContentSection no="01 / 05" title="Our mission" divider={false}>
@@ -92,13 +89,6 @@ export default function AboutPage() {
           ))}
         </div>
       </ContentSection>
-
-      <FigureBand
-        id="about-clinic-first"
-        alt="A health worker seated at a plain table in a modest community health room, daylight from a window beside her, a small dark instrument on the table with its screen off."
-        caption="Illustrative — intended setting"
-        label="Figure 01"
-      />
 
       <ContentSection no="03 / 05" title="Founders" divider={false}>
         <div className="grid gap-8 sm:grid-cols-2">
@@ -148,10 +138,6 @@ export default function AboutPage() {
           </p>
         </Reveal>
       </ContentSection>
-
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <DevNotice />
-      </PaperSection>
 
       <VoidBand>
         <div className="flex flex-wrap justify-center gap-3">

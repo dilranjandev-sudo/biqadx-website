@@ -95,12 +95,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "metasurface-fab",
-    alt: "A nanoimprint tool pressing onto a nanostructured wafer under instrument light.",
-    caption: "Illustrative — nanofabrication research",
-  },
-  {
     kind: "grid",
     title: "Four legitimate roles",
     intro:
@@ -153,8 +147,8 @@ export default function MetasurfacePage() {
   return (
     <PlatformPage
       kicker="Metasurface Diagnostics"
-      title="Engineering light at the surface of the diagnostic cartridge."
-      lead="Not the visual pattern — a repeatable transfer function the reader can illuminate, measure and verify."
+      title="Engineering light at the surface."
+      lead="Not the pattern — the transfer function behind it."
       heroImage={{
         id: "metasurface-hero",
         alt: "A macro of an engineered optical surface under controlled light.",

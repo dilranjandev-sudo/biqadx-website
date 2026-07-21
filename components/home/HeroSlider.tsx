@@ -21,15 +21,15 @@ const DURATION_MS = 6500;
  */
 export function HeroSlider({
   eyebrow,
+  headline,
   description,
   primary,
-  secondary,
   slides,
 }: {
   eyebrow: string;
+  headline: string;
   description: string;
   primary: CtaLink;
-  secondary: CtaLink;
   slides: Slide[];
 }) {
   const [i, setI] = useState(0);
@@ -105,13 +105,17 @@ export function HeroSlider({
         })}
       </motion.div>
 
-      {/* Legibility scrims */}
+      {/* Legibility scrims, kept to the text side only. The copy sits lower-left,
+          so the ground is a corner pocket anchored there plus a light wash in
+          from the left — both clear before mid-frame, so the right side of the
+          picture stays bright and fully visible, the way a hero image should
+          read. The image is already dark, so this is all the type needs. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(11,14,20,0.45) 0%, rgba(11,14,20,0.08) 34%, rgba(11,14,20,0.9) 86%, rgba(11,14,20,1) 100%)",
+            "radial-gradient(85% 90% at 0% 100%, rgba(11,14,20,0.55) 0%, rgba(11,14,20,0.22) 42%, rgba(11,14,20,0) 68%)",
         }}
       />
       <div
@@ -119,7 +123,7 @@ export function HeroSlider({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(11,14,20,0.78) 0%, rgba(11,14,20,0.1) 55%, transparent 100%)",
+            "linear-gradient(90deg, rgba(11,14,20,0.48) 0%, rgba(11,14,20,0.14) 34%, transparent 56%)",
         }}
       />
       {/* Scroll-away dim — the hero settles into the section below it */}
@@ -129,30 +133,44 @@ export function HeroSlider({
         style={animate ? { opacity: scrim } : { opacity: 0 }}
       />
 
-      <Container className="relative pb-14 pt-32 sm:pb-20">
+      <Container className="relative pb-16 pt-32 sm:pb-24">
+        {/* A little more air on the left on wide screens — the copy sits in from
+            the container edge the way the reference hero does, instead of hard
+            against it. */}
+        {/* A soft shadow on the copy keeps every line legible on the brightest
+            slide without a heavier scrim darkening the whole frame — the scrims
+            stay light, the shadow does the work at the glyph edge. */}
         <motion.div
-          className="max-w-xl"
-          style={animate ? { y: copyY, opacity: copyOpacity } : { y: 0, opacity: 1 }}
+          className="max-w-2xl lg:pl-6 xl:pl-10"
+          style={{
+            textShadow:
+              "0 1px 3px rgba(11,14,20,0.95), 0 0 2px rgba(11,14,20,0.85), 0 2px 24px rgba(11,14,20,0.55)",
+            ...(animate ? { y: copyY, opacity: copyOpacity } : { y: 0, opacity: 1 }),
+          }}
         >
-          <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
+          <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal">
             {eyebrow}
           </p>
-          <p className="mt-4 font-display text-xl font-medium leading-snug tracking-tight text-signal sm:text-2xl">
+
+          {/* The headline carries the page — short, at display scale, in the
+              caps register globals.css gives every h1. One punchy line replaces
+              the paragraph that used to sit here, which read as a wall rather
+              than a statement. */}
+          <h1 className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[0.98] tracking-tightest text-signal sm:text-6xl lg:text-[4.25rem]">
+            {headline}
+          </h1>
+
+          <p className="mt-6 max-w-md font-body text-base leading-relaxed text-signal/80 sm:text-lg">
             {description}
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-7">
+          {/* One call to action only — Contact already lives in the nav, so a
+              second hero link just repeated it. */}
+          <div className="mt-9">
             <Link
               href={primary.href}
               className="group inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal underline decoration-signal/50 underline-offset-4 transition-colors hover:decoration-signal"
             >
               {primary.label}
-              <Arrow />
-            </Link>
-            <Link
-              href={secondary.href}
-              className="group inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal/75 transition-colors hover:text-signal"
-            >
-              {secondary.label}
               <Arrow />
             </Link>
           </div>

@@ -39,11 +39,10 @@ export default function CareersPage() {
     <>
       <PageHero
         kicker="Careers & Talent"
-        title="Build the measurement system, not just the prototype."
+        title="Build the system, not the demo."
         image="careers-craft"
       >
-        For people who document assumptions, test failure modes, and can tell a
-        promising concept from verified evidence.
+        For people who test their own assumptions.
       </PageHero>
 
       <ContentSection no="01 / 03" title="Talent areas" divider={false}>

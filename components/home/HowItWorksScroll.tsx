@@ -294,6 +294,12 @@ function Frame({
   index: number;
   priority?: boolean;
 }) {
+  // Odd-numbered frames carry their caption at the top, even ones at the bottom,
+  // so the strip is not five identical bottom-caption cards. Each frame's scrim
+  // follows its caption to that edge, and stays light — the photography is dark,
+  // so the ground only has to lift the type off it, not black the picture out.
+  const top = index % 2 === 1;
+
   return (
     <div
       className="relative overflow-hidden rounded-xl border border-[var(--border-dark)] bg-graphite/30"
@@ -308,19 +314,27 @@ function Frame({
         className="object-cover"
       />
 
-      {/* The copy sits on the picture, so it needs its own ground. Deeper than a
-          caption strip needs, because there are now two lines of type under the
-          heading and both have to clear AA over the brightest frame in the set. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 sm:h-1/2"
+        className={`pointer-events-none absolute inset-x-0 h-3/5 sm:h-1/2 ${
+          top ? "top-0" : "bottom-0"
+        }`}
         style={{
-          background:
-            "linear-gradient(180deg, rgba(11,14,20,0) 0%, rgba(11,14,20,0.55) 40%, rgba(11,14,20,0.88) 72%, rgba(11,14,20,0.96) 100%)",
+          background: `linear-gradient(${
+            top ? "0deg" : "180deg"
+          }, rgba(11,14,20,0) 0%, rgba(11,14,20,0.36) 42%, rgba(11,14,20,0.58) 74%, rgba(11,14,20,0.72) 100%)`,
         }}
       />
 
-      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-10">
+      <div
+        className={`absolute inset-x-0 p-4 sm:p-10 ${top ? "top-0" : "bottom-0"}`}
+        // A crisp near-outline shadow carries the legibility so the scrim can
+        // stay light — the text reads clean on the dark photo, not on a wash.
+        style={{
+          textShadow:
+            "0 1px 3px rgba(11,14,20,0.95), 0 0 2px rgba(11,14,20,0.85), 0 2px 20px rgba(11,14,20,0.5)",
+        }}
+      >
         <div className="flex items-center gap-4">
           <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal">
             {String(index + 1).padStart(2, "0")} / 05

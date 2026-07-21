@@ -5,7 +5,6 @@ import { FigureBand } from "@/components/ui/FigureBand";
 import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 type GridItem = { t: string; d?: string };
 
@@ -288,10 +287,6 @@ export function PlatformPage({
           </PaperSection>
         );
       })}
-
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <DevNotice />
-      </PaperSection>
 
       <VoidBand>
         <div className="flex flex-wrap justify-center gap-3">

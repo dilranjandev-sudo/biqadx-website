@@ -108,13 +108,41 @@ export function ResearchScope() {
           {/* Headline column — pins while the plates travel past */}
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-28">
-              <p className="font-mono text-[0.66rem] uppercase leading-relaxed tracking-[0.2em] text-signal/60">
+              {/* Two distinct lines rather than one crammed run: the company
+                  descriptor, then the three development stages as separate tokens
+                  with dot separators — legible, and consistent with the stage
+                  badges the footer uses. */}
+              <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/70">
                 India-based deep-tech healthcare R&amp;D
-                <br />
-                Research · Prototype · Engineering Development
               </p>
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                {["Research", "Prototype", "Engineering Development"].map(
+                  (stage, i) => (
+                    <span
+                      key={stage}
+                      className="flex items-center gap-3 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/65"
+                    >
+                      {i > 0 && (
+                        <span
+                          aria-hidden="true"
+                          className="h-1 w-1 rounded-full bg-signal/35"
+                        />
+                      )}
+                      {stage}
+                    </span>
+                  ),
+                )}
+              </div>
 
-              <h1 className="mt-7 font-display text-[2.25rem] font-bold leading-[1.04] tracking-tightest text-signal sm:text-[3.25rem]">
+              {/* Refined light-refraction accent — the one sanctioned use of the
+                  prism gradient, as a short mark, never a fill. */}
+              <span
+                aria-hidden="true"
+                className="mt-6 block h-[3px] w-12 rounded-full"
+                style={{ background: "var(--prism-gradient)" }}
+              />
+
+              <h1 className="mt-6 font-display text-[2.25rem] font-bold leading-[1.04] tracking-tightest text-signal sm:text-[3.25rem]">
                 {HEADLINE.map((line, i) => (
                   <span key={line} className="block overflow-hidden pb-[0.08em]">
                     <ScrollReveal as="span" variant="mask" delay={i * 0.09} className="block">
@@ -124,11 +152,9 @@ export function ResearchScope() {
                 ))}
               </h1>
 
-              {/* Plain divider. It used to fill with scroll progress, which read
-                  as a progress bar — the page carries no progress chrome. */}
               <div className="mt-8 h-px w-full bg-signal/20" />
 
-              <p className="mt-8 max-w-sm font-body text-sm leading-relaxed text-signal/75">
+              <p className="mt-8 max-w-sm font-body text-sm leading-[1.7] text-signal/80">
                 Research scope — the assay menu is not finalized, and every method and
                 assay requires method-specific validation.
               </p>
@@ -171,11 +197,11 @@ function Plate({
       <ScrollReveal>
         {/* Index rule — plate number, subject, hairline */}
         <div className="flex items-center gap-4">
-          <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/60">
+          <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/70">
             {plate.index} / 03
           </span>
           <span className="h-px flex-1 bg-signal/15" />
-          <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
+          <span className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/70">
             {plate.kicker}
           </span>
         </div>
@@ -206,7 +232,10 @@ function Plate({
               <CountUp to={plate.figure.value} prefix={plate.figure.prefix} />
             )}
           </span>
-          <span className="font-mono text-[0.6rem] uppercase leading-relaxed tracking-[0.16em] text-signal/60">
+          {/* Kept light — the big figure leads, the label sits back beside it as
+              a quiet caption. /50 is about as faint as this can go and still hold
+              AA (4.5:1) for small text on Void. */}
+          <span className="font-mono text-[0.6rem] uppercase leading-relaxed tracking-[0.16em] text-signal/50">
             {plate.figure.label}
           </span>
         </div>

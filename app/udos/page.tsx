@@ -47,11 +47,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "udos-bench",
-    alt: "A research bench with optics, a microfluidic chip and control electronics under soft light.",
-  },
-  {
     kind: "note",
     title: "The role of AI and machine learning",
     body: "ML may support reconstruction, deconvolution, anomaly detection or workflow assistance — but must not bypass safety interlocks, calibration, internal controls, validity or human governance. Any AI function is trained, tested, locked, monitored and validated for its defined purpose.",
@@ -74,8 +69,8 @@ export default function UdosPage() {
   return (
     <PlatformPage
       kicker="UDOS Software & Data Integrity"
-      title="Software that controls the measurement before interpreting it."
-      lead="The first job is not intelligence. It is never letting an invalid measurement look valid."
+      title="Control before interpretation."
+      lead="Never let an invalid measurement look valid."
       heroImage={{
         id: "udos-control",
         alt: "A close macro of the analyzer's embedded control electronics and edge-compute board under soft light.",

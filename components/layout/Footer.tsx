@@ -31,7 +31,11 @@ export function Footer() {
 
   return (
     <footer className="bg-void">
-      {/* CTA — image band with overlaid text */}
+      {/* CTA — its own image band, so the engineered-surface photograph and its
+          cyan→violet→amber sheen read clearly behind the headline. A single image
+          stretched over the whole footer put this dark part of the frame here and
+          hid the sheen; giving the CTA its own band keeps the picture where it
+          belongs. */}
       <section className="relative isolate overflow-hidden border-t border-[var(--border-dark)]">
         <Image
           src="/images/footer-cta.png"
@@ -43,10 +47,10 @@ export function Footer() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(11,14,20,0.74) 0%, rgba(11,14,20,0.62) 45%, rgba(11,14,20,0.9) 100%)",
+              "linear-gradient(180deg, rgba(11,14,20,0.72) 0%, rgba(11,14,20,0.55) 44%, rgba(11,14,20,0.9) 100%)",
           }}
         />
         <div className="relative mx-auto max-w-content px-4 py-20 text-center sm:px-6 sm:py-28">
@@ -65,8 +69,30 @@ export function Footer() {
         </div>
       </section>
 
-      {/* Sitemap — brand, then the four groups on one alignment */}
-      <div className="mx-auto max-w-content px-4 py-16 sm:px-6 sm:py-20">
+      {/* Sitemap + legal — over a dark photograph of the card at rest on the
+          bench, its cyan-violet sheen showing through the lower middle. The image
+          is mostly near-black, so the scrim can stay moderate: the picture reads,
+          and every line — down to the small mono legal — still clears AA. */}
+      <section className="relative isolate overflow-hidden">
+        <Image
+          src="/images/footer-bench.png"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(11,14,20,0.6) 0%, rgba(11,14,20,0.66) 42%, rgba(11,14,20,0.82) 78%, rgba(11,14,20,0.9) 100%)",
+          }}
+        />
+
+        {/* Sitemap — brand, then the four groups on one alignment */}
+        <div className="relative mx-auto max-w-content px-4 py-16 sm:px-6 sm:py-20">
         <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] lg:gap-x-10">
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex flex-wrap items-center gap-3">
@@ -75,14 +101,14 @@ export function Footer() {
               </span>
               <StagePill />
             </div>
-            <p className="mt-5 max-w-xs font-mono text-[0.66rem] uppercase leading-relaxed tracking-[0.2em] text-signal/60">
+            <p className="mt-5 max-w-xs font-mono text-[0.66rem] uppercase leading-relaxed tracking-[0.2em] text-signal/70">
               India-based deep-tech healthcare R&amp;D
             </p>
           </div>
 
           {footer.columns.map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <h3 className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
+              <h3 className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/70">
                 {col.title}
               </h3>
               <ul className="mt-5 space-y-3">
@@ -90,7 +116,7 @@ export function Footer() {
                   <li key={link.label + link.href}>
                     <Link
                       href={link.href}
-                      className="font-body text-sm leading-snug text-signal/75 transition-colors hover:text-signal"
+                      className="font-body text-sm leading-snug text-signal/85 transition-colors hover:text-signal"
                     >
                       {link.label}
                     </Link>
@@ -101,12 +127,24 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Compliance furniture — required on every route */}
+        {/* Compliance furniture — required on every route. Structured as two
+            parts: the development stage on the left as labelled chips, the legal
+            fine print on the right. */}
         <div className="mt-16 border-t border-[var(--border-dark)] pt-10 sm:mt-20">
-          <StageBadges />
-          <LegalBlock className="mt-8" />
+          <div className="grid gap-y-10 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-5">
+              <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-signal/60">
+                Development stage
+              </p>
+              <StageBadges className="mt-4 max-w-md" />
+            </div>
+            <div className="lg:col-span-7">
+              <LegalBlock />
+            </div>
+          </div>
         </div>
-      </div>
+        </div>
+      </section>
 
       {/* Closing sign-off — the last thing on every page. Full-bleed, no card,
           copy set over the picture at the lower left. It carries the brand line

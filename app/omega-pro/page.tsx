@@ -52,11 +52,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "omega-interrogate",
-    alt: "The seated card inside the analyzer, a blade of light grazing its surface beneath the optics.",
-  },
-  {
     kind: "note",
     title: "Thermally and optically controlled measurement",
     body: "Repeatable diagnostics require more than a bright source and a camera. OMEGA-PRO is being engineered around stabilized optical datums, thermal monitoring, dark and reference measurements, wavelength verification, intensity normalization, detector health checks and defined acquisition states.",
@@ -82,8 +77,8 @@ export default function OmegaProPage() {
   return (
     <PlatformPage
       kicker="OMEGA-PRO Analyzer"
-      title="A cooperative analyzer built around cartridge-defined measurement."
-      lead="The reusable half of the pair — supplying the energy, geometry and control the card cannot carry alone."
+      title="The analyzer, built around the card."
+      lead="The reusable half of the pair."
       heroImage={{
         id: "omega-hero",
         alt: "Concept render of the OMEGA-PRO analyzer and its internal optical path.",

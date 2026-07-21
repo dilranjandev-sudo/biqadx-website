@@ -47,7 +47,7 @@ export function PlatformShowcase() {
         <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-[2.5rem]">
           One platform. Three cooperating parts.
         </h2>
-        <p className="mt-4 max-w-xl font-body leading-relaxed text-signal/75">
+        <p className="mt-4 max-w-xl font-body text-base leading-[1.7] text-signal/85">
           The analyzer observes, the cartridge performs, and the software decides
           when a result is valid — designed together as one measurement system.
         </p>
@@ -75,23 +75,45 @@ export function PlatformShowcase() {
                 </Reveal>
                 <Reveal delay={0.08} className={flip ? "lg:order-1" : ""}>
                   <div>
-                    <span className="font-mono text-[0.66rem] tracking-[0.2em] text-signal/60">
-                      {String(i + 1).padStart(2, "0")} / 03
-                    </span>
-                    <h3 className="mt-3 font-display text-2xl font-bold tracking-tightest text-signal sm:text-[2rem]">
+                    {/* Number and role on one eyebrow line — the spine format the
+                        rest of the page uses, so the three parts read as numbered
+                        chapters and the role is legible before the name. */}
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-[0.66rem] tracking-[0.2em] text-signal/70">
+                        {String(i + 1).padStart(2, "0")} / 03
+                      </span>
+                      <span aria-hidden="true" className="h-px w-8 bg-signal/25" />
+                      <span className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/70">
+                        {p.tag}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 font-display text-2xl font-bold tracking-tightest text-signal sm:text-[2rem]">
                       {p.name}
                     </h3>
-                    <p className="mt-1 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
-                      {p.tag}
-                    </p>
-                    <p className="mt-5 max-w-md font-body leading-relaxed text-signal/75">
+                    <p className="mt-4 max-w-md font-body text-base leading-[1.7] text-signal/85">
                       {p.desc}
                     </p>
                     <Link
                       href={p.href}
-                      className="mt-6 inline-block font-body text-sm text-signal/75 underline decoration-signal/30 underline-offset-4 transition-colors hover:text-signal"
+                      className="mt-6 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-signal underline decoration-signal/40 underline-offset-4 transition-colors hover:decoration-signal"
                     >
                       Explore {p.name}
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden="true"
+                        className="transition-transform duration-300 group-hover:translate-x-0.5"
+                      >
+                        <path
+                          d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
+                          stroke="currentColor"
+                          strokeWidth="1.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </Link>
                   </div>
                 </Reveal>

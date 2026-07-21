@@ -1,117 +1,119 @@
+import Image from "next/image";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { ParallaxFrame } from "@/components/motion/Parallax";
 
 /**
- * The validity gate, set as a threshold: four conditions in a row, a rule across
- * the page, and the statement of what happens on the other side of it.
+ * The validity gate, set as one clean image-led statement — the way the sections
+ * above it read. An earlier version listed all four conditions with a sentence
+ * of explanation each, which turned the section into a wall of text; here the
+ * conditions are named only, and the point is carried by the headline.
  *
- * The previous version put the claim and the conditions in two columns side by
- * side, which read as two lists of equal weight and lost the thing that makes
- * this section worth having — that the conditions come *before* the output, and
- * that all of them gate it. Laying them across and then drawing a line under
- * them puts the sequence back: four gates, then the line, then what passes.
- *
- * Each condition now carries a clause saying what it actually checks. Four bare
- * labels told a reader what the gate is called, not what it does.
- *
- * The prism accent appears here as a light mark on each condition — the one
- * legitimate use for it (refraction), never as a fill.
+ * The image is the card's own on-card reference patches — the literal subject of
+ * one of the conditions, so it illustrates the section rather than decorating it.
+ * It carries no reading, no state, no result.
  *
  * Deliberately no pass/fail state anywhere: no ticks, no green, no "PASS". This
- * describes the structure of the gate, not the result of a run. Showing an
- * outcome here would be the same fabricated-result problem that got imagery
- * rejected (CLAUDE.md — no result readouts, no invented data).
+ * describes the structure of the gate, not the result of a run (CLAUDE.md — no
+ * result readouts, no invented data).
  */
 
 const CONDITIONS = [
-  {
-    t: "Cartridge identity",
-    d: "The analyzer confirms which card it is holding, and the method bound to it.",
-  },
-  {
-    t: "Seating & safety",
-    d: "Position, closure and interlocks are confirmed before energy is applied.",
-  },
-  {
-    t: "References in-limit",
-    d: "On-card references must read within their expected bounds.",
-  },
-  {
-    t: "Internal controls",
-    d: "Process controls must behave as specified for a run to count.",
-  },
+  "Cartridge identity",
+  "Seating & safety",
+  "References in-limit",
+  "Internal controls",
 ];
 
 export function ValidityGate() {
   return (
     <section aria-label="Validity gate">
-      <ScrollReveal>
-        <div className="flex items-baseline justify-between">
-          <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
-            The validity gate
-          </p>
-          {/* /60, not /45 — the dimmer tone measured 3.99:1 on Void and AA
-              needs 4.5 for type this size. */}
-          <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
-            All four required
-          </p>
-        </div>
-      </ScrollReveal>
-
-      {/* The four gates, across. */}
-      <ol className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-        {CONDITIONS.map((c, i) => (
-          <li key={c.t}>
-            <ScrollReveal delay={0.06 * i}>
-              <div className="relative border-t border-signal/20 pt-5">
-                <span
-                  aria-hidden="true"
-                  className="absolute -top-[3px] left-0 h-1.5 w-1.5 rounded-full"
-                  style={{ background: "var(--prism-gradient)" }}
-                />
-                <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/60">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h4 className="mt-2 font-display text-base font-bold leading-tight tracking-tight text-signal">
-                  {c.t}
-                </h4>
-                <p className="mt-2 font-body text-sm leading-relaxed text-signal/70">
-                  {c.d}
-                </p>
-              </div>
-            </ScrollReveal>
-          </li>
-        ))}
-      </ol>
-
-      {/* The threshold itself, then what is on the other side of it. */}
-      <div className="mt-12 border-t border-signal/20 pt-10 sm:mt-16 sm:pt-12">
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-14">
-          <h3 className="font-display text-2xl font-bold leading-[1.12] tracking-tightest text-signal sm:text-[2.25rem] lg:col-span-7">
-            <span className="block overflow-hidden pb-[0.08em]">
-              <ScrollReveal as="span" variant="mask" className="block">
-                Output released only in the
-              </ScrollReveal>
+      <div className="overflow-hidden rounded-xl border border-[var(--border-dark)] bg-graphite/20">
+        <div className="grid lg:grid-cols-12">
+          {/* The physical references — one of the things the gate checks. */}
+          <ScrollReveal
+            variant="wipe"
+            className="relative min-h-[240px] lg:col-span-5 lg:min-h-full"
+          >
+            {/* A scan wipe uncovers the frame as it enters — the section's own
+                idea, since the instrument reads the card by scanning light across
+                it — then the picture drifts and de-zooms inside the held frame as
+                the section scrolls past. Both are transform/clip only, so a frame
+                that never animates is simply a still photograph. */}
+            <ParallaxFrame className="absolute inset-0" amount={7} from={1.16} to={1.02}>
+              <Image
+                src="/images/scope-references.png"
+                alt="Macro of the card's engineered on-card reference patches — a graded step wedge and tinted squares used to check the measurement against known values."
+                fill
+                sizes="(min-width: 1024px) 460px, 100vw"
+                className="object-cover"
+              />
+            </ParallaxFrame>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(11,14,20,0) 0%, rgba(11,14,20,0) 62%, rgba(11,14,20,0.5) 100%)",
+              }}
+            />
+            <span
+              className="absolute bottom-5 left-5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal"
+              style={{ textShadow: "0 1px 3px rgba(11,14,20,0.9)" }}
+            >
+              On-card references
             </span>
-            <span className="block overflow-hidden pb-[0.08em]">
-              <ScrollReveal
-                as="span"
-                variant="mask"
-                delay={0.08}
-                className="block"
-              >
-                authorized validity state.
-              </ScrollReveal>
-            </span>
-          </h3>
+          </ScrollReveal>
 
-          <div className="lg:col-span-5">
-            <ScrollReveal delay={0.16}>
-              <p className="max-w-sm font-body text-sm leading-relaxed text-signal/70 lg:mt-2">
-                If any one of the four is not met, no result is issued. The
-                measurement is repeated, flagged or rejected — withholding an
-                answer is a designed outcome, not a failure of the instrument.
+          {/* The statement, then the four gates named. */}
+          <div className="p-7 sm:p-12 lg:col-span-7">
+            <ScrollReveal>
+              <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
+                The validity gate
               </p>
             </ScrollReveal>
+
+            <h3 className="mt-5 max-w-lg font-display text-2xl font-bold leading-[1.12] tracking-tightest text-signal sm:text-[2rem]">
+              <span className="block overflow-hidden pb-[0.08em]">
+                <ScrollReveal as="span" variant="mask" className="block">
+                  Output released only in the
+                </ScrollReveal>
+              </span>
+              <span className="block overflow-hidden pb-[0.08em]">
+                <ScrollReveal as="span" variant="mask" delay={0.08} className="block">
+                  authorized validity state.
+                </ScrollReveal>
+              </span>
+            </h3>
+
+            <ScrollReveal delay={0.12}>
+              <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-signal/70">
+                If any one check fails, no result is issued — a designed outcome,
+                not a fault.
+              </p>
+            </ScrollReveal>
+
+            {/* Four gates, named only. */}
+            <div className="mt-8 border-t border-[var(--border-dark)] pt-6">
+              <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/60">
+                All four must hold
+              </p>
+              <ul className="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                {CONDITIONS.map((c, i) => (
+                  <li key={c}>
+                    <ScrollReveal delay={0.06 * i}>
+                      <div className="flex items-baseline gap-3">
+                        <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/60">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="font-body text-sm font-medium text-signal">
+                          {c}
+                        </span>
+                      </div>
+                    </ScrollReveal>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

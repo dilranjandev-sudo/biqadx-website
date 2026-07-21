@@ -2,10 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 export const metadata: Metadata = {
   title: "Intellectual Property & Engineering",
@@ -61,7 +60,7 @@ export default function IpEngineeringPage() {
     <>
       <PageHero
         kicker="IP & Engineering"
-        title="Protecting the architecture while proving the engineering."
+        title="Protecting the architecture."
         image="ip-nanofab"
       >
         Patent work is part of R&amp;D — not a substitute for evidence.
@@ -140,10 +139,6 @@ export default function IpEngineeringPage() {
           ))}
         </div>
       </ContentSection>
-
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <DevNotice />
-      </PaperSection>
 
       <VoidBand>
         <div className="flex flex-wrap justify-center gap-3">

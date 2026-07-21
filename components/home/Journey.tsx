@@ -72,10 +72,12 @@ function Chapter({
   chapter,
   animate,
   right,
+  top,
 }: {
   chapter: (typeof CHAPTERS)[number];
   animate: boolean;
   right: boolean;
+  top: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -112,13 +114,18 @@ function Chapter({
         />
       </motion.div>
 
-      {/* Two scrims: one up from the base, one in from the side the copy is on. */}
+      {/* The ground is anchored to the copy's own corner — bottom-left or
+          top-right — as a pocket that clears well before the opposite side, so
+          the far corner of the picture stays bright and fully visible. A light
+          wash in from the copy's side backs the taller lines. The photography is
+          already dark, so this is all the type needs. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(11,14,20,0.5) 0%, rgba(11,14,20,0.18) 34%, rgba(11,14,20,0.86) 80%, rgba(11,14,20,0.97) 100%)",
+          background: `radial-gradient(80% 78% at ${right ? "100%" : "0%"} ${
+            top ? "0%" : "100%"
+          }, rgba(11,14,20,0.56) 0%, rgba(11,14,20,0.24) 44%, rgba(11,14,20,0) 70%)`,
         }}
       />
       <div
@@ -127,14 +134,14 @@ function Chapter({
         style={{
           background: `linear-gradient(${
             right ? "270deg" : "90deg"
-          }, rgba(11,14,20,0.8) 0%, rgba(11,14,20,0.4) 58%, rgba(11,14,20,0) 100%)`,
+          }, rgba(11,14,20,0.38) 0%, rgba(11,14,20,0.15) 46%, rgba(11,14,20,0) 82%)`,
         }}
       />
 
       <div
-        className={`absolute inset-x-0 bottom-0 flex px-4 pb-16 sm:px-10 sm:pb-24 ${
-          right ? "justify-end" : "justify-start"
-        }`}
+        className={`absolute inset-x-0 flex px-4 sm:px-10 ${
+          top ? "top-0 pt-28 sm:pt-32" : "bottom-0 pb-16 sm:pb-24"
+        } ${right ? "justify-end" : "justify-start"}`}
       >
         {/* The copy enters through ScrollReveal, not through the scrub.
             Scrub-bound opacity was tried and reverted: it made the copy fade out
@@ -143,7 +150,10 @@ function Chapter({
             reveal fires once, holds its visible end state, and has a timeout
             backstop — so the worst case here is a still frame with legible copy
             on it, never an empty screen. */}
-        <ScrollReveal variant="up" className="max-w-md">
+        <ScrollReveal
+          variant="up"
+          className="max-w-md [text-shadow:0_1px_3px_rgba(11,14,20,0.95),0_0_2px_rgba(11,14,20,0.85),0_2px_22px_rgba(11,14,20,0.5)]"
+        >
           <div className="flex items-center gap-4">
             <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal">
               {chapter.index} / 03
@@ -206,12 +216,15 @@ export function Journey() {
       </Container>
 
       {/* Full-bleed from here — deliberately outside the content grid. */}
+      {/* The middle chapter is set top-right, the outer two bottom-left, so the
+          three are not one repeated composition down the page. */}
       {CHAPTERS.map((c, i) => (
         <Chapter
           key={c.index}
           chapter={c}
           animate={animate}
           right={i % 2 === 1}
+          top={i % 2 === 1}
         />
       ))}
 

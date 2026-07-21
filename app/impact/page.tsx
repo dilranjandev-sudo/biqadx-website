@@ -2,10 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 export const metadata: Metadata = {
   title: "Intended Healthcare Impact",
@@ -50,11 +49,10 @@ export default function ImpactPage() {
     <>
       <PageHero
         kicker="Intended Healthcare Impact"
-        title="Designed for the places where diagnostic delay matters most."
+        title="Where diagnostic delay matters most."
         image="about-clinic-first"
       >
-        A clinic is reachable; a laboratory often is not. Samples travel,
-        results return late, and care waits.
+        A clinic is reachable. A laboratory often is not.
       </PageHero>
 
       <ContentSection
@@ -109,10 +107,6 @@ export default function ImpactPage() {
           </p>
         </Reveal>
       </ContentSection>
-
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <DevNotice />
-      </PaperSection>
 
       <VoidBand>
         <div className="flex flex-wrap justify-center gap-3">

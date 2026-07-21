@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/Container";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { PlatformShowcase } from "@/components/home/PlatformShowcase";
 import { HowItWorksScroll } from "@/components/home/HowItWorksScroll";
 import { Journey } from "@/components/home/Journey";
 import { ResearchScope } from "@/components/home/ResearchScope";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 export const metadata: Metadata = {
   title: { absolute: "BIQADX | Metasurface-Integrated Diagnostic Platforms" },
@@ -15,24 +13,29 @@ export const metadata: Metadata = {
 
 const HERO = {
   eyebrow: "METACARD™ · OMEGA-PRO · UDOS",
-  description:
-    "A metasurface-integrated diagnostic platform — the cartridge participates in the measurement, engineered for decentralized healthcare.",
-  // NOTE: home-platform.png is withheld from the hero — it carries branding text,
-  // a "SWIFT | SENSITIVE | SIMPLE" strapline and a lit "READY" device screen, all
-  // barred by the image rules in CLAUDE.md. Restore it here once a compliant
-  // re-generation lands (prompt: IMAGE_PROMPTS_HOME.md → home-platform).
+  headline: "Engineering the diagnostic surface.",
+  description: "Metasurface diagnostics, built for decentralized care.",
+  // Purpose-made hero set that tells one story across four frames — the card in
+  // hand, seated, read, then at rest in its setting. All compliance-checked: no
+  // text/logo/lit readout, narrow cyan→violet only, the real off-white-and-teal
+  // instrument and the chamfered-corner card, subject in the right half with the
+  // lower-left kept dark for the copy. Prompts: IMAGE_PLACEHOLDERS.md → "Home hero".
   images: [
     {
-      src: "/images/howitworks-seat.png",
-      alt: "A thin iridescent card being inserted into the analyzer.",
+      src: "/images/hero-inhand.png",
+      alt: "A gloved hand holding the METACARD cartridge up to the light, a narrow cyan-to-violet sheen across its micro-textured face.",
     },
     {
-      src: "/images/metasurface-macro.png",
-      alt: "A nanostructured surface showing structural colour — cyan, violet and amber.",
+      src: "/images/hero-seat.png",
+      alt: "A gloved hand sliding the cartridge into the analyzer's teal-outlined loading port.",
     },
     {
-      src: "/images/seq-3-interrogate.png",
-      alt: "The seated card inside the analyzer, a blade of light grazing its engineered surface.",
+      src: "/images/hero-interrogate.png",
+      alt: "An optical objective ringed by an illuminated collar over the seated cartridge, a thin cyan-violet line raised where the light grazes it.",
+    },
+    {
+      src: "/images/hero-bench.png",
+      alt: "The OMEGA-PRO analyzer at rest on a clean bench in a calm, daylit room.",
     },
   ],
 };
@@ -42,10 +45,10 @@ export default function HomePage() {
     <>
       <HeroSlider
         eyebrow={HERO.eyebrow}
+        headline={HERO.headline}
         description={HERO.description}
         slides={HERO.images}
         primary={{ label: "Explore the platform", href: "/metasurface-diagnostics" }}
-        secondary={{ label: "Contact", href: "/contact" }}
       />
 
       {/* Positioning — pinned headline against a travelling sheet of plates */}
@@ -60,12 +63,10 @@ export default function HomePage() {
       {/* One connected journey: science → trust → mission */}
       <Journey />
 
-      {/* R&D stage notice — kept at the bottom, above the footer's CTA band */}
-      <section className="bg-void">
-        <Container className="pb-20 pt-4 sm:pb-24">
-          <DevNotice tone="void" className="mx-auto max-w-3xl" />
-        </Container>
-      </section>
+      {/* No separate R&D notice here any more — it duplicated the footer's
+          required development-stage disclaimer, which sits right below it. The
+          footer now carries the single, canonical version (stage badges +
+          disclaimer + link), so the home page states it once. */}
     </>
   );
 }

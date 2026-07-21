@@ -2,10 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { VoidBand } from "@/components/ui/PaperSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { DevNotice } from "@/components/ui/DevNotice";
 
 export const metadata: Metadata = {
   title: "Sustainability & Responsible Consumables",
@@ -41,11 +40,10 @@ export default function SustainabilityPage() {
     <>
       <PageHero
         kicker="Sustainability"
-        title="Diagnostic access should not ignore material responsibility."
+        title="Access, without ignoring the waste."
         image="sustainability-film"
       >
-        Testing closer to care cuts travel and lab burden. Disposables create
-        waste. Both are design constraints.
+        Disposables create waste. That is a design constraint.
       </PageHero>
 
       <ContentSection
@@ -93,10 +91,6 @@ export default function SustainabilityPage() {
           </p>
         </Reveal>
       </ContentSection>
-
-      <PaperSection className="border-t border-[var(--border-light)]">
-        <DevNotice />
-      </PaperSection>
 
       <VoidBand>
         <div className="flex flex-wrap justify-center gap-3">

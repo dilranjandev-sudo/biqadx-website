@@ -43,11 +43,6 @@ const BLOCKS: PlatformBlock[] = [
     ],
   },
   {
-    kind: "band",
-    id: "metacard-use",
-    alt: "A gloved hand seating a thin iridescent card into the analyzer's slot.",
-  },
-  {
     kind: "chips",
     title: "Functional zone concepts",
     intro:
@@ -102,8 +97,8 @@ export default function MetacardPage() {
   return (
     <PlatformPage
       kicker="METACARD Cartridge"
-      title="A diagnostic cartridge designed as a measurement system."
-      lead="Not packaging. The card defines part of the measurement itself."
+      title="The cartridge is part of the measurement."
+      lead="Not packaging — part of the instrument."
       heroImage={{
         id: "metacard-hero",
         alt: "Concept render of the METACARD cartridge and a macro of its nanostructured surface.",
