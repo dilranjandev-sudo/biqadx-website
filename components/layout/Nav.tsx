@@ -29,24 +29,60 @@ export function Nav() {
   const hoverTimer = useRef<number | undefined>(undefined);
   const lenis = useLenis();
 
-  // The header is transparent over the page's dark hero and only takes its solid
-  // bar once you scroll — so the top of every page reads as one image, but the
-  // light nav text still gets a dark ground the moment it would cross onto light
-  // content. Driven off Lenis when it is running (native scroll events are muted
-  // under smooth scroll), with a plain window fallback.
+  // No bar over the hero — the top of every page should read as one uninterrupted
+  // image — and a solid bar everywhere below it, because the light nav text needs
+  // a dark ground the moment it crosses onto the Paper content of a subpage.
+  //
+  // The trigger is the hero's own bottom edge rather than a fixed scroll
+  // distance. A fixed distance put the bar back after a few pixels of scroll,
+  // while the reader was still looking at the hero, which is exactly the thing
+  // it is supposed to stay out of. Heroes vary in height from page to page, so
+  // the measurement has to come from the element.
+  //
+  // Driven off Lenis when it is running — native scroll events are muted under
+  // smooth scroll — with a plain window fallback, and re-measured on resize
+  // since the hero is sized in svh.
   useEffect(() => {
-    const update = (y: number) => setScrolled(y > 8);
-    update(window.scrollY);
+    let frame = 0;
+    const update = () => {
+      const header = navRef.current?.parentElement;
+      const hero = document.querySelector("main > section:first-of-type");
+      if (!hero || !header) {
+        setScrolled(window.scrollY > 8);
+        return;
+      }
+      // Swap the moment the hero's bottom passes under the header, so the bar
+      // arrives with the content it exists to sit on.
+      setScrolled(hero.getBoundingClientRect().bottom <= header.getBoundingClientRect().height);
+    };
+    // Native scroll events can outpace the frame rate, so those are coalesced to
+    // one layout read per frame. Lenis's own event is already emitted once per
+    // frame from its animation loop — putting it through the same queue would
+    // only cost it a frame of lag — so that path calls straight through.
+    const schedule = () => {
+      if (!frame)
+        frame = window.requestAnimationFrame(() => {
+          frame = 0;
+          update();
+        });
+    };
+
+    update();
+    window.addEventListener("resize", schedule);
+    let detach: (() => void) | undefined;
     if (lenis) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const on = (l: any) => update(l?.scroll ?? window.scrollY);
-      lenis.on("scroll", on);
-      return () => lenis.off("scroll", on);
+      lenis.on("scroll", update);
+      detach = () => lenis.off("scroll", update);
+    } else {
+      window.addEventListener("scroll", schedule, { passive: true });
+      detach = () => window.removeEventListener("scroll", schedule);
     }
-    const onScroll = () => update(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [lenis]);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", schedule);
+      detach?.();
+    };
+  }, [lenis, pathname]);
 
   // Close everything on route change.
   useEffect(() => {
