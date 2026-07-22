@@ -36,9 +36,10 @@ count-ups) · GSAP + ScrollTrigger (home "See it work" scrub, dynamically import
 ## Where things live
 - `app/` — one folder per route (`page.tsx`). Home = `app/page.tsx`.
 - `components/layout/` — `Nav`, `Footer`, `StagePill`, `StageBadges`, `LegalBlock` (compliance furniture).
-- `components/home/` — home sections: `HeroSlider`, `PlatformShowcase`, `HowItWorksScroll`, `Journey`, `ValidityShot`, `ScopeStats`.
+- `components/home/` — home sections: `HeroSlider`, `PlatformShowcase`, `HowItWorksScroll`, `Journey`, `ValidityGate`, `ResearchScope`.
+- `components/diagrams/` — the site's line drawings (`Diagram` frame + one file per drawing) and `DiagramPlate`, the dark band they sit on.
 - `components/platform/PlatformPage.tsx` — **shared template for all 8 Platform pages** (data-driven).
-- `components/ui/` — `PageHero`, `PaperSection`/`VoidBand`, `MediaBand`, `ImageSlot`, `DevNotice`, `Container`.
+- `components/ui/` — `PageHero`, `PaperSection`/`VoidBand`, `ContentSection`, `FigureBand`, `ImageSlot`, `Container`.
 - `components/motion/` — `LenisProvider`, `Reveal`.
 - `lib/copy.ts` — **all site copy** (brand, messaging, stage/disclaimer, nav, footer, CTAs, contact, JSON-LD). Edit content here.
 - `lib/images.ts` — **image manifest** (`id → {src, alt, caption}`). Wiring an image = one entry here.
