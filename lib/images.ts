@@ -38,7 +38,7 @@ export const images: Record<string, ImageAsset> = {
   "omega-interrogate": { src: "/images/seq-3-interrogate.png", alt: "The seated card inside the analyzer, a blade of light grazing its surface beneath the optics.", caption: "Illustrative — interrogation research" },
   "howitworks-sequence": { src: "/images/howitworks-sequence.png", alt: "A gloved hand sliding a blank card into the analyzer's teal-outlined front port in a daylit lab, its touchscreen dark.", caption: "Illustrative — research workflow" },
   "howitworks-mid": { src: "/images/seq-4-validate.png", alt: "An inspection objective over the card's geometric alignment features during a self-check.", caption: "Illustrative — validation research" },
-  "methods-mid": { src: "/images/metasurface-macro.png", alt: "Macro of a nanostructured surface showing structural colour across the texture.", caption: "Illustrative — structured optical surface" },
+  "methods-mid": { src: "/images/surface-macro-4.png", alt: "Extreme macro at a steep viewing angle, the micro-texture running away from the camera with a narrow band of cyan-violet sheen held in focus and the rest falling soft.", caption: "Illustrative — structured optical surface" },
   "quality-validate": { src: "/images/why-validate.png", alt: "A card held in a precision fixture as a light probe scans its reference edge during a self-check.", caption: "Illustrative — metrology research" },
   "udos-bench": { src: "/images/about-workspace.png", alt: "A research bench with optics, a microfluidic chip and control electronics under soft light.", caption: "Illustrative — control-system research" },
   "roadmap-mid": { src: "/images/seq-5-result.png", alt: "A card resting in the analyzer with a single neutral status light after a run.", caption: "Illustrative — research workflow" },
@@ -135,6 +135,37 @@ export const images: Record<string, ImageAsset> = {
   "contact-hero": {
     src: "/images/hero-bench.png",
     alt: "The OMEGA-PRO analyzer at rest on a clean bench in a calm, daylit room — an open, waiting workspace.",
+  },
+  "insights-desk": {
+    src: "/images/insights-desk.png",
+    alt: "A researcher's desk in low evening light: an open blank notebook with a pencil across it, a jeweller's loupe, and a blank card catching a soft cyan-to-violet sheen.",
+    brightness: 1.14,
+  },
+  "media-portrait": {
+    src: "/images/media-portrait.png",
+    alt: "A quiet corner of a research building — two empty chairs angled toward each other across a round table, a band of daylight on the wall, a blank card on the table.",
+    brightness: 1.55,
+  },
+
+  // The structured surface at four angles. Shot as a set on purpose: the first
+  // two are the same material photographed differently, and putting them side by
+  // side is the only way to *show* the claim the whole platform rests on — that
+  // the optical response depends on the angle it is read at.
+  "surface-macro-1": {
+    src: "/images/surface-macro-1.png",
+    alt: "Extreme macro of the engineered surface at a grazing angle: fine directional micro-texture running diagonally, a narrow cyan-to-violet sheen lifting along the ridges on the right and fading to matte grey on the left.",
+  },
+  "surface-macro-2": {
+    src: "/images/surface-macro-2.png",
+    alt: "The same engineered surface photographed face-on under flat light: plain neutral grey matte metal with fine directional micro-texture, and almost no colour at all.",
+  },
+  "surface-macro-3": {
+    src: "/images/surface-macro-3.png",
+    alt: "Extreme macro of the card's chamfered corner: the textured top face carries a cyan-to-violet sheen, the smooth chamfer and edge stay plain grey.",
+  },
+  "surface-macro-4": {
+    src: "/images/surface-macro-4.png",
+    alt: "Extreme macro at a steep viewing angle, the micro-texture running away from the camera with a narrow band of cyan-violet sheen held in focus and the rest falling soft.",
   },
 };
 
