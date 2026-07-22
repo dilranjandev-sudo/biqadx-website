@@ -60,6 +60,15 @@ const BLOCKS: PlatformBlock[] = [
       "Regulatory & clinical validation strategy",
     ],
   },
+  // Sits between the eight gates and the paragraph explaining the number, so the
+  // qualifier arrives with the figure rather than after it.
+  {
+    kind: "diagram",
+    title: "What the candidate count actually counts",
+    intro:
+      "Every candidate has to pass all eight gates. Nothing has been through them yet.",
+    diagram: "roadmap-funnel",
+  },
   {
     kind: "note",
     title: "What “approximately 200 tests” means",

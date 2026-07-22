@@ -277,6 +277,22 @@ h3.font-display {
   animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* A short rule that draws itself out from nothing. Used on the contact form's
+   success panel, where the swap from form to confirmation is the one moment a
+   visitor most needs to feel land. */
+@keyframes ruleDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.rule-draw {
+  transform-origin: left;
+  animation: ruleDraw 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
 /* Nav items — a fill that sweeps in from the right on hover and continues out to
    the left on leave, so the motion reads as one direction rather than as a box
    appearing and disappearing.
@@ -340,6 +356,68 @@ h3.font-display {
     clip-path: inset(0 0 0 0);
   }
 }
+/* A diagram drafting itself: strokes draw on, then everything that is not a
+   stroke — labels, fills, arrowheads — fades up behind them.
+
+   `pathLength="1"` is set on the drawn paths in the diagram components, so one
+   dash length works for every path regardless of its real geometry. The default
+   (unarmed) state leaves the dash properties alone entirely, so a diagram that
+   is never animated is simply a finished diagram. */
+.rv-armed.rv-draw [data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.rv-armed.rv-draw [data-draw-fade] {
+  opacity: 0;
+}
+/* `--dg-delay` is set per element by the drawing, so a stack of layers or a row
+   of gate conditions can arrive one at a time instead of all at once. */
+.rv-armed.rv-in.rv-draw [data-draw] {
+  animation: drawOn 1.2s cubic-bezier(0.33, 1, 0.68, 1)
+    calc(var(--rv-delay, 0s) + var(--dg-delay, 0s)) both;
+}
+.rv-armed.rv-in.rv-draw [data-draw-fade] {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)
+    calc(var(--rv-delay, 0s) + var(--dg-delay, 0s) + 0.5s) both;
+}
+@keyframes drawOn {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A short highlight that travels the length of a path once, after the drawing
+   has settled — the run passing along the spine it has to clear, or the light
+   travelling the beam.
+
+   Strictly decorative: the element carries `opacity="0"` as a presentation
+   attribute, which CSS animation overrides but nothing else does. So if the
+   animation never runs — reduced motion, no JS, a browser that never fires the
+   observer — the highlight is simply absent and the finished drawing is intact. */
+.rv-armed.rv-in.rv-draw [data-draw-run] {
+  animation: drawRun 1.8s cubic-bezier(0.37, 0, 0.29, 1)
+    calc(var(--rv-delay, 0s) + var(--dg-delay, 0s)) both;
+}
+@keyframes drawRun {
+  from {
+    stroke-dashoffset: 1.1;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: -0.15;
+    opacity: 0;
+  }
+}
+
 .rv-armed.rv-in.rv-up {
   animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0s) both;
 }

@@ -56,6 +56,16 @@ const BLOCKS: PlatformBlock[] = [
     title: "Thermally and optically controlled measurement",
     body: "Repeatable diagnostics require more than a bright source and a camera. OMEGA-PRO is being engineered around stabilized optical datums, thermal monitoring, dark and reference measurements, wavelength verification, intensity normalization, detector health checks and defined acquisition states.",
   },
+  // Why the pair is cooperative rather than a reader and a strip: the analyzer
+  // holds the same angles, stand-off and seating on every run, and that is what
+  // makes one card's reading comparable to another's.
+  {
+    kind: "diagram",
+    title: "One geometry, held every run",
+    intro:
+      "The chassis fixes the angles between illumination and detection, the stand-off to the card face, and where the card comes to rest.",
+    diagram: "card-reader",
+  },
   {
     kind: "grid",
     title: "How the architecture stays honest",

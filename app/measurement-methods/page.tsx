@@ -75,6 +75,24 @@ const BLOCKS: PlatformBlock[] = [
       },
     ],
   },
+  // Placed after the list of fourteen rather than before it: the drawing is the
+  // answer to "so what holds those together?", and it only lands once the reader
+  // has scrolled the list and felt how varied it is.
+  {
+    kind: "diagram",
+    title: "One platform, several physics",
+    intro:
+      "Every family shares the card format, the reader interface and the control layer. What differs is the physics used to make the measurement.",
+    diagram: "method-families",
+  },
+  // The physics differ; the surface they are all read from does not. Placed
+  // after the drawing so the abstraction lands first and the material second.
+  {
+    kind: "band",
+    id: "surface-macro-4",
+    alt: "Extreme macro at a steep viewing angle, the micro-texture running away from the camera with a narrow band of cyan-violet sheen held in focus and the rest falling soft.",
+    caption: "Illustrative — the structured surface, in macro",
+  },
   {
     kind: "chips",
     title: "Research extensions",

@@ -35,6 +35,16 @@ const BLOCKS: PlatformBlock[] = [
       },
     ],
   },
+  // Placed straight after the four layers are named, because the drawing is what
+  // turns them from a list into a rule: a claim may only stand as high as the
+  // evidence under it, and the top two layers are studies not yet done.
+  {
+    kind: "diagram",
+    title: "How high a claim is allowed to stand",
+    intro:
+      "The four layers are a ladder, and what may be said climbs with them — never above them.",
+    diagram: "evidence-ladder",
+  },
   {
     kind: "grid",
     title: "On-card reference strategy",

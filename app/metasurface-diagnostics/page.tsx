@@ -94,6 +94,17 @@ const BLOCKS: PlatformBlock[] = [
       },
     ],
   },
+  // The drawing opens the page. Everything below describes what happens at the
+  // surface, and a reader who has seen where the surface sits in the optical
+  // path reads all of it differently — no photograph of a bench can establish
+  // that, because it is structure, not appearance.
+  {
+    kind: "diagram",
+    title: "Where the surface sits",
+    intro:
+      "The structured face is inside the optical path, with the sample resting on it — so the light reaching the detector has been shaped by both.",
+    diagram: "light-path",
+  },
   {
     kind: "grid",
     title: "Four legitimate roles",
@@ -135,6 +146,26 @@ const BLOCKS: PlatformBlock[] = [
       "Reference zones",
       "Physical identity zones",
     ],
+  },
+  // The same piece of material, photographed twice. This is the page's central
+  // claim and the one thing no drawing and no single photograph can carry: the
+  // surface's optical response depends on the angle it is read at. Side by side
+  // it needs no explaining; either frame alone would say nothing.
+  {
+    kind: "pair",
+    title: "The same surface, twice",
+    intro:
+      "One piece of material, two lighting angles. The colour is not painted on — it is what the structure does to light arriving a particular way.",
+    left: {
+      id: "surface-macro-1",
+      alt: "Extreme macro of the engineered surface at a grazing angle: fine directional micro-texture with a narrow cyan-to-violet sheen lifting along the ridges on the right and fading to matte grey on the left.",
+      caption: "Light grazing the surface",
+    },
+    right: {
+      id: "surface-macro-2",
+      alt: "The same engineered surface photographed face-on under flat light: plain neutral grey matte metal with fine directional micro-texture and almost no colour.",
+      caption: "The same surface, lit face-on",
+    },
   },
   {
     kind: "note",

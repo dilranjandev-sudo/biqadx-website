@@ -3,10 +3,31 @@ import { PageHero } from "@/components/ui/PageHero";
 import { ImageSlot } from "@/components/ui/ImageSlot";
 import { FigureBand } from "@/components/ui/FigureBand";
 import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
+import { Container } from "@/components/ui/Container";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { LightPath } from "@/components/diagrams/LightPath";
+import { CardLayers } from "@/components/diagrams/CardLayers";
+import { CardReaderPath } from "@/components/diagrams/CardReaderPath";
+import { ValidityGateDiagram } from "@/components/diagrams/ValidityGateDiagram";
+import { MethodFamilies } from "@/components/diagrams/MethodFamilies";
+import { EvidenceLadder } from "@/components/diagrams/EvidenceLadder";
+import { RoadmapFunnel } from "@/components/diagrams/RoadmapFunnel";
+import { DiagramPlate } from "@/components/diagrams/DiagramPlate";
 
 type GridItem = { t: string; d?: string };
+
+// Pages name a drawing rather than importing one, so a page stays a data file.
+const DIAGRAMS = {
+  "light-path": LightPath,
+  "card-layers": CardLayers,
+  "card-reader": CardReaderPath,
+  "validity-gate": ValidityGateDiagram,
+  "method-families": MethodFamilies,
+  "evidence-ladder": EvidenceLadder,
+  "roadmap-funnel": RoadmapFunnel,
+} as const;
+
+export type DiagramId = keyof typeof DIAGRAMS;
 
 export type PlatformBlock =
   | {
@@ -20,7 +41,19 @@ export type PlatformBlock =
   | { kind: "chips"; title: string; intro?: string; items: string[] }
   | { kind: "list"; title: string; intro?: string; items: string[] }
   | { kind: "note"; title: string; body: string }
+  /** A line drawing. The photography can show the bench; only this can show the
+   *  structure the page is actually describing. */
+  | { kind: "diagram"; title: string; intro?: string; diagram: DiagramId }
   | { kind: "band"; id: string; alt: string; caption?: string }
+  /** Two photographs side by side, where the comparison *is* the content and
+   *  either one alone would say nothing. */
+  | {
+      kind: "pair";
+      title: string;
+      intro?: string;
+      left: { id: string; alt: string; caption: string };
+      right: { id: string; alt: string; caption: string };
+    }
   /** Text paired with its own image — the block that makes these pages image-led. */
   | {
       kind: "figure";
@@ -91,14 +124,14 @@ function Figure({
           flip ? "lg:col-span-6 lg:order-2" : "lg:col-span-6 lg:order-1"
         }
       >
-        <Reveal>
+        <ScrollReveal>
           <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             {title}
           </h2>
           <p className="mt-4 max-w-md font-body leading-relaxed text-ink/75">
             {body}
           </p>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </div>
   );
@@ -134,7 +167,11 @@ export function PlatformPage({
   // A numbered spine down the page. Titled blocks are the sections a reader
   // navigates by, so they carry "01 / 06"; bands are figures and are numbered
   // separately, the way a technical document separates plates from sections.
-  const sectionTotal = blocks.filter((b) => b.kind !== "band").length;
+  // Bands and diagrams are plates, not sections — they are numbered as figures
+  // and must not inflate the "01 / 06" the reader navigates by.
+  const sectionTotal = blocks.filter(
+    (b) => b.kind !== "band" && b.kind !== "diagram" && b.kind !== "pair",
+  ).length;
   let paperIndex = 0;
   let figureIndex = 0;
   // The signature image now opens the page inside the hero, so in-page bands
@@ -155,6 +192,51 @@ export function PlatformPage({
       </PageHero>
 
       {blocks.map((b, bi) => {
+        // Diagrams get their own Void plate rather than sitting in the Paper
+        // flow. Two reasons, and the first is not negotiable: the prism gradient
+        // is built for the dark surface — its amber stop is 1.4:1 on Paper, so a
+        // light path drawn there fades out exactly where it matters. The second
+        // is that a full-bleed dark plate is how this site already presents a
+        // figure, so the drawings read as plates in a technical document rather
+        // than as decoration inside a text section.
+        if (b.kind === "diagram") {
+          const Drawing = DIAGRAMS[b.diagram];
+          return (
+            <DiagramPlate key={bi} title={b.title} intro={b.intro}>
+              <Drawing tone="signal" />
+            </DiagramPlate>
+          );
+        }
+
+        // A pair sits on the same Void plate a diagram gets: it is doing a
+        // diagram's job — carrying a comparison — and boxing it into the Paper
+        // flow would make two photographs look like decoration.
+        if (b.kind === "pair") {
+          return (
+            <DiagramPlate key={bi} title={b.title} intro={b.intro}>
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                {[b.left, b.right].map((side, si) => (
+                  <ScrollReveal key={side.id} variant="wipe" delay={si * 0.1}>
+                    <figure>
+                      <div className="relative aspect-square overflow-hidden rounded-lg">
+                        <ImageSlot
+                          id={side.id}
+                          alt={side.alt}
+                          ratio="1/1"
+                          sizes="(min-width: 640px) 45vw, 100vw"
+                        />
+                      </div>
+                      <figcaption className="mt-3 font-mono text-[0.6rem] uppercase leading-relaxed tracking-[0.16em] text-signal/70">
+                        {side.caption}
+                      </figcaption>
+                    </figure>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </DiagramPlate>
+          );
+        }
+
         if (b.kind === "band") {
           bandIndex += 1;
           return (
@@ -179,9 +261,9 @@ export function PlatformPage({
           figureIndex += 1;
           return (
             <PaperSection key={bi} className={border}>
-              <Reveal>
+              <ScrollReveal>
                 <SectionMark no={sectionNo} />
-              </Reveal>
+              </ScrollReveal>
               <Figure {...b} flip={flip} />
             </PaperSection>
           );
@@ -194,27 +276,34 @@ export function PlatformPage({
                 it describes instead of stranding it above a full-width block. */}
             <div className="grid gap-8 lg:grid-cols-12 lg:gap-14">
               <div className="lg:col-span-4">
-                <Reveal>
+                <ScrollReveal>
                   <SectionMark no={sectionNo} />
+                  {/* Masked rise, matching Home and ContentSection, so all
+                      three page families land a heading the same way. */}
                   <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-ink sm:text-[1.75rem]">
-                    {b.title}
+                    <span className="block overflow-hidden pb-[0.08em]">
+                      <ScrollReveal as="span" variant="mask" delay={0.06} className="block">
+                        {b.title}
+                      </ScrollReveal>
+                    </span>
                   </h2>
                   {b.kind !== "note" && b.intro ? (
                     <p className="mt-4 font-body text-sm leading-relaxed text-ink/75">
                       {b.intro}
                     </p>
                   ) : null}
-                </Reveal>
+                </ScrollReveal>
               </div>
 
               <div className="lg:col-span-8">
                 {b.kind === "note" && (
-                  <Reveal>
+                  <ScrollReveal>
                     <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
                       {b.body}
                     </p>
-                  </Reveal>
+                  </ScrollReveal>
                 )}
+
 
                 {b.kind === "grid" && (
                   <div
@@ -269,7 +358,7 @@ export function PlatformPage({
                 )}
 
                 {b.kind === "chips" && (
-                  <Reveal>
+                  <ScrollReveal>
                     <ul className="flex flex-wrap gap-2">
                       {b.items.map((z) => (
                         <li
@@ -280,7 +369,7 @@ export function PlatformPage({
                         </li>
                       ))}
                     </ul>
-                  </Reveal>
+                  </ScrollReveal>
                 )}
               </div>
             </div>

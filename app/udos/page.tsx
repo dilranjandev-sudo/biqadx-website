@@ -51,6 +51,16 @@ const BLOCKS: PlatformBlock[] = [
     title: "The role of AI and machine learning",
     body: "ML may support reconstruction, deconvolution, anomaly detection or workflow assistance — but must not bypass safety interlocks, calibration, internal controls, validity or human governance. Any AI function is trained, tested, locked, monitored and validated for its defined purpose.",
   },
+  // The hardest idea on this page to carry in prose, and the easiest to draw:
+  // four conditions in series, and a failure that stops the run rather than
+  // producing a different answer.
+  {
+    kind: "diagram",
+    title: "The validity gate",
+    intro:
+      "Four conditions are checked in series. A result is released only when every one of them holds.",
+    diagram: "validity-gate",
+  },
   {
     kind: "list",
     title: "Data principles",
