@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -46,7 +45,7 @@ export default function CareersPage() {
       </PageHero>
 
       <ContentSection no="01 / 03" title="Talent areas" divider={false}>
-        <Reveal>
+        <ScrollReveal>
           <ul className="flex flex-wrap gap-2">
             {TALENT.map((t) => (
               <li
@@ -57,7 +56,7 @@ export default function CareersPage() {
               </li>
             ))}
           </ul>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection no="02 / 03" title="How we work">
@@ -84,7 +83,7 @@ export default function CareersPage() {
         title="Talent interest"
         intro="Specific openings are published only when formally approved."
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             General inquiries should include your area of interest, background,
             portfolio or publications, location, availability, and the problem
@@ -93,7 +92,7 @@ export default function CareersPage() {
           <Link href="/contact" className="btn-ink mt-8">
             Submit a talent-interest inquiry
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <VoidBand>

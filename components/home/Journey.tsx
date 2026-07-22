@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { useAnimate } from "@/components/motion/useAnimate";
 import { ValidityGate } from "./ValidityGate";
@@ -205,14 +204,14 @@ export function Journey() {
   return (
     <section className="bg-void">
       <Container className="pb-14 pt-20 sm:pb-16 sm:pt-28">
-        <Reveal>
+        <ScrollReveal>
           <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/60">
             Why it works
           </p>
           <h2 className="mt-3 max-w-xl font-display text-3xl font-bold tracking-tightest text-signal sm:text-[2.5rem]">
             Science, trust, and reach.
           </h2>
-        </Reveal>
+        </ScrollReveal>
       </Container>
 
       {/* Full-bleed from here — deliberately outside the content grid. */}

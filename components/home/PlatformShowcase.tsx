@@ -1,7 +1,7 @@
 import Image from "next/image";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Reveal } from "@/components/motion/Reveal";
 import { ParallaxFrame } from "@/components/motion/Parallax";
 
 // One image per part, each drifting inside its frame as the page scrolls past.
@@ -57,7 +57,7 @@ export function PlatformShowcase() {
             const flip = i % 2 === 1;
             return (
               <div key={p.name} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
-                <Reveal className={flip ? "lg:order-2" : ""} y={26}>
+                <ScrollReveal className={flip ? "lg:order-2" : ""}>
                   <ParallaxFrame
                     className="relative aspect-[4/3] overflow-hidden rounded-xl border border-[var(--border-dark)]"
                     amount={6}
@@ -72,8 +72,8 @@ export function PlatformShowcase() {
                       className="object-cover"
                     />
                   </ParallaxFrame>
-                </Reveal>
-                <Reveal delay={0.08} className={flip ? "lg:order-1" : ""}>
+                </ScrollReveal>
+                <ScrollReveal delay={0.08} className={flip ? "lg:order-1" : ""}>
                   <div>
                     {/* Number and role on one eyebrow line — the spine format the
                         rest of the page uses, so the three parts read as numbered
@@ -116,7 +116,7 @@ export function PlatformShowcase() {
                       </svg>
                     </Link>
                   </div>
-                </Reveal>
+                </ScrollReveal>
               </div>
             );
           })}

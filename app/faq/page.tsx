@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { FaqItem } from "@/components/faq/FaqItem";
 
@@ -141,11 +140,11 @@ export default function FaqPage() {
 
       <Container className="relative py-24 sm:py-32">
         {/* Title, on the picture */}
-        <Reveal>
+        <ScrollReveal>
           <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/70">
             FAQ
           </p>
-        </Reveal>
+        </ScrollReveal>
         <h1
           className="mt-4 max-w-3xl font-display text-[2.4rem] font-bold leading-[1.02] tracking-tightest text-signal sm:text-5xl md:text-[3.5rem]"
           style={{ textShadow: "0 1px 14px rgba(11,14,20,0.6)" }}
@@ -163,7 +162,7 @@ export default function FaqPage() {
         <div className="mt-16 max-w-2xl space-y-14 sm:mt-20 sm:space-y-16">
           {GROUPS.map((g, gi) => (
             <div key={g.title}>
-              <Reveal>
+              <ScrollReveal>
                 <div className="flex items-center gap-4">
                   <span className="font-mono text-[0.6rem] tracking-[0.16em] text-signal/70">
                     {pad(gi + 1)} / {pad(GROUPS.length)}
@@ -174,7 +173,11 @@ export default function FaqPage() {
                   className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight text-signal sm:text-[1.75rem]"
                   style={{ textShadow: "0 1px 10px rgba(11,14,20,0.55)" }}
                 >
-                  {g.title}
+                  <span className="block overflow-hidden pb-[0.08em]">
+                    <ScrollReveal as="span" variant="mask" delay={0.06} className="block">
+                      {g.title}
+                    </ScrollReveal>
+                  </span>
                 </h2>
                 <p
                   className="mt-3 max-w-md font-body text-sm leading-relaxed text-signal/75"
@@ -182,7 +185,7 @@ export default function FaqPage() {
                 >
                   {g.intro}
                 </p>
-              </Reveal>
+              </ScrollReveal>
 
               <div className="mt-6">
                 {g.items.map((item, i) => (

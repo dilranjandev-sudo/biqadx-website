@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { PaperSection } from "@/components/ui/PaperSection";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { contact, brand } from "@/lib/copy";
 
@@ -45,18 +44,22 @@ export default function ContactPage() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left — how to reach us, the facts, and what we work on */}
           <div className="lg:col-span-5">
-            <Reveal>
+            <ScrollReveal>
               <p className="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-ink/65">
                 Direct
               </p>
               <h2 className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight text-ink sm:text-[1.75rem]">
-                One official channel.
+                <span className="block overflow-hidden pb-[0.08em]">
+                  <ScrollReveal as="span" variant="mask" delay={0.06} className="block">
+                    One official channel.
+                  </ScrollReveal>
+                </span>
               </h2>
               <p className="mt-4 max-w-sm font-body leading-relaxed text-ink/75">
                 Use the form for any professional inquiry — it reaches the right
                 people and we reply from the official company channel.
               </p>
-            </Reveal>
+            </ScrollReveal>
 
             <dl className="mt-9">
               {INFO.map((i, idx) => (
@@ -71,7 +74,7 @@ export default function ContactPage() {
               ))}
             </dl>
 
-            <Reveal>
+            <ScrollReveal>
               <p className="mt-9 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-ink/65">
                 We collaborate on
               </p>
@@ -85,7 +88,7 @@ export default function ContactPage() {
                   </li>
                 ))}
               </ul>
-            </Reveal>
+            </ScrollReveal>
 
             {/* Footnote, not a callout box — matches the stage notice elsewhere. */}
             <p className="mt-9 border-t border-[var(--border-light)] pt-5 font-body text-xs leading-relaxed text-ink/65">

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -67,7 +66,7 @@ export default function IpEngineeringPage() {
       </PageHero>
 
       <ContentSection no="01 / 04" title="Public IP position" divider={false}>
-        <Reveal>
+        <ScrollReveal>
           {/* TODO(verify): specific application numbers, dates, inventors and legal
               status published only after official-record and patent-agent
               verification. */}
@@ -77,7 +76,7 @@ export default function IpEngineeringPage() {
             multi-fluid interfaces, multimodal analytical systems, immune-state
             sensing and metasurface-integrated cartridge–reader architectures.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection
@@ -85,13 +84,13 @@ export default function IpEngineeringPage() {
         title={"What “patent filed” means"}
         intro="An application has been submitted to an IP office. That is all it means."
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             It does not mean the patent is granted, the claims are valid over
             prior art, the technology has been manufactured, the assay works
             clinically, the device is approved, or a product is available.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection no="03 / 04" title="Engineering disciplines">

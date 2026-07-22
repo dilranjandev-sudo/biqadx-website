@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { messaging } from "@/lib/copy";
 
@@ -45,6 +44,7 @@ export default function MediaPage() {
       <PageHero
         kicker="Media & Public Information"
         title="Media and public information."
+        image="media-portrait"
       >
         Approved wording, and what must not be written.
       </PageHero>
@@ -54,19 +54,19 @@ export default function MediaPage() {
         title="Approved one-line description"
         divider={false}
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-display text-xl font-medium leading-snug tracking-tight text-ink sm:text-2xl">
             {messaging.oneLine}
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection no="02 / 04" title="Approved boilerplate">
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body leading-relaxed text-ink/75">
             {BOILERPLATE}
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection
@@ -75,7 +75,7 @@ export default function MediaPage() {
         intro="Titles and biographies must be confirmed before publication or external quotation."
       >
         {/* TODO(verify): confirm founder titles/bios before publication or quotation. */}
-        <Reveal>
+        <ScrollReveal>
           <ul>
             {[
               { name: "Arun Kumar", role: "Founder & CEO" },
@@ -94,7 +94,7 @@ export default function MediaPage() {
               </li>
             ))}
           </ul>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection

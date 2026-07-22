@@ -59,6 +59,7 @@ export default function InsightsPage() {
       <PageHero
         kicker="Insights & Research"
         title="The science, without the hype."
+        image="insights-desk"
       >
         What is established, what we are targeting, and the difference.
       </PageHero>

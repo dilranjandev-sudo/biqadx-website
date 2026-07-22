@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -60,14 +59,14 @@ export default function AboutPage() {
       </PageHero>
 
       <ContentSection no="01 / 05" title="Our mission" divider={false}>
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-display text-2xl font-medium leading-snug tracking-tight text-ink sm:text-[1.75rem]">
             Make reliable diagnostic capability more accessible to clinics,
             community facilities and decentralized care — while preserving the
             evidence, quality controls and regulatory discipline healthcare
             requires.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection no="02 / 05" title="Our operating thesis">
@@ -115,7 +114,7 @@ export default function AboutPage() {
         title="What BIQADX is today"
         intro="Research, prototype and engineering-development stage."
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             The company is building controlled design baselines, cartridge and
             reader prototypes, manufacturing plans, validation strategies,
@@ -123,11 +122,11 @@ export default function AboutPage() {
             presenting the METACARD–OMEGA-PRO platform as a clinically validated
             or commercially available product.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection no="05 / 05" title="Long-term direction">
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             A portfolio of validated cartridge families that share common
             analyzer infrastructure while using assay-specific fluidics,
@@ -136,7 +135,7 @@ export default function AboutPage() {
             and advanced optical measurements, without pretending every method
             fits one identical consumable.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <VoidBand>

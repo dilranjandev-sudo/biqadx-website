@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { Timeline } from "@/components/howitworks/Timeline";
+import { DiagramPlate } from "@/components/diagrams/DiagramPlate";
+import { SamplePath } from "@/components/diagrams/SamplePath";
 
 export const metadata: Metadata = {
   title: "How the Platform Works",
@@ -38,8 +40,19 @@ export default function HowItWorksPage() {
         <Timeline />
       </ContentSection>
 
+      {/* The timeline above is the run in time; this is the same run in space.
+          Seeing the route is what makes metering, the zone's position partway
+          along it, and containment read as separate concerns rather than as one
+          vague processing step. */}
+      <DiagramPlate
+        title="The same run, in space"
+        intro="One route through the card: in at the port, metered, across the zone that is measured, then sealed."
+      >
+        <SamplePath tone="signal" />
+      </DiagramPlate>
+
       <ContentSection no="02 / 02" title="Why validity gating matters">
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             A number should not be shown merely because a detector produced a
             signal. Technical validity depends on identity, seating, references,
@@ -47,7 +60,7 @@ export default function HowItWorksPage() {
             integrity. This is the basis of BIQADX&rsquo;s validity-gated output
             philosophy.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <VoidBand>

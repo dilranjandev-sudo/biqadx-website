@@ -112,13 +112,17 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
+      // The form is replaced outright, and until now that swap was a hard cut —
+      // the one moment on the site where a visitor most needs to feel that
+      // something completed. It rises in, and the prism rule draws itself out
+      // from nothing, so the panel reads as an arrival rather than a jump.
       <div
         role="status"
-        className="rounded-2xl border border-[var(--border-light)] bg-white/60 p-8 sm:p-10"
+        className="fade-up rounded-2xl border border-[var(--border-light)] bg-white/60 p-8 sm:p-10"
       >
         <span
           aria-hidden="true"
-          className="block h-[3px] w-12 rounded-full"
+          className="rule-draw block h-[3px] w-12 rounded-full"
           style={{ background: "var(--prism-gradient)" }}
         />
         <p className="mt-5 font-display text-xl leading-snug text-ink">
@@ -225,11 +229,38 @@ export function ContactForm() {
         </p>
       )}
 
+        {/* Sending is the one state where nothing on screen used to move, on the
+            one action where a visitor most wants to know something is happening.
+            The label still carries the meaning for a screen reader and for
+            anyone whose motion is reduced; the arc is decorative. */}
         <button
           type="submit"
           className="btn-ink w-full sm:w-auto"
           disabled={status === "submitting"}
         >
+          {status === "submitting" && (
+            <svg
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+              className="h-3.5 w-3.5 animate-spin"
+            >
+              <circle
+                cx="10"
+                cy="10"
+                r="8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeOpacity="0.28"
+              />
+              <path
+                d="M10 2 a8 8 0 0 1 8 8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          )}
           {status === "submitting" ? "Sending…" : "Send inquiry"}
         </button>
       </form>

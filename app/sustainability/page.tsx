@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -68,14 +67,14 @@ export default function SustainabilityPage() {
       </ContentSection>
 
       <ContentSection no="02 / 03" title="Eco-Labware research direction">
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             Sustainable consumable concepts based on polymer blends and
             redesign. Biodegradability, compostability, recyclability, bio-based
             content and reduced material use are distinct — none is claimed
             without standardized testing and certification.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection
@@ -83,13 +82,13 @@ export default function SustainabilityPage() {
         title="Safety remains first"
         intro="A lower-impact material has to clear the same bar as any other."
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             It is not acceptable if it compromises sample integrity, reagent
             stability, sterility, barrier, mechanical strength, optical quality,
             electrical isolation or safe disposal.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <VoidBand>

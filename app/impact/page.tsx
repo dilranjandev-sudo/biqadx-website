@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { DiagramPlate } from "@/components/diagrams/DiagramPlate";
+import { DelayChain } from "@/components/diagrams/DelayChain";
 
 export const metadata: Metadata = {
   title: "Intended Healthcare Impact",
@@ -60,7 +61,7 @@ export default function ImpactPage() {
         title="Intended future settings"
         divider={false}
       >
-        <Reveal>
+        <ScrollReveal>
           <ul className="flex flex-wrap gap-2">
             {SETTINGS.map((s) => (
               <li
@@ -71,7 +72,7 @@ export default function ImpactPage() {
               </li>
             ))}
           </ul>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <ContentSection
@@ -94,18 +95,28 @@ export default function ImpactPage() {
         </div>
       </ContentSection>
 
+      {/* The argument of this page is about relative length — the measurement is
+          not the slow step — and that is a thing to see, not to read. It sits
+          before the conditional-impact section so the caveat lands last. */}
+      <DiagramPlate
+        title="Where the time actually goes"
+        intro="On a referral route the sample travels, waits, and the result travels back. Each of those is longer than the measurement."
+      >
+        <DelayChain tone="signal" />
+      </DiagramPlate>
+
       <ContentSection
         no="03 / 03"
         title="Impact is conditional"
         intro="We are building toward this impact — not claiming completed outcomes."
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             It depends on successful engineering, assay development, analytical
             and clinical validation, regulatory authorization, manufacturing
             scale-up, service models and affordability.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <VoidBand>

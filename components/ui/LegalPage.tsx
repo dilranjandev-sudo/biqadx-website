@@ -64,12 +64,20 @@ export function LegalPage({
                           : "border-t border-[var(--border-light)] py-8 last:pb-0"
                       }
                     >
+                      {/* Masked rise, like every other heading on the site. The
+                          legal pages are plainer than the rest by design, but a
+                          heading arriving differently here made them read as a
+                          different site rather than as a quieter room in it. */}
                       <div className="mb-4 flex items-baseline gap-4">
                         <span className="font-mono text-[0.6rem] tracking-[0.16em] text-ink/65">
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         <h2 className="font-display text-lg font-bold leading-tight tracking-tight text-ink">
-                          {s.heading}
+                          <span className="block overflow-hidden pb-[0.08em]">
+                            <ScrollReveal as="span" variant="mask" className="block">
+                              {s.heading}
+                            </ScrollReveal>
+                          </span>
                         </h2>
                       </div>
                       <div className="font-body leading-relaxed text-ink/75">{s.body}</div>

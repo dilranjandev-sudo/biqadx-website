@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { footer, nav, cta, messaging, brand } from "@/lib/copy";
 import { getImage } from "@/lib/images";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { StagePill } from "./StagePill";
 import { StageBadges } from "./StageBadges";
 import { LegalBlock } from "./LegalBlock";
@@ -53,19 +54,33 @@ export function Footer() {
               "linear-gradient(180deg, rgba(11,14,20,0.72) 0%, rgba(11,14,20,0.55) 44%, rgba(11,14,20,0.9) 100%)",
           }}
         />
+        {/* The last thing on every page, and until now the only headline on the
+            site that arrived already finished. Set in two masked lines like the
+            section headlines above it, so the closing line lands the same way
+            the rest of the page has been landing all the way down. */}
         <div className="relative mx-auto max-w-content px-4 py-20 text-center sm:px-6 sm:py-28">
           <h2 className="mx-auto max-w-3xl font-display text-3xl font-bold leading-[1.1] tracking-tightest text-signal sm:text-5xl">
-            Engineering the diagnostic surface.
-            <br className="hidden sm:block" /> Partner with BIQADX.
+            <span className="block overflow-hidden pb-[0.08em]">
+              <ScrollReveal as="span" variant="mask" className="block">
+                Engineering the diagnostic surface.
+              </ScrollReveal>
+            </span>
+            <span className="block overflow-hidden pb-[0.08em]">
+              <ScrollReveal as="span" variant="mask" delay={0.09} className="block">
+                Partner with BIQADX.
+              </ScrollReveal>
+            </span>
           </h2>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href={cta.primary.href} className="btn-primary">
-              {cta.primary.label}
-            </Link>
-            <Link href="/contact" className="btn-outline">
-              Contact
-            </Link>
-          </div>
+          <ScrollReveal delay={0.22}>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link href={cta.primary.href} className="btn-primary">
+                {cta.primary.label}
+              </Link>
+              <Link href="/contact" className="btn-outline">
+                Contact
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 

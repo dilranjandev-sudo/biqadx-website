@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
 import { VoidBand } from "@/components/ui/PaperSection";
-import { Reveal } from "@/components/motion/Reveal";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -116,7 +115,7 @@ export default function PartnersPage() {
         title="Partnership-focused"
         intro="This is not a sales channel."
       >
-        <Reveal>
+        <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             We do not invite clinical procurement, patient sample submission or
             routine product demonstrations. Public discussion covers mission,
@@ -126,7 +125,7 @@ export default function PartnersPage() {
           <Link href="/contact" className="btn-ink mt-8">
             Start a collaboration inquiry
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </ContentSection>
 
       <VoidBand>
