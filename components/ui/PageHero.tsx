@@ -2,39 +2,47 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import { Container } from "./Container";
 import { ParallaxFrame } from "@/components/motion/Parallax";
+import { KineticHeading } from "@/components/motion/KineticHeading";
 import { getImage } from "@/lib/images";
 
 /**
  * Hero band at the top of each subpage.
  *
- * Pass `image` (a manifest id) and the page opens on its photograph with the
- * copy set over it, the way Home does — rather than a flat dark band followed
- * immediately by the same picture as a separate section, which read as the page
- * saying everything twice. Without an id it falls back to the plain band, which
- * is what the legal pages want.
+ * ## Why the copy is beside the photograph, not on it
  *
- * Text over photography needs its own ground, so two scrims sit under the copy:
- * a bottom-up gradient and a left-side one. They are shaped around the copy
- * rather than veiling the frame evenly, so the picture keeps its brightness
- * where nothing is written and the copy still clears AA over every frame in the
- * set. Verified against the real pixels, not assumed — see the scrims below.
+ * It used to be set over the picture, which meant every hero was a negotiation
+ * between two things that pull in opposite directions: the photograph wants to
+ * be bright, and the type needs a dark ground. That negotiation was fought with
+ * scrims, and it was re-fought every time an image was swapped — brightness
+ * tuned per file, scrim stops reshaped around the copy corner, contrast
+ * re-measured against the actual pixels of every frame in the set.
  *
- * Copy is kept short and small on purpose. Every subpage opens the way Home does
- * — kicker, one display line, one sentence — so the picture carries the page and
- * the reading starts in the sections below rather than in the hero.
+ * Giving the copy its own panel of solid Void ends the argument rather than
+ * winning it. The type sits at a fixed, known contrast that no photograph can
+ * affect, and the photograph is shown with no scrim over it at all — for the
+ * first time, whole and at its own exposure.
  *
- * The entrance is CSS-driven (`.rise-in` / `.fade-up` in globals.css) rather than
- * JS-driven, for two reasons: this component carries the <h1> on 17 pages, so it
- * must stay visible even if no animation ever runs; and it keeps the band a
- * server component. Reduced motion is handled by the global media query.
+ * On a narrow screen the two stack: picture, then copy beneath it. The split is
+ * a wide-screen idea; forcing it into one column would give both halves too
+ * little room.
+ *
+ * ## Motion
+ *
+ * The entrance is CSS (`.rise-in` / `.fade-up` in globals.css) rather than
+ * JS-driven, for two reasons: this component carries the <h1> on sixteen pages,
+ * so it must stay visible even if no animation ever runs; and it keeps the band
+ * a server component. Reduced motion is handled by the global media query.
+ *
+ * The headline additionally answers to the pointer — see KineticHeading, which
+ * is an enhancement layered on top of already-rendered text.
  */
 export function PageHero({
   kicker,
   title,
   image,
   imageAlt,
-  // Exposure normally comes from the manifest, per image — see below. A page can
-  // still override it. Drift is on by default so every page opens alive.
+  // Exposure comes from the manifest, per image — see below. A page can still
+  // override it. Drift is on by default so every page opens alive.
   imageBrightness,
   imageParallax = true,
   children,
@@ -70,28 +78,38 @@ export function PageHero({
 
   const copy = (
     <div className="max-w-2xl">
-      {/* Full signal, not /70: this is the smallest type in the hero and it sits
-          highest, where the scrim is lightest — it was the only line in the band
-          that ever fell under 4.5:1. */}
       {kicker && (
-        <p className="fade-up font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal">
+        <p className="fade-up font-mono text-[0.66rem] uppercase tracking-[0.2em] text-signal/75">
           {kicker}
         </p>
       )}
 
-      {/* Big, bold, in the caps register globals.css gives every h1 — the same
-          highlighted headline the home hero carries, so every page opens the same
-          way. It rises in from the mask; the size steps down on narrow screens so
-          longer titles still fit. */}
-      <h1 className="mt-4 max-w-3xl overflow-hidden font-display text-[2.4rem] font-bold leading-[1.02] tracking-tightest text-signal sm:text-5xl md:text-[3.5rem]">
+      {/* The one sanctioned use of the prism gradient: a short mark, never a
+          fill. It anchors the copy column and echoes Home. */}
+      <span
+        aria-hidden="true"
+        className="fade-up mt-5 block h-[3px] w-10 rounded-full"
+        style={{ background: "var(--prism-gradient)", animationDelay: "120ms" }}
+      />
+
+      {/* Rises out of its mask, then answers to the pointer. `aria-label` carries
+          the whole string, so the per-character spans inside are never read out
+          one letter at a time. */}
+      {/* `text-wrap: balance` matters more here than the size does. Without it
+          the last line of a hero headline is regularly one orphaned word, which
+          is what makes a wrapped title look broken rather than set. */}
+      <h1
+        aria-label={title}
+        className="mt-5 overflow-hidden font-display text-[2.3rem] font-bold leading-[1.03] tracking-tightest text-signal [text-wrap:balance] sm:text-[3rem] lg:text-[3.4rem]"
+      >
         <span className="rise-in block pb-[0.06em]" style={{ animationDelay: "60ms" }}>
-          {title}
+          <KineticHeading text={title} />
         </span>
       </h1>
 
       {children && (
         <div
-          className="fade-up mt-6 max-w-xl font-body text-base leading-relaxed text-signal/80 sm:text-lg"
+          className="fade-up mt-6 max-w-md font-body text-base leading-relaxed text-signal/80 sm:text-lg"
           style={{ animationDelay: "220ms" }}
         >
           {children}
@@ -108,80 +126,69 @@ export function PageHero({
     );
   }
 
-  // What actually zooms a hero is the band's aspect ratio, not the parallax: a
-  // 3:2 photograph in a wide, short band is cropped hard by object-cover and the
-  // subject reads as a blown-up detail. Height is the real de-zoom lever, so the
-  // band is tall.
-  //
-  // The scale is then kept as close to 1 as the drift allows. It cannot be 1:
-  // translating the image by `amount` percent needs at least that much overflow
-  // on each side or a sliver of empty band shows at the extremes — the old
-  // 5% drift under a 1.06→1.0 scale did exactly that at the top of the scroll.
-  // 2% drift with a 1.05→1.04 scale is gap-free everywhere and barely enlarges
-  // the picture at all.
+  const picture = (
+    <>
+      <Image
+        src={asset.src}
+        alt={imageAlt ?? asset.alt}
+        fill
+        priority
+        sizes="(min-width: 1024px) 58vw, 100vw"
+        className="object-cover"
+        style={{ filter: imageFilter }}
+      />
+      {/* The only tone laid over the picture, and only at the seam: a short fade
+          into the copy panel so the two halves meet rather than butt. Everywhere
+          else the photograph is shown untouched. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 hidden lg:block"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(11,14,20,0.85) 0%, rgba(11,14,20,0.25) 12%, rgba(11,14,20,0) 30%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 lg:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(11,14,20,0.30) 0%, rgba(11,14,20,0) 45%, rgba(11,14,20,0.85) 100%)",
+        }}
+      />
+    </>
+  );
+
   return (
-    <section className="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-void sm:min-h-[82svh]">
-      {imageParallax ? (
-        <ParallaxFrame
-          className="absolute inset-0 -z-10"
-          amount={2}
-          from={1.05}
-          to={1.04}
-        >
-          <Image
-            src={asset.src}
-            alt={imageAlt ?? asset.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-            style={imageFilter ? { filter: imageFilter } : undefined}
-          />
-        </ParallaxFrame>
-      ) : (
-        <div
-          className="absolute inset-0 -z-10"
-          style={imageFilter ? { filter: imageFilter } : undefined}
-        >
-          <Image
-            src={asset.src}
-            alt={imageAlt ?? asset.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+    <section className="relative isolate bg-void">
+      <div className="lg:grid lg:min-h-[74svh] lg:grid-cols-12">
+        {/* Picture. First in the DOM on narrow screens so the page opens on the
+            photograph, which is how Home opens too. */}
+        <div className="relative aspect-[3/2] overflow-hidden sm:aspect-[16/9] lg:order-2 lg:col-span-6 lg:aspect-auto">
+          {imageParallax ? (
+            // A whisper of scale only. The frame is no longer a wide, short band
+            // cropping a 3:2 photograph hard, so the drift needs almost no
+            // overflow to stay gap-free.
+            <ParallaxFrame className="absolute inset-0" amount={2} from={1.05} to={1.04}>
+              {picture}
+            </ParallaxFrame>
+          ) : (
+            <div className="absolute inset-0">{picture}</div>
+          )}
         </div>
-      )}
 
-      {/* The scrims are shaped around where the copy actually sits — the lower
-          left — instead of veiling the whole frame evenly. The old pair held a
-          flat 0.25 veil across the middle and 0.05 at the right edge, which cost
-          the picture brightness everywhere and still left the small kicker under
-          4.5:1 on the lighter photographs.
-          Now the upper third is nearly clear and the right edge is untouched, so
-          the picture reads bright, while the copy corner is taken deliberately
-          darker. Measured against the actual pixels of all fourteen hero files
-          at their manifest exposures, the worst case across the set is kicker
-          5.1:1, h1 6.5:1, lead 8.5:1 — against floors of 4.5, 3.0 and 4.5. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(11,14,20,0.36) 0%, rgba(11,14,20,0.10) 30%, rgba(11,14,20,0.58) 52%, rgba(11,14,20,0.86) 82%, rgba(11,14,20,0.94) 100%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(11,14,20,0.80) 0%, rgba(11,14,20,0.26) 55%, rgba(11,14,20,0) 100%)",
-        }}
-      />
-
-      <Container className="relative pb-14 pt-28 sm:pb-20 sm:pt-32">{copy}</Container>
+        {/* Copy, on solid Void. Nothing behind it, so its contrast is fixed and
+            no photograph can move it. */}
+        {/* Six columns, not five, and a tighter right gutter. At five the
+            headline had 423px to work in at 54px type, which wrapped
+            thirty-five-character titles onto four lines — the copy was being
+            broken by the panel, not by its own length. */}
+        <div className="lg:order-1 lg:col-span-6 lg:flex lg:items-center">
+          <div className="mx-auto w-full max-w-content px-4 py-12 sm:px-6 sm:py-16 lg:mx-0 lg:max-w-none lg:py-20 lg:pl-[max(1.5rem,calc((100vw-72rem)/2))] lg:pr-8">
+            {copy}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

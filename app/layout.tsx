@@ -14,9 +14,13 @@ import { organizationJsonLd } from "@/lib/copy";
 // cut set in caps — a DIN-adjacent, engineering-drawing register — while body and
 // labels stay in the regular Sans and Mono. Staying inside Plex keeps the three
 // cuts visibly related instead of reading as three unrelated typefaces.
+// Four extra cuts beyond the two the design uses, purely so the hero headline
+// can ramp its weight under the pointer. Plex Sans Condensed has no variable
+// version on Google Fonts — there is no `wght` axis to interpolate — so a weight
+// response has to be built from static steps.
 const display = IBM_Plex_Sans_Condensed({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-display",
   display: "swap",
 });

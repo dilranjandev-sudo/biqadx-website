@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { KineticHeading } from "@/components/motion/KineticHeading";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { motionDisabled } from "@/lib/motion";
@@ -156,8 +157,16 @@ export function HeroSlider({
               caps register globals.css gives every h1. One punchy line replaces
               the paragraph that used to sit here, which read as a wall rather
               than a statement. */}
-          <h1 className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[0.98] tracking-tightest text-signal sm:text-6xl lg:text-[4.25rem]">
-            {headline}
+          {/* The letters answer to the pointer here too, so Home opens the way
+              every subpage does. The dim floor is raised well above the subpage
+              default: this headline sits on a photograph, where the scrims were
+              measured for type at full strength, and taking letters down to 72%
+              would spend the margin those scrims bought. */}
+          <h1
+            aria-label={headline}
+            className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[0.98] tracking-tightest text-signal sm:text-6xl lg:text-[4.25rem]"
+          >
+            <KineticHeading text={headline} dimFloor={0.88} lift={8} />
           </h1>
 
           <p className="mt-6 max-w-md font-body text-base leading-relaxed text-signal/80 sm:text-lg">
