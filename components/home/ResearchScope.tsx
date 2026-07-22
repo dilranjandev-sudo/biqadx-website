@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
+import { useInView } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { motionDisabled } from "@/lib/motion";
-import { useAnimate } from "@/components/motion/useAnimate";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { ParallaxFrame } from "@/components/motion/Parallax";
 
 /**
  * Research scope, laid out as a lab plate sheet rather than a hero band.
@@ -98,8 +98,6 @@ function CountUp({ to, prefix = "" }: { to: number; prefix?: string }) {
 
 export function ResearchScope() {
   const sectionRef = useRef<HTMLElement>(null);
-  const animate = useAnimate();
-
 
   return (
     <section ref={sectionRef} className="bg-void" aria-label="Research scope">
@@ -145,6 +143,12 @@ export function ResearchScope() {
               <h1 className="mt-6 font-display text-[2.25rem] font-bold leading-[1.04] tracking-tightest text-signal sm:text-[3.25rem]">
                 {HEADLINE.map((line, i) => (
                   <span key={line} className="block overflow-hidden pb-[0.08em]">
+                    {/* Deliberately not a KineticHeading. This headline is
+                        fifty-nine characters over five lines, and it sits in a
+                        column that is `sticky` while three spring-driven plates
+                        scroll past it — per-letter work here lands on the one
+                        part of Home that is already doing the most during a
+                        scroll. The hero carries the effect for this page. */}
                     <ScrollReveal as="span" variant="mask" delay={i * 0.09} className="block">
                       {line}
                     </ScrollReveal>
@@ -165,7 +169,7 @@ export function ResearchScope() {
           <div className="lg:col-span-7">
             <ul className="space-y-16 sm:space-y-20">
               {PLATES.map((p, i) => (
-                <Plate key={p.index} plate={p} eager={i === 0} animate={animate} />
+                <Plate key={p.index} plate={p} eager={i === 0} />
               ))}
             </ul>
           </div>
@@ -175,25 +179,9 @@ export function ResearchScope() {
   );
 }
 
-function Plate({
-  plate,
-  eager,
-  animate,
-}: {
-  plate: Plate;
-  eager: boolean;
-  animate: boolean;
-}) {
-  const ref = useRef<HTMLLIElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const rawY = useTransform(scrollYProgress, [0, 1], ["7%", "-7%"]);
-  const y = useSpring(rawY, { stiffness: 120, damping: 28, mass: 0.4 });
-
+function Plate({ plate, eager }: { plate: Plate; eager: boolean }) {
   return (
-    <li ref={ref} className={plate.offset}>
+    <li className={plate.offset}>
       <ScrollReveal>
         {/* Index rule — plate number, subject, hairline */}
         <div className="flex items-center gap-4">
@@ -206,14 +194,15 @@ function Plate({
           </span>
         </div>
 
+        {/* Same drift as before, now on the shared CSS timeline rather than on
+            a scroll observer and a spring of its own. Three of these run in a
+            sticky column, which is the worst place on the page to be doing
+            per-frame work. */}
         <div
           className="relative mt-4 overflow-hidden border border-[var(--border-dark)]"
           style={{ aspectRatio: plate.ratio }}
         >
-          <motion.div
-            className="absolute inset-0 will-change-transform"
-            style={animate ? { y, scale: 1.1 } : { y: 0, scale: 1 }}
-          >
+          <ParallaxFrame className="absolute inset-0" amount={7} from={1.1} to={1.1}>
             <Image
               src={plate.img}
               alt={plate.alt}
@@ -222,7 +211,7 @@ function Plate({
               priority={eager}
               className="object-cover"
             />
-          </motion.div>
+          </ParallaxFrame>
         </div>
 
         {/* Figure — sits under its plate like a caption, not overlaid on it */}
