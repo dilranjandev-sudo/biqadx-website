@@ -32,6 +32,7 @@ export function Diagram({
   caption,
   tone = "ink",
   height = 300,
+  interactive = false,
   children,
 }: {
   /** Short mono label, e.g. "Figure 01". */
@@ -45,6 +46,9 @@ export function Diagram({
   tone?: "ink" | "signal";
   /** viewBox height. Width is always 800, so drawings share one scale. */
   height?: number;
+  /** Marks the drawing probeable: a crosshair cursor, and `.dg-probe` parts
+   *  respond to the pointer (see `.dg-interactive` in globals.css). */
+  interactive?: boolean;
   children: ReactNode;
 }) {
   // Pattern ids are document-global, so two drawings on one page would collide
@@ -82,7 +86,7 @@ export function Diagram({
             role="img"
             aria-label={title}
             viewBox={`0 0 800 ${height}`}
-            className="h-auto w-full"
+            className={`h-auto w-full${interactive ? " dg-interactive" : ""}`}
             style={{ minWidth: 560 }}
             fill="none"
             // Strokes and text both key off this, so the whole drawing follows

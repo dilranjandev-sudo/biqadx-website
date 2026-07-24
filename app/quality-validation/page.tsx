@@ -45,6 +45,15 @@ const BLOCKS: PlatformBlock[] = [
       "The four layers are a ladder, and what may be said climbs with them — never above them.",
     diagram: "evidence-ladder",
   },
+  // The on-card references placed where they live on the card, each probeable —
+  // the on-card half of quality, paired with the evidence ladder above.
+  {
+    kind: "diagram",
+    title: "The references the card carries",
+    intro:
+      "The card brings its own known values, so a single run can check itself. Probe a zone to see what it guards against.",
+    diagram: "on-card-references",
+  },
   {
     kind: "grid",
     title: "On-card reference strategy",
@@ -71,6 +80,16 @@ const BLOCKS: PlatformBlock[] = [
         d: "Positive, negative or procedural controls, independent of instrument references.",
       },
     ],
+  },
+  // A figure between the reference grid and the gating list: evidence starts at
+  // the surface itself, measured, before anything is claimed of it.
+  {
+    kind: "figure",
+    title: "Evidence starts at the surface",
+    body: "Before any performance claim, the structure itself is measured — how uniform it is, how it returns light. The ladder above begins on real metrology, not on a result.",
+    id: "quality-surface",
+    alt: "Extreme macro of the card's structured corner, a narrow band of cyan-to-violet sheen across its fine texture on a near-black ground.",
+    caption: "Illustrative — structured optical surface",
   },
   {
     kind: "list",

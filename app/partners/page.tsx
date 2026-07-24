@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
+import { SplitFigure } from "@/components/ui/SplitFigure";
 import { VoidBand } from "@/components/ui/PaperSection";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
@@ -90,6 +91,21 @@ export default function PartnersPage() {
           ))}
         </div>
       </ContentSection>
+
+      {/* After the nine collaboration areas — the page's argument that no one
+          discipline builds this alone. The hero shows two pairs of hands at one
+          bench; this figure shows the other side of it, capability in someone
+          else's facility. Image on the left so it alternates against the heroes
+          and the sections around it. */}
+      <SplitFigure
+        id="partners-fab"
+        flip
+        alt="A gowned figure seen through the glass of a fabrication bay, working at a replication tool — capability that sits in a partner's facility rather than on a bench."
+        kicker="Why partners"
+        lead="Some of this capability will never sit in our building."
+        body="Master fabrication, optical coatings, assay chemistry, regulated software — each is a field in its own right. We are built to work with the people who already do them."
+        caption="Illustrative — fabrication partner capability"
+      />
 
       <ContentSection no="02 / 03" title="What a useful inquiry includes">
         <ul>

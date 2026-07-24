@@ -3,35 +3,52 @@ import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { Container } from "@/components/ui/Container";
 
 /**
- * A drawing given its own full-bleed dark plate.
+ * A drawing given its own full-bleed plate.
  *
- * Diagrams sit on Void rather than in the Paper flow for a reason that is not
- * aesthetic: the prism gradient's amber stop is about 1.4:1 on Paper, so a light
- * path drawn there fades out exactly where it matters. Keeping every drawing on
- * one surface also means one contrast story instead of two.
+ * These used to be dark without exception, for a reason that was real rather
+ * than aesthetic: the prism gradient is built for the dark surface, and on Paper
+ * its cyan measures 1.3:1 and its amber 1.4:1 — so a light path drawn there
+ * faded out exactly where it mattered. That constraint has been dealt with at
+ * the source: `--prism-ink-*` is the same three hues darkened until each clears
+ * 4.5:1 on Paper, and the two drawings that use the gradient pick their stops by
+ * tone.
  *
- * Shared by PlatformPage and by the pages that are not template-driven, so a
- * drawing looks the same wherever it appears.
+ * So the default is Paper now. A line drawing is ink on paper — that is what an
+ * engineering drawing is, and it reads as a real document rather than as a
+ * lightbox. Dark is still available and is right for two things: photographs,
+ * which this site presents as cinematic bands, and the home page, which is Void
+ * throughout.
  */
 export function DiagramPlate({
   title,
   intro,
   children,
+  tone = "ink",
 }: {
   title: string;
   intro?: string;
   children: ReactNode;
+  tone?: "ink" | "signal";
 }) {
+  const dark = tone === "signal";
   return (
-    <section className="bg-void">
+    <section className={dark ? "bg-void" : "bg-paper"}>
       <Container className="py-16 sm:py-20">
         <div className="mx-auto max-w-3xl">
           <ScrollReveal>
-            <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-signal sm:text-[1.75rem]">
+            <h2
+              className={`font-display text-2xl font-bold leading-tight tracking-tight sm:text-[1.75rem] ${
+                dark ? "text-signal" : "text-ink"
+              }`}
+            >
               {title}
             </h2>
             {intro ? (
-              <p className="mt-4 max-w-xl font-body text-sm leading-relaxed text-signal/85">
+              <p
+                className={`mt-4 max-w-xl font-body text-sm leading-relaxed ${
+                  dark ? "text-signal/85" : "text-ink/75"
+                }`}
+              >
                 {intro}
               </p>
             ) : null}

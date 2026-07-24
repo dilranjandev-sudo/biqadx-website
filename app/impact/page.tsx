@@ -1,8 +1,7 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
+import { ImageSlot } from "@/components/ui/ImageSlot";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { DiagramPlate } from "@/components/diagrams/DiagramPlate";
 import { DelayChain } from "@/components/diagrams/DelayChain";
@@ -75,9 +74,23 @@ export default function ImpactPage() {
         </ScrollReveal>
       </ContentSection>
 
+      {/* Five items in two columns leave the heading column empty for most of the
+          section's height. The figure goes there — beside the list rather than
+          behind it. It carries the two items a photograph actually can (time and
+          access); manufacturability, workflow and traceability are not things a
+          picture can honestly show. */}
       <ContentSection
         no="02 / 03"
         title="What the platform is trying to improve"
+        aside={
+          <ImageSlot
+            id="impact-waiting"
+            alt="A small rural health facility at first light, shutters still closed, a bench outside where people wait — the distance and the waiting that come before any measurement."
+            ratio="4/5"
+            caption="Illustrative — decentralized care setting"
+            sizes="(min-width: 1024px) 380px, 100vw"
+          />
+        }
       >
         <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           {IMPROVE.map((m, i) => (
@@ -102,7 +115,7 @@ export default function ImpactPage() {
         title="Where the time actually goes"
         intro="On a referral route the sample travels, waits, and the result travels back. Each of those is longer than the measurement."
       >
-        <DelayChain tone="signal" />
+        <DelayChain tone="ink" />
       </DiagramPlate>
 
       <ContentSection
@@ -118,17 +131,6 @@ export default function ImpactPage() {
           </p>
         </ScrollReveal>
       </ContentSection>
-
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/partners" className="btn-primary">
-            Partner on healthcare access
-          </Link>
-          <Link href="/metasurface-diagnostics" className="btn-outline">
-            Explore the platform
-          </Link>
-        </div>
-      </VoidBand>
     </>
   );
 }

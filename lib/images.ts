@@ -33,14 +33,17 @@ export const images: Record<string, ImageAsset> = {
   },
 
   // Platform mid-page bands (reused vetted imagery for immediate visual richness).
-  "metasurface-fab": { src: "/images/ip-nanofab.png", alt: "A nanoimprint tool pressing onto an iridescent nanostructured wafer under instrument light.", caption: "Illustrative — nanofabrication research" },
+  // `metasurface-fab` and `methods-mid` were removed: they duplicated ip-nanofab
+  // and surface-macro-4 (same file behind a second id) and were referenced by no
+  // page. Wire the real file's id directly if a slot ever needs it.
   "metacard-use": { src: "/images/seq-2-seat.png", alt: "A gloved hand seating a thin iridescent card into the analyzer's slot.", caption: "Illustrative — research workflow" },
   "omega-interrogate": { src: "/images/seq-3-interrogate.png", alt: "The seated card inside the analyzer, a blade of light grazing its surface beneath the optics.", caption: "Illustrative — interrogation research" },
   "howitworks-sequence": { src: "/images/howitworks-sequence.png", alt: "A gloved hand sliding a blank card into the analyzer's teal-outlined front port in a daylit lab, its touchscreen dark.", caption: "Illustrative — research workflow" },
   "howitworks-mid": { src: "/images/seq-4-validate.png", alt: "An inspection objective over the card's geometric alignment features during a self-check.", caption: "Illustrative — validation research" },
-  "methods-mid": { src: "/images/surface-macro-4.png", alt: "Extreme macro at a steep viewing angle, the micro-texture running away from the camera with a narrow band of cyan-violet sheen held in focus and the rest falling soft.", caption: "Illustrative — structured optical surface" },
   "quality-validate": { src: "/images/why-validate.png", alt: "A card held in a precision fixture as a light probe scans its reference edge during a self-check.", caption: "Illustrative — metrology research" },
-  "udos-bench": { src: "/images/about-workspace.png", alt: "A research bench with optics, a microfluidic chip and control electronics under soft light.", caption: "Illustrative — control-system research" },
+  "udos-bench": { src: "/images/udos-bench.png", alt: "Control electronics on a dark bench — a bare board, ribbon cables and a probe under a work lamp, an instrument at the edge of frame.", caption: "Illustrative — control-system research" },
+  "roadmap-candidates": { src: "/images/roadmap-candidates.png", alt: "Many blank card-format cartridges laid out in rows on a dark bench, receding into soft focus, a faint cyan-to-violet sheen on the nearest few.", caption: "Illustrative — candidate set" },
+  "howitworks-figure": { src: "/images/howitworks-figure.png", alt: "Gloved hands holding a card-format cartridge over a fixture at a lab bench, a cyan-blue sheen on its face.", caption: "Illustrative — research workflow" },
   "roadmap-mid": { src: "/images/seq-5-result.png", alt: "A card resting in the analyzer with a single neutral status light after a run.", caption: "Illustrative — research workflow" },
 
   // Page signature bands.
@@ -86,6 +89,37 @@ export const images: Record<string, ImageAsset> = {
     caption: "Illustrative — nanofabrication research",
     brightness: 1.36,
   },
+  // Mid-page split figures. No `brightness`: that is only read by PageHero, which
+  // has to make one photograph sit under a headline. These sit beside text at
+  // their own exposure. The two analyzer/surface frames are compliant delivered
+  // files that were on disk but unplaced (screen off, narrow sheen — not a flat
+  // rainbow, not a lit result).
+  "omega-analyzer": {
+    src: "/images/hero-analyzer.png",
+    alt: "The OMEGA-PRO analyzer at rest on a dark bench, its screen off — a closed, serviceable instrument.",
+    caption: "Illustrative — concept render",
+  },
+  "quality-surface": {
+    src: "/images/hero-surface.png",
+    alt: "Extreme macro of the card's structured corner, a narrow band of cyan-to-violet sheen across its fine texture on a near-black ground.",
+    caption: "Illustrative — structured optical surface",
+  },
+  "ip-surface": {
+    src: "/images/metacard-3.png",
+    alt: "A card-format part floating on near-black, its fine surface texture catching a narrow cyan-to-violet sheen — the structure that fabrication has to reproduce faithfully.",
+    caption: "Illustrative — replicated structure",
+  },
+  "careers-iteration": {
+    src: "/images/careers-iteration.png",
+    alt: "A partly built optical test rig on a breadboard — posts, clamps and a mounted lens, cables dressed to one side, a hex key and an open notebook left on the bench.",
+    caption: "Illustrative — engineering work in progress",
+  },
+  "partners-fab": {
+    src: "/images/partners-fab.png",
+    alt: "A gowned figure seen through the glass of a fabrication bay, working at a press tool — capability that sits in a partner's facility rather than on a bench.",
+    caption: "Illustrative — fabrication partner capability",
+  },
+
   "careers-craft": {
     src: "/images/careers-craft.png",
     alt: "A researcher's hands at an optical breadboard, holding a jeweller's loupe over a blank card clamped on a precision stage under focused light.",

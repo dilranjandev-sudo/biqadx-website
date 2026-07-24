@@ -34,6 +34,15 @@ const svg = m[0]
   .replace(/var\(--prism-1\)/g, "#6EE7F0")
   .replace(/var\(--prism-2\)/g, "#A78BFA")
   .replace(/var\(--prism-3\)/g, "#F2C879")
+  // the same three hues darkened for the light surface, used by any drawing
+  // rendered with tone="ink"
+  .replace(/var\(--prism-ink-1\)/g, "#0D7981")
+  .replace(/var\(--prism-ink-2\)/g, "#6B3BF7")
+  .replace(/var\(--prism-ink-3\)/g, "#95660E")
+  // surface colours, used where a drawing needs an opaque occluder rather than
+  // an ink stroke — an exploded assembly has to hide what is behind each part
+  .replace(/var\(--paper\)/g, "#F5F3EE")
+  .replace(/var\(--void\)/g, "#0B0E14")
   .replace(/currentColor/g, fg)
   .replace(/class="font-mono"/g, 'font-family="IBM Plex Mono, DejaVu Sans Mono, monospace"')
   // the served tag already carries a style attribute (min-width), and a second

@@ -81,6 +81,7 @@ export function MethodFamilies({ tone = "ink" }: { tone?: "ink" | "signal" }) {
     <Diagram
       tone={tone}
       height={410}
+      interactive
       label="Figure — platform and families"
       title="One shared platform, fourteen measurement-physics families"
       description="Across the top, three bars name what every method shares: the card format, the reader interface and the control layer. A bracket gathers them as one platform and an arrow leads down from it. Below, fourteen cells are laid out in two columns of seven, each numbered and named: absorbance and endpoint photometry, kinetic photometry, turbidimetry, fluorescence, time-resolved fluorescence, chemiluminescence, Raman and SERS, LSPR and plasmonic sensing, lens-free holographic imaging, computational imaging, lateral-flow reflectance imaging, optical coagulation, electrochemistry, and photoelectrochemistry. A line at the foot states that this is a count of physics, not of validated methods."
@@ -118,7 +119,7 @@ export function MethodFamilies({ tone = "ink" }: { tone?: "ink" | "signal" }) {
         const y = rowY(i);
         const d = 0.55 + i * 0.04;
         return (
-          <g key={f} data-mf={i}>
+          <g key={f} data-mf={i} className="dg-probe">
             <DgPath
               d={`M${c.x} ${y} L${c.x + c.w} ${y} L${c.x + c.w} ${y + ROW_H} L${c.x} ${y + ROW_H} Z`}
               width={1.2}

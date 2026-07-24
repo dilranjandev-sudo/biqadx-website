@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { getImage } from "@/lib/images";
 import { useAnimate } from "@/components/motion/useAnimate";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 type ImageSlotProps = {
   /** Manifest id in lib/images.ts. Renders a placeholder until populated. */
@@ -31,6 +32,16 @@ type ImageSlotProps = {
    * unattached to anything.
    */
   overlay?: boolean;
+  /**
+   * A short line set on the photograph itself, above the compliance caption.
+   *
+   * A band carrying only "Illustrative — engineering work in progress" is a
+   * picture with a disclaimer on it; the reader gets nothing from the image that
+   * the surrounding page did not already say. This is the sentence the band is
+   * there to make. Overlay bands only — on an inline figure it would compete
+   * with the section heading beside it.
+   */
+  statement?: string;
 };
 
 /** Renders a generated image when the manifest has one, otherwise an accessible,
@@ -51,6 +62,7 @@ export function ImageSlot({
   priority = false,
   label,
   overlay = false,
+  statement,
   frameClassName,
 }: ImageSlotProps) {
   const asset = getImage(id);
@@ -124,18 +136,40 @@ export function ImageSlot({
           </>
         )}
 
-        {overlay && shownCaption && (
+        {overlay && (shownCaption || statement) && (
           <>
+            {/* Taller and heavier when a statement sits on the picture: a scrim
+                sized for one line of 10px mono leaves display type standing on
+                whatever the photograph happens to be doing underneath it. */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+              className={`pointer-events-none absolute inset-x-0 bottom-0 ${
+                statement ? "h-2/3" : "h-1/3"
+              }`}
               style={{
-                background:
-                  "linear-gradient(180deg, rgba(11,14,20,0) 0%, rgba(11,14,20,0.8) 100%)",
+                background: statement
+                  ? "linear-gradient(180deg, rgba(11,14,20,0) 0%, rgba(11,14,20,0.45) 45%, rgba(11,14,20,0.9) 100%)"
+                  : "linear-gradient(180deg, rgba(11,14,20,0) 0%, rgba(11,14,20,0.8) 100%)",
               }}
             />
-            <figcaption className="absolute inset-x-0 bottom-0 px-5 pb-5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/75 sm:px-7 sm:pb-6">
-              {shownCaption}
+            <figcaption className="absolute inset-x-0 bottom-0 px-5 pb-5 sm:px-7 sm:pb-6">
+              {statement && (
+                <p className="mb-2 max-w-xl font-display text-lg font-bold leading-snug tracking-tight text-signal sm:text-2xl">
+                  {/* Masked rise, the same arrival every headline on this site
+                      uses — so a line on a photograph reads as part of the page
+                      rather than as a caption that happens to be large. */}
+                  <span className="block overflow-hidden pb-[0.08em]">
+                    <ScrollReveal as="span" variant="mask" delay={0.18} className="block">
+                      {statement}
+                    </ScrollReveal>
+                  </span>
+                </p>
+              )}
+              {shownCaption && (
+                <span className="block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-signal/75">
+                  {shownCaption}
+                </span>
+              )}
             </figcaption>
           </>
         )}

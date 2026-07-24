@@ -10,6 +10,14 @@ import { useDiagramLoop } from "./useDiagramLoop";
 // in-limit" — is on the page beside the drawing; repeating it here turned four
 // gates into eight lines of type and buried the shape.
 const CONDITIONS = ["Identity", "Seating", "References", "Controls"];
+// The full phrasing, revealed on hover. The drawing rests on one word each so the
+// shape stays legible; probing a gate spells out what it actually checks.
+const CONDITIONS_FULL = [
+  "Cartridge identity",
+  "Seating & safety",
+  "References in-limit",
+  "Internal controls",
+];
 
 const X = [176, 306, 436, 566];
 const SPINE = 122;
@@ -81,6 +89,7 @@ export function ValidityGateDiagram({
     <Diagram
       tone={tone}
       height={220}
+      interactive
       label="Figure — validity gate"
       title="The validity gate: four conditions in series"
       description="A flow drawn left to right. A run enters at the left and passes through four checks in series, each drawn as a small square: cartridge identity, seating and safety, references in-limit, and internal controls. Each square has a branch dropping away below it. If all four hold, the line continues to the right and a result is released. If any one of them fails, the branch leads instead to a terminated line marked no result — a stop, not an alternative answer."
@@ -101,7 +110,13 @@ export function ValidityGateDiagram({
         const d = 0.18 + i * 0.18;
         const prev = i === 0 ? 118 : X[i - 1] + BOX / 2;
         return (
-          <g key={c}>
+          <g key={c} className="dg-probe">
+            {/* Revealed on hover: what this gate actually checks. */}
+            <g className="dg-detail">
+              <DgLabel x={x} y={SPINE - 52}>
+                {CONDITIONS_FULL[i]}
+              </DgLabel>
+            </g>
             {/* Segment of the spine into this condition */}
             <DgPath d={`M${prev} ${SPINE} L${x - BOX / 2} ${SPINE}`} width={1.5} delay={d} />
 

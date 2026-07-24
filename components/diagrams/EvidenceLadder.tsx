@@ -67,6 +67,7 @@ export function EvidenceLadder({ tone = "ink" }: { tone?: "ink" | "signal" }) {
     <Diagram
       tone={tone}
       height={360}
+      interactive
       label="Figure — evidence and claims"
       title="Four evidence layers, and the ceiling on what may be claimed"
       description="A staircase of four ascending steps, read left to right: physics evidence from models and principle experiments; component evidence from metrology on what was fabricated; cartridge evidence that the function survives bonding, reagents and storage; and assay and system evidence from analytical and clinical studies. A dashed ceiling line steps up in parallel with the staircase, labelled as the limit of what may be claimed — a claim can never sit above the evidence beneath it. A bracket under the first two steps marks them as engineering evidence; a bracket under the last two marks them as the studies required before any performance claim."
@@ -78,7 +79,14 @@ export function EvidenceLadder({ tone = "ink" }: { tone?: "ink" | "signal" }) {
         const y = stepY(i);
         const d = i * 0.18;
         return (
-          <g key={r.name}>
+          <g key={r.name} className="dg-probe">
+            {/* Revealed on hover: the evidence this rung actually stands on. Too
+                long to sit in a 158-unit step, so it only appears when probed. */}
+            <g className="dg-detail">
+              <DgLabel x={x + STEP_W / 2} y={y + TREAD + 22} dim>
+                {r.note}
+              </DgLabel>
+            </g>
             {/* The tread and the riser up to it */}
             <DgPath
               d={`M${x} ${BASE} L${x} ${y} L${x + STEP_W} ${y} L${x + STEP_W} ${BASE}`}

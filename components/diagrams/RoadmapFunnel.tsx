@@ -72,6 +72,7 @@ export function RoadmapFunnel({ tone = "ink" }: { tone?: "ink" | "signal" }) {
     <Diagram
       tone={tone}
       height={outY + 64}
+      interactive
       label="Figure — the roadmap funnel"
       title="Eight gates between a candidate assay and a validated one"
       description="A funnel narrowing downward. At the top, roughly two hundred candidate assays enter. Below it, eight bands of decreasing width, each naming a gate an assay must pass: clinical need, sample workflow, measurement physics and comparator, assay chemistry and fluidics, precision and stability, manufacturability, reader configuration, and regulatory and clinical validation. At the foot of the funnel the output box states that none have been validated yet. The bands carry no counts of their own; only the candidate figure at the top and the empty output at the bottom are stated."
@@ -90,7 +91,7 @@ export function RoadmapFunnel({ tone = "ink" }: { tone?: "ink" | "signal" }) {
         const y = bandY(i);
         const d = 0.15 + i * 0.09;
         return (
-          <g key={g} data-rf={i}>
+          <g key={g} data-rf={i} className="dg-probe">
             <DgPath
               d={`M${CX - w / 2} ${y} L${CX + w / 2} ${y} L${CX + w / 2} ${y + BAND_H} L${CX - w / 2} ${y + BAND_H} Z`}
               width={1.3}

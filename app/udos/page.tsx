@@ -51,6 +51,16 @@ const BLOCKS: PlatformBlock[] = [
     title: "The role of AI and machine learning",
     body: "ML may support reconstruction, deconvolution, anomaly detection or workflow assistance — but must not bypass safety interlocks, calibration, internal controls, validity or human governance. Any AI function is trained, tested, locked, monitored and validated for its defined purpose.",
   },
+  // The whole run, and the one thing the page most needs to show rather than
+  // assert: machine learning is a governed helper, wired into calibration and
+  // held short of the validity gate.
+  {
+    kind: "diagram",
+    title: "The pipeline, and where ML sits",
+    intro:
+      "A run is acquired, corrected, checked and released only through the validity gate. Machine learning assists calibration — it never gates a result.",
+    diagram: "udos-pipeline",
+  },
   // The hardest idea on this page to carry in prose, and the easiest to draw:
   // four conditions in series, and a failure that stops the run rather than
   // producing a different answer.
@@ -60,6 +70,16 @@ const BLOCKS: PlatformBlock[] = [
     intro:
       "Four conditions are checked in series. A result is released only when every one of them holds.",
     diagram: "validity-gate",
+  },
+  // The software has a physical home — the edge-compute and control electronics
+  // inside the analyzer. A figure grounds an otherwise abstract page.
+  {
+    kind: "figure",
+    title: "Software with a physical home",
+    body: "UDOS is not a cloud service bolted on afterwards — it runs on the control electronics inside the analyzer, deterministically, close to the measurement it governs.",
+    id: "udos-bench",
+    alt: "Control electronics on a dark bench — a bare board, ribbon cables and a probe under a work lamp.",
+    caption: "Illustrative — control-system research",
   },
   {
     kind: "list",

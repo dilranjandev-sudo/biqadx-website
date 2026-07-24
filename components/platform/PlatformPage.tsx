@@ -1,17 +1,20 @@
-import Link from "next/link";
 import { PageHero } from "@/components/ui/PageHero";
 import { ImageSlot } from "@/components/ui/ImageSlot";
 import { FigureBand } from "@/components/ui/FigureBand";
-import { PaperSection, VoidBand } from "@/components/ui/PaperSection";
+import { PaperSection } from "@/components/ui/PaperSection";
 import { Container } from "@/components/ui/Container";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { LightPath } from "@/components/diagrams/LightPath";
-import { CardLayers } from "@/components/diagrams/CardLayers";
-import { CardReaderPath } from "@/components/diagrams/CardReaderPath";
+import { CardAssemblyScene } from "@/components/diagrams/CardAssemblyScene";
+import { CardReaderScene } from "@/components/diagrams/CardReaderScene";
 import { ValidityGateDiagram } from "@/components/diagrams/ValidityGateDiagram";
 import { MethodFamilies } from "@/components/diagrams/MethodFamilies";
 import { EvidenceLadder } from "@/components/diagrams/EvidenceLadder";
 import { RoadmapFunnel } from "@/components/diagrams/RoadmapFunnel";
+import { UdosPipeline } from "@/components/diagrams/UdosPipeline";
+import { OmegaDetectors } from "@/components/diagrams/OmegaDetectors";
+import { CartridgeFamilies } from "@/components/diagrams/CartridgeFamilies";
+import { OnCardReferences } from "@/components/diagrams/OnCardReferences";
 import { DiagramPlate } from "@/components/diagrams/DiagramPlate";
 
 type GridItem = { t: string; d?: string };
@@ -19,12 +22,14 @@ type GridItem = { t: string; d?: string };
 // Pages name a drawing rather than importing one, so a page stays a data file.
 const DIAGRAMS = {
   "light-path": LightPath,
-  "card-layers": CardLayers,
-  "card-reader": CardReaderPath,
   "validity-gate": ValidityGateDiagram,
   "method-families": MethodFamilies,
   "evidence-ladder": EvidenceLadder,
   "roadmap-funnel": RoadmapFunnel,
+  "udos-pipeline": UdosPipeline,
+  "omega-detectors": OmegaDetectors,
+  "cartridge-families": CartridgeFamilies,
+  "on-card-references": OnCardReferences,
 } as const;
 
 export type DiagramId = keyof typeof DIAGRAMS;
@@ -44,6 +49,13 @@ export type PlatformBlock =
   /** A line drawing. The photography can show the bench; only this can show the
    *  structure the page is actually describing. */
   | { kind: "diagram"; title: string; intro?: string; diagram: DiagramId }
+  /** The cartridge taken apart under the reader's own scrolling. Its own block
+   *  kind rather than another `diagram` id, because it owns a pinned scroll track
+   *  and so has to control its whole section rather than sit inside a plate. */
+  | { kind: "assembly"; title: string; intro?: string }
+  /** The card seated against its stops under the reader's own scrolling. Same
+   *  reason as `assembly` for being its own kind: it owns a pinned scroll track. */
+  | { kind: "seating"; title: string; intro?: string }
   | { kind: "band"; id: string; alt: string; caption?: string }
   /** Two photographs side by side, where the comparison *is* the content and
    *  either one alone would say nothing. */
@@ -82,7 +94,7 @@ function SectionMark({ no }: { no: string }) {
       <span className="font-mono text-[0.6rem] tracking-[0.16em] text-ink/65">
         {no}
       </span>
-      <span aria-hidden="true" className="h-px w-10 bg-ink/20" />
+      <span aria-hidden="true" className="diffract-rule h-px w-10" />
     </div>
   );
 }
@@ -106,6 +118,7 @@ function Figure({
   return (
     <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
       <ScrollReveal
+        variant="wipe"
         className={
           flip ? "lg:col-span-6 lg:order-1" : "lg:col-span-6 lg:order-2"
         }
@@ -153,16 +166,16 @@ export function PlatformPage({
   lead,
   heroImage,
   blocks,
-  primary,
-  secondary,
 }: {
   kicker: string;
   title: string;
   lead: string;
   heroImage: { id: string; alt: string; caption?: string };
   blocks: PlatformBlock[];
-  primary: Cta;
-  secondary: Cta;
+  /** Still accepted so the eight pages that pass them do not error, but no longer
+   *  rendered — the closing CTA band was removed site-wide. */
+  primary?: Cta;
+  secondary?: Cta;
 }) {
   // A numbered spine down the page. Titled blocks are the sections a reader
   // navigates by, so they carry "01 / 06"; bands are figures and are numbered
@@ -170,7 +183,12 @@ export function PlatformPage({
   // Bands and diagrams are plates, not sections — they are numbered as figures
   // and must not inflate the "01 / 06" the reader navigates by.
   const sectionTotal = blocks.filter(
-    (b) => b.kind !== "band" && b.kind !== "diagram" && b.kind !== "pair",
+    (b) =>
+      b.kind !== "band" &&
+      b.kind !== "diagram" &&
+      b.kind !== "assembly" &&
+      b.kind !== "seating" &&
+      b.kind !== "pair",
   ).length;
   let paperIndex = 0;
   let figureIndex = 0;
@@ -192,28 +210,35 @@ export function PlatformPage({
       </PageHero>
 
       {blocks.map((b, bi) => {
-        // Diagrams get their own Void plate rather than sitting in the Paper
-        // flow. Two reasons, and the first is not negotiable: the prism gradient
-        // is built for the dark surface — its amber stop is 1.4:1 on Paper, so a
-        // light path drawn there fades out exactly where it matters. The second
-        // is that a full-bleed dark plate is how this site already presents a
-        // figure, so the drawings read as plates in a technical document rather
-        // than as decoration inside a text section.
+        // Diagrams get their own full-bleed plate rather than sitting inside a
+        // text section, so they read as plates in a technical document rather
+        // than as decoration. On Paper: a line drawing is ink on paper, which is
+        // what an engineering drawing is. The contrast problem that used to force
+        // these onto a dark surface is fixed at the source — see DiagramPlate.
         if (b.kind === "diagram") {
           const Drawing = DIAGRAMS[b.diagram];
           return (
             <DiagramPlate key={bi} title={b.title} intro={b.intro}>
-              <Drawing tone="signal" />
+              <Drawing tone="ink" />
             </DiagramPlate>
           );
         }
 
-        // A pair sits on the same Void plate a diagram gets: it is doing a
-        // diagram's job — carrying a comparison — and boxing it into the Paper
-        // flow would make two photographs look like decoration.
+        if (b.kind === "assembly") {
+          return <CardAssemblyScene key={bi} title={b.title} intro={b.intro} />;
+        }
+
+        if (b.kind === "seating") {
+          return <CardReaderScene key={bi} title={b.title} intro={b.intro} />;
+        }
+
+        // A pair keeps the dark plate even though the drawings no longer do.
+        // These are photographs, and a full-bleed dark band is how this site
+        // presents photography everywhere else; two bright frames dropped into
+        // the Paper flow read as decoration rather than as a comparison.
         if (b.kind === "pair") {
           return (
-            <DiagramPlate key={bi} title={b.title} intro={b.intro}>
+            <DiagramPlate key={bi} title={b.title} intro={b.intro} tone="signal">
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 {[b.left, b.right].map((side, si) => (
                   <ScrollReveal key={side.id} variant="wipe" delay={si * 0.1}>
@@ -376,17 +401,6 @@ export function PlatformPage({
           </PaperSection>
         );
       })}
-
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href={primary.href} className="btn-primary">
-            {primary.label}
-          </Link>
-          <Link href={secondary.href} className="btn-outline">
-            {secondary.label}
-          </Link>
-        </div>
-      </VoidBand>
     </>
   );
 }

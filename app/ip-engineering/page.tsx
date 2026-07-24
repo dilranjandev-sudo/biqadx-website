@@ -1,8 +1,7 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
+import { SplitFigure } from "@/components/ui/SplitFigure";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -110,6 +109,19 @@ export default function IpEngineeringPage() {
         </div>
       </ContentSection>
 
+      {/* A figure between the disciplines and the disclosure boundary: what the
+          patent work protects is the ability to reproduce a structure like this
+          faithfully, at volume. */}
+      <SplitFigure
+        id="ip-surface"
+        flip
+        kicker="What is protected"
+        lead="The value is in reproducing the structure, faithfully and at volume."
+        body="A metasurface only works if the pattern is made to tolerance every time. The engineering and the IP are about that reproducibility — not a single good part."
+        alt="A card-format part floating on near-black, its fine surface texture catching a narrow cyan-to-violet sheen."
+        caption="Illustrative — replicated structure"
+      />
+
       <ContentSection
         no="04 / 04"
         title="What we publish, and what we hold back"
@@ -138,17 +150,6 @@ export default function IpEngineeringPage() {
           ))}
         </div>
       </ContentSection>
-
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/partners" className="btn-primary">
-            Discuss an NDA-based technical review
-          </Link>
-          <Link href="/metasurface-diagnostics" className="btn-outline">
-            Explore the metasurface science
-          </Link>
-        </div>
-      </VoidBand>
     </>
   );
 }

@@ -1,8 +1,6 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { messaging } from "@/lib/copy";
 
@@ -136,17 +134,6 @@ export default function MediaPage() {
           </ScrollReveal>
         </div>
       </ContentSection>
-
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/contact" className="btn-primary">
-            Send a media inquiry
-          </Link>
-          <Link href="/about" className="btn-outline">
-            View company background
-          </Link>
-        </div>
-      </VoidBand>
     </>
   );
 }

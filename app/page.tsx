@@ -4,6 +4,7 @@ import { PlatformShowcase } from "@/components/home/PlatformShowcase";
 import { HowItWorksScroll } from "@/components/home/HowItWorksScroll";
 import { Journey } from "@/components/home/Journey";
 import { ResearchScope } from "@/components/home/ResearchScope";
+import { PlatformAssemblyScene } from "@/components/diagrams/PlatformAssemblyScene";
 
 export const metadata: Metadata = {
   title: { absolute: "BIQADX | Metasurface-Integrated Diagnostic Platforms" },
@@ -53,6 +54,14 @@ export default function HomePage() {
 
       {/* Positioning — pinned headline against a travelling sheet of plates */}
       <ResearchScope />
+
+      {/* One system, three parts — the platform separates as you scroll, each
+          part named with its role. Sits before the showcase so the reader sees
+          the parts are one system before meeting each of them as a photograph. */}
+      <PlatformAssemblyScene
+        title="Three parts of one system"
+        intro="A cartridge that does part of the measurement, an analyzer that reads it, and software that releases a result only when it is valid. Keep scrolling to separate them."
+      />
 
       {/* Platform — three image-led parts on the rail */}
       <PlatformShowcase />

@@ -70,6 +70,7 @@ const OUT_TICKS = [52, 74, 100, 132];
  */
 export function LightPath({ tone = "ink" }: { tone?: "ink" | "signal" }) {
   const root = useRef<SVGGElement>(null);
+  const ink = tone === "signal" ? "" : "-ink";
 
   useDiagramLoop(root, (k) => {
     const el = root.current;
@@ -114,9 +115,13 @@ export function LightPath({ tone = "ink" }: { tone?: "ink" | "signal" }) {
             x2={DETECTOR[0]}
             y2={DETECTOR[1]}
           >
-            <stop offset="0%" stopColor="var(--prism-1)" />
-            <stop offset="48%" stopColor="var(--prism-2)" />
-            <stop offset="100%" stopColor="var(--prism-3)" />
+            {/* The prism stops are built for the dark surface; on Paper the cyan
+                is 1.3:1 and the amber 1.4:1, so the returning beam — the whole
+                subject of this drawing — would fade out along its length. The ink
+                set is the same three hues darkened until each clears 4.5:1. */}
+            <stop offset="0%" stopColor={`var(--prism${ink}-1)`} />
+            <stop offset="48%" stopColor={`var(--prism${ink}-2)`} />
+            <stop offset="100%" stopColor={`var(--prism${ink}-3)`} />
           </linearGradient>
         </defs>
 

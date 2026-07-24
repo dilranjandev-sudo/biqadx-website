@@ -30,9 +30,27 @@
     var(--prism-3) 100%
   );
 
+  /* The same three hues for use on Paper.
+   *
+   * The prism stops are built for the dark surface and are close to invisible on
+   * the light one — measured against Paper the cyan is 1.3:1 and the amber 1.4:1,
+   * so a light path drawn in them fades out exactly where it matters. That is
+   * why the drawings used to be confined to a dark plate.
+   *
+   * Hue and saturation are kept and only lightness is reduced, until each stop
+   * clears 4.5:1 on Paper: cyan 4.65, violet 5.27, amber 4.53. Still recognisably
+   * a refraction, and legible on the surface the rest of the subpage uses. */
+  --prism-ink-1: #0d7981;
+  --prism-ink-2: #6b3bf7;
+  --prism-ink-3: #95660e;
+
   --border-dark: rgba(232, 236, 239, 0.12);
   --border-light: rgba(11, 14, 20, 0.12);
 
+  /* Resting angle for the diffraction accents. DiffractionDriver overwrites this
+     from scroll; with no JS / reduced motion it stays here, so every prism accent
+     simply shows a fixed, pleasant slice of the gradient rather than nothing. */
+  --diffract: 0.5;
 }
 
 * {
@@ -232,6 +250,97 @@ body {
 .hero-sweep {
   animation: heroSweep 9s ease-in-out infinite;
   animation-delay: 2s;
+}
+
+/* Scroll-driven diffraction accents (see DiffractionDriver).
+   A short prism hairline whose hue slides as `--diffract` changes. The gradient
+   is wider than the element and symmetric, so shifting its position walks the
+   colour across the rule and back without a seam. The default `--diffract: 0.5`
+   parks it mid-sweep, so with no JS the rule is simply a static prism glint.
+   `.diffract-rule` is for Paper (the ink prism set, which clears AA there);
+   `.diffract-rule-signal` is for Void (the bright set). Decorative hairlines, not
+   text — but still visible at rest, never a vanished line. */
+.diffract-rule,
+.diffract-rule-signal {
+  background-repeat: no-repeat;
+  background-size: 240% 100%;
+  background-position-x: calc(var(--diffract, 0.5) * 100%);
+}
+.diffract-rule {
+  background-image: linear-gradient(
+    90deg,
+    var(--prism-ink-1),
+    var(--prism-ink-2),
+    var(--prism-ink-3),
+    var(--prism-ink-2),
+    var(--prism-ink-1)
+  );
+}
+.diffract-rule-signal {
+  background-image: linear-gradient(
+    90deg,
+    var(--prism-1),
+    var(--prism-2),
+    var(--prism-3),
+    var(--prism-2),
+    var(--prism-1)
+  );
+}
+
+/* Page transition — every route fades its content in (see app/template.tsx,
+   which re-mounts per navigation). Opacity only, so it never becomes a containing
+   block for the site's sticky/fixed elements. Reduced motion cuts it instantly. */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.page-enter {
+  animation: pageEnter 0.45s ease both;
+}
+
+/* Interactive diagrams — "probe the figure".
+   A drawing marked `.dg-interactive` is inspected, not just watched: hovering a
+   part (`.dg-probe`) brightens it and reveals its detail (`.dg-detail`), while the
+   other parts dim so the eye follows the pointer. Pure CSS, so it needs no frame
+   loop and works even where rAF is throttled; the reduced-motion block at the end
+   of this file already neutralises the transitions. Gated to real pointers, so a
+   touch device gets today's drawing untouched. `:has()` and `fill-box` are
+   modern-browser features; where absent, the drawing simply does not respond,
+   which is a no-op, not a break. */
+.dg-interactive {
+  cursor: crosshair;
+}
+/* Only `filter` transitions, never `opacity`. Several of these diagrams run an
+   ambient loop that writes `opacity` on the same groups every frame; a transition
+   on opacity would smear that walk into a lag. The dim is instant (snappier), the
+   brighten eases. */
+.dg-probe {
+  transition: filter 0.22s ease;
+}
+.dg-detail {
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  /* dim the siblings of whichever part is hovered */
+  .dg-interactive:has(.dg-probe:hover) .dg-probe:not(:hover) {
+    opacity: 0.35;
+  }
+  /* brighten the hovered part and show its detail. `opacity: 1` here forces the
+     hovered part fully lit even on a diagram whose loop is mid-dim — any author
+     CSS beats the loop's presentation-attribute opacity. */
+  .dg-probe:hover {
+    filter: brightness(1.6);
+    opacity: 1;
+  }
+  .dg-probe:hover .dg-detail {
+    opacity: 1;
+  }
 }
 
 /* Headlines: condensed Plex set in caps — the engineering-drawing register.

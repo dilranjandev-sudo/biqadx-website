@@ -105,6 +105,17 @@ const BLOCKS: PlatformBlock[] = [
       "The structured face is inside the optical path, with the sample resting on it — so the light reaching the detector has been shaped by both.",
     diagram: "light-path",
   },
+  // Having shown where the surface sits and what it controls, a figure of how it
+  // is actually made — a macro of the fabricated structure — grounds the science
+  // in a real object.
+  {
+    kind: "figure",
+    title: "How the surface is made",
+    body: "The control described above is a physical pattern, fabricated to tolerance and replicated at volume. It is an engineered structure, not a coating or a print.",
+    id: "metasurface-fab",
+    alt: "Extreme macro of a fabricated nanostructured surface catching a narrow cyan-to-violet sheen at a grazing angle, its fine texture resolved on a near-black ground.",
+    caption: "Illustrative — fabricated structure",
+  },
   {
     kind: "grid",
     title: "Four legitimate roles",

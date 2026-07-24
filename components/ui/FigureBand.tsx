@@ -15,6 +15,7 @@ export function FigureBand({
   alt,
   caption,
   label,
+  statement,
   priority = false,
 }: {
   id: string;
@@ -22,6 +23,10 @@ export function FigureBand({
   caption?: string;
   /** Short mono label set on the image, e.g. "Figure 02". */
   label?: string;
+  /** One line set on the photograph — what this band is here to say. Without it
+   *  a band carries only its compliance caption, and the picture asserts
+   *  nothing the page has not already said in the section above it. */
+  statement?: string;
   priority?: boolean;
 }) {
   return (
@@ -34,6 +39,7 @@ export function FigureBand({
             frameClassName="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]"
             caption={caption}
             label={label}
+            statement={statement}
             overlay
             priority={priority}
             className="mx-auto max-w-[1600px]"

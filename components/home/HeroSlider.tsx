@@ -153,6 +153,14 @@ export function HeroSlider({
             {eyebrow}
           </p>
 
+          {/* The same prism mark the subpage heroes carry, so Home opens with the
+              scroll-diffraction signature too — its hue travels with scroll (see
+              DiffractionDriver). With no JS it parks at the resting angle. */}
+          <span
+            aria-hidden="true"
+            className="diffract-rule-signal mt-4 block h-[3px] w-10 rounded-full"
+          />
+
           {/* The headline carries the page — short, at display scale, in the
               caps register globals.css gives every h1. One punchy line replaces
               the paragraph that used to sit here, which read as a wall rather

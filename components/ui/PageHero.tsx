@@ -85,11 +85,14 @@ export function PageHero({
       )}
 
       {/* The one sanctioned use of the prism gradient: a short mark, never a
-          fill. It anchors the copy column and echoes Home. */}
+          fill. It anchors the copy column and echoes Home. Its hue now travels
+          with scroll (see DiffractionDriver) — the same accent as the section
+          rules, on the bright set for the dark hero. With no JS it parks at the
+          resting angle and reads exactly as it did before. */}
       <span
         aria-hidden="true"
-        className="fade-up mt-5 block h-[3px] w-10 rounded-full"
-        style={{ background: "var(--prism-gradient)", animationDelay: "120ms" }}
+        className="diffract-rule-signal fade-up mt-5 block h-[3px] w-10 rounded-full"
+        style={{ animationDelay: "120ms" }}
       />
 
       {/* Rises out of its mask, then answers to the pointer. `aria-label` carries

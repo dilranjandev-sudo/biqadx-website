@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
+import { SplitFigure } from "@/components/ui/SplitFigure";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -59,6 +59,17 @@ export default function CareersPage() {
         </ScrollReveal>
       </ContentSection>
 
+      {/* A figure where the page turns from *what* the work is to *how* it is
+          done: the line beside a rig part-built rather than finished. */}
+      <SplitFigure
+        id="careers-iteration"
+        alt="A partly built optical test rig on a breadboard — posts, clamps and a mounted fixture, cables dressed to one side, mid-experiment rather than finished."
+        kicker="In practice"
+        lead="Most of the work looks like this, and none of it is the demo."
+        body="Rigs are part-built and re-built. Progress is measured, corrected and written down — not staged for a photograph."
+        caption="Illustrative — engineering work in progress"
+      />
+
       <ContentSection no="02 / 03" title="How we work">
         <ul>
           {HOW.map((h, i) => (
@@ -94,12 +105,6 @@ export default function CareersPage() {
           </Link>
         </ScrollReveal>
       </ContentSection>
-
-      <VoidBand>
-        <Link href="/about" className="btn-outline">
-          Learn about BIQADX
-        </Link>
-      </VoidBand>
     </>
   );
 }

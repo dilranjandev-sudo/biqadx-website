@@ -65,13 +65,13 @@ const BLOCKS: PlatformBlock[] = [
   },
   // The page's whole claim is that the card performs part of the measurement,
   // and that is a claim about what is stacked inside it. A photograph shows a
-  // rectangle; the section shows the six layers.
+  // rectangle; this takes the card apart while the reader scrolls, one plate at
+  // a time, which is the one thing a still drawing of it could not do.
   {
-    kind: "diagram",
+    kind: "assembly",
     title: "What is inside the card",
     intro:
-      "Six functions in one disposable — routing, structured optics, an electrochemical interface, references and identity, stacked into a few millimetres.",
-    diagram: "card-layers",
+      "Six functions in one disposable — routing, structured optics, an electrochemical interface, references and identity, stacked into a few millimetres. Keep scrolling to take it apart.",
   },
   {
     kind: "grid",
@@ -85,6 +85,15 @@ const BLOCKS: PlatformBlock[] = [
       { t: "METACARD-C", d: "Citrate workflows." },
     ],
   },
+  // The family made visual: three distinct cards converging on one shared reader
+  // interface — the page's answer to the unsafe "one universal card" idea.
+  {
+    kind: "diagram",
+    title: "One interface, a family of cards",
+    intro:
+      "The cards differ by chemistry; the reader interface stays constant. Probe a family to see the workflow it is built for.",
+    diagram: "cartridge-families",
+  },
   {
     kind: "list",
     title: "Prototype engineering targets",
@@ -96,12 +105,15 @@ const BLOCKS: PlatformBlock[] = [
       "Manufacturing under study: precision polymer replication, nanoimprint, thin-film deposition, printing, lamination, insert placement and inline metrology.",
     ],
   },
-  // The section drawing shows the card as six stacked layers; this is what one
-  // of those layers looks like at the edge, in life. The chamfer and the edge
-  // stay plain — only the textured face carries the sheen — which is the same
-  // point the drawing makes about the structured zone being a *zone*.
+  // The assembly scene shows the card as six stacked layers; this is what one of
+  // those layers looks like at the edge, in life. Text beside the image, not a
+  // full-bleed band: only the textured face carries the sheen, the chamfer and
+  // edge stay plain — the same point the drawing makes about the structured zone
+  // being a *zone*.
   {
-    kind: "band",
+    kind: "figure",
+    title: "The structured zone is a zone",
+    body: "Only the textured face carries the sheen; the chamfer and edge stay plain. The optics live in one region of the card, not across all of it — which is what lets the rest do other work.",
     id: "surface-macro-3",
     alt: "Extreme macro of the card's chamfered corner: the textured top face carries a cyan-to-violet sheen while the smooth chamfer and edge stay plain grey.",
     caption: "Illustrative — the card's edge, in macro",

@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
+import { DiffractionDriver } from "@/components/motion/DiffractionDriver";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { organizationJsonLd } from "@/lib/copy";
@@ -78,6 +79,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <LenisProvider>
+          <DiffractionDriver />
           <Nav />
           <main id="main-content">{children}</main>
           <Footer />

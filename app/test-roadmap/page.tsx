@@ -11,6 +11,16 @@ export const metadata: Metadata = {
 };
 
 const BLOCKS: PlatformBlock[] = [
+  // A figure before the funnel: the candidate set is large and mostly untravelled
+  // — many blanks on the bench, a long road ahead.
+  {
+    kind: "figure",
+    title: "A large set, a long road",
+    body: "Roughly two hundred candidate assays sit in view; none has been through validation. The count is a menu of possibilities, not a shelf of finished tests.",
+    id: "roadmap-candidates",
+    alt: "Many blank card-format cartridges laid out in rows on a dark bench, receding into soft focus.",
+    caption: "Illustrative — candidate set",
+  },
   {
     kind: "grid",
     title: "Candidate assay families",

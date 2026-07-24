@@ -1,8 +1,7 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
+import { SplitFigure } from "@/components/ui/SplitFigure";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -66,6 +65,19 @@ export default function SustainabilityPage() {
         </div>
       </ContentSection>
 
+      {/* A figure between the principles and the materials research: the split
+          the page argues for — a small disposable contact path against a
+          serviceable instrument that is kept. Placeholder until the image is
+          supplied. */}
+      <SplitFigure
+        id="sustainability-split"
+        kicker="The split"
+        lead="Keep the expensive half; make only the contact path disposable."
+        body="Optics and electronics stay in the analyzer, serviced and reused. The card carries only what has to touch the sample — which is the smallest thing that can be thrown away."
+        alt="A thin card-format disposable resting beside the closed reusable analyzer on a dark bench — the small part against the kept one."
+        caption="Illustrative — reusable analyzer, disposable card"
+      />
+
       <ContentSection no="02 / 03" title="Eco-Labware research direction">
         <ScrollReveal>
           <p className="max-w-2xl font-body text-lg leading-relaxed text-ink/75">
@@ -91,16 +103,6 @@ export default function SustainabilityPage() {
         </ScrollReveal>
       </ContentSection>
 
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/partners" className="btn-primary">
-            Discuss materials collaboration
-          </Link>
-          <Link href="/legal/development-stage" className="btn-outline">
-            Read the development-stage statement
-          </Link>
-        </div>
-      </VoidBand>
     </>
   );
 }

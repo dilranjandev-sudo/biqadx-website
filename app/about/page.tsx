@@ -1,8 +1,8 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContentSection } from "@/components/ui/ContentSection";
-import { VoidBand } from "@/components/ui/PaperSection";
+import { ImageSlot } from "@/components/ui/ImageSlot";
+import { SplitFigure } from "@/components/ui/SplitFigure";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -38,11 +38,13 @@ const FOUNDERS = [
   {
     name: "Arun Kumar",
     role: "Founder & CEO",
+    photo: "founder-arun",
     line: "Leads company vision, strategy, platform architecture, intellectual-property development, partnerships and the mission to expand diagnostic access.",
   },
   {
     name: "Dilranjan Kumar Patel",
     role: "Co-Founder & CTO",
+    photo: "founder-dilranjan",
     line: "Leads technical development, multidisciplinary engineering integration, prototyping and translation toward manufacturable systems.",
   },
 ];
@@ -89,11 +91,40 @@ export default function AboutPage() {
         </div>
       </ContentSection>
 
+      {/* The mission made concrete: the setting the whole platform is built for —
+          decentralized, clinic-first care. A generated image is fine here (generic
+          people), unlike the founder portraits below. */}
+      <SplitFigure
+        id="about-care"
+        flip
+        kicker="Who it is for"
+        lead="Built for the clinic, not the reference lab."
+        body="The platform is engineered for community and primary-care settings outside large centralized laboratories — where a reliable result close to the patient changes what care is possible."
+        alt="A community health worker in a modest primary-care setting in soft daylight, a small unbranded portable device at hand, its screen off."
+        caption="Illustrative — decentralized care setting"
+      />
+
+      {/* Founders carry portraits, and those slots stay empty until real
+          photographs of these two people are supplied.
+          This is the one place on the site where an image may not be generated.
+          Everywhere else the imagery is illustrative and the people in it are
+          deliberately generic; here the names are real, so a generated face
+          would not be an illustration of a founder — it would be an invented
+          person presented as one. ImageSlot renders a labelled placeholder until
+          `founder-arun` and `founder-dilranjan` exist in lib/images.ts, so the
+          page is complete and honest in the meantime. */}
       <ContentSection no="03 / 05" title="Founders" divider={false}>
         <div className="grid gap-8 sm:grid-cols-2">
           {FOUNDERS.map((f, i) => (
             <ScrollReveal key={f.name} delay={i * 0.06}>
               <div className="border-t border-ink/15 pt-4">
+                <ImageSlot
+                  id={f.photo}
+                  alt={`Portrait of ${f.name}, ${f.role}, BIQADX.`}
+                  ratio="4/5"
+                  className="mb-5 max-w-[220px]"
+                  sizes="(min-width: 640px) 220px, 60vw"
+                />
                 <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-ink">
                   {f.name}
                 </h3>
@@ -137,17 +168,6 @@ export default function AboutPage() {
           </p>
         </ScrollReveal>
       </ContentSection>
-
-      <VoidBand>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/partners" className="btn-primary">
-            Discuss a strategic partnership
-          </Link>
-          <Link href="/legal/development-stage" className="btn-outline">
-            Read the development-stage statement
-          </Link>
-        </div>
-      </VoidBand>
     </>
   );
 }

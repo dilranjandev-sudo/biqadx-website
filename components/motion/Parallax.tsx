@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { motionDisabled } from "@/lib/motion";
+import {
+  registerScrollJob,
+  scheduleScrollFrame,
+} from "@/components/motion/scrollLoop";
 
 /**
  * Scroll-linked motion for images, run by one shared loop.
@@ -22,9 +26,11 @@ import { motionDisabled } from "@/lib/motion";
  * `currentTime` of null, and no transform is ever applied. It fails as a
  * still image rather than as an error, which is the worst way to fail.
  *
- * So: one module-level registry, one scroll listener, one frame callback for the
- * whole page. Reads are batched ahead of writes so N frames cost one layout pass
- * rather than N, and anything off screen is skipped before it costs anything.
+ * So: one module-level registry, and one entry on the page's single shared scroll
+ * loop. Reads are batched ahead of writes so N frames cost one layout pass rather
+ * than N, and anything off screen is skipped before it costs anything. The loop
+ * itself is in `scrollLoop`, because the whole point is undone if the next
+ * scroll-driven feature starts a second one.
  */
 
 type Entry = {
@@ -37,61 +43,46 @@ type Entry = {
 };
 
 const entries = new Set<Entry>();
-let rafId = 0;
-let bound = false;
 
-function paint() {
-  rafId = 0;
-  const vh = window.innerHeight;
+// Every parallax frame on the page is one job on the shared loop, not one job
+// each: they all read the same viewport height and all want their rects taken in
+// a single batch.
+const job = {
+  measure() {
+    const vh = window.innerHeight;
+    const reads: { e: Entry; top: number; h: number }[] = [];
+    entries.forEach((e) => {
+      const r = e.frame.getBoundingClientRect();
+      reads.push({ e, top: r.top, h: r.height });
+    });
+    return { vh, reads };
+  },
+  apply({ vh, reads }: { vh: number; reads: { e: Entry; top: number; h: number }[] }) {
+    for (const { e, top, h } of reads) {
+      // Nothing off screen is worth a transform.
+      if (top > vh || top + h < 0) continue;
+      // 0 as the frame enters from the bottom, 1 as it leaves past the top.
+      const p = 1 - (top + h) / (vh + h);
+      const y = e.amount - 2 * e.amount * p;
+      // Scale runs from → to → from, peaking as the frame crosses the middle.
+      const s = e.from + (e.to - e.from) * (1 - Math.abs(0.5 - p) * 2);
+      e.inner.style.transform = `translateY(${y.toFixed(3)}${e.unit}) scale(${s.toFixed(4)})`;
+    }
+  },
+};
 
-  // Read every rect first. Interleaving a read with a write forces a synchronous
-  // reflow per element, which is exactly the cost this is meant to avoid.
-  const reads: { e: Entry; top: number; h: number }[] = [];
-  entries.forEach((e) => {
-    const r = e.frame.getBoundingClientRect();
-    reads.push({ e, top: r.top, h: r.height });
-  });
-
-  for (const { e, top, h } of reads) {
-    // Nothing off screen is worth a transform.
-    if (top > vh || top + h < 0) continue;
-    // 0 as the frame enters from the bottom, 1 as it leaves past the top.
-    const p = 1 - (top + h) / (vh + h);
-    const y = e.amount - 2 * e.amount * p;
-    // Scale runs from → to → from, peaking as the frame crosses the middle.
-    const s = e.from + (e.to - e.from) * (1 - Math.abs(0.5 - p) * 2);
-    e.inner.style.transform = `translateY(${y.toFixed(3)}${e.unit}) scale(${s.toFixed(4)})`;
-  }
-}
-
-function schedule() {
-  // Cancel-then-request rather than "skip if one is pending". Both coalesce to
-  // one paint per frame, but the latch version dead-locks if a requested frame
-  // is never delivered: `rafId` stays set, and every later scroll is discarded
-  // as a duplicate. That is not hypothetical — it is exactly what happens in a
-  // throttled or non-rendering context, and it fails silently, as a picture that
-  // simply never moves.
-  if (rafId) cancelAnimationFrame(rafId);
-  rafId = requestAnimationFrame(paint);
-}
+let unsubscribe: (() => void) | null = null;
 
 function register(entry: Entry) {
   entries.add(entry);
-  if (!bound) {
-    bound = true;
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-  }
-  schedule();
+  if (!unsubscribe) unsubscribe = registerScrollJob(job);
+  scheduleScrollFrame();
   return () => {
     entries.delete(entry);
     entry.inner.style.transform = "";
-    if (entries.size === 0 && bound) {
-      bound = false;
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = 0;
+    if (entries.size === 0 && unsubscribe) {
+      unsubscribe();
+      unsubscribe = null;
     }
   };
 }
