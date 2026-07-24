@@ -40,6 +40,12 @@ export function PinnedScene({
    *  real document rather than a lightbox. Void is for the home page, which is
    *  dark throughout. */
   tone = "ink",
+  /** Stack the copy above the drawing instead of beside it. For a wide, short
+   *  drawing (viewBox far wider than tall) the beside layout leaves it floating
+   *  in a narrow band with big empty margins top and bottom; stacked, a compact
+   *  heading sits over a full-width drawing that fills the pinned frame. The tall
+   *  Paper drawings keep the default beside layout — stacked, they overflow. */
+  stack = false,
 }: {
   title: string;
   intro?: string;
@@ -52,6 +58,7 @@ export function PinnedScene({
   lead?: number;
   tail?: number;
   tone?: "ink" | "signal";
+  stack?: boolean;
 }) {
   const dark = tone === "signal";
   const trackRef = useRef<HTMLDivElement>(null);
@@ -128,12 +135,19 @@ export function PinnedScene({
       >
         <div className="lg:sticky lg:top-0 lg:flex lg:h-svh lg:items-center motion-reduce:lg:static motion-reduce:lg:h-auto motion-reduce:lg:block">
           <Container className="w-full py-16 sm:py-20 lg:py-0">
-            {/* Copy beside the drawing rather than above it. Stacked, a heading
-                and a figure of this size overflow the pinned viewport and the
-                bottom of the drawing is cut off for the whole scene — invisible
-                in the markup, obvious the moment it is measured. */}
-            <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-10">
-              <div className="lg:col-span-4">
+            {/* Copy beside the drawing, or stacked above it for a wide/short
+                drawing. Beside is the default: a tall Paper drawing stacked would
+                overflow the pinned viewport and lose its bottom. Stacked is for a
+                drawing far wider than tall, which beside would leave floating in a
+                thin band between big empty margins. */}
+            <div
+              className={
+                stack
+                  ? "flex flex-col items-center gap-8 text-center lg:gap-10"
+                  : "lg:grid lg:grid-cols-12 lg:items-center lg:gap-10"
+              }
+            >
+              <div className={stack ? "max-w-2xl" : "lg:col-span-4"}>
                 <ScrollReveal>
                   <h2
                     className={`font-display text-2xl font-bold leading-tight tracking-tight sm:text-[1.75rem] ${
@@ -144,9 +158,9 @@ export function PinnedScene({
                   </h2>
                   {intro ? (
                     <p
-                      className={`mt-4 max-w-xl font-body text-sm leading-relaxed ${
-                        dark ? "text-signal/85" : "text-ink/75"
-                      }`}
+                      className={`mt-4 font-body text-sm leading-relaxed ${
+                        stack ? "mx-auto max-w-xl" : "max-w-xl"
+                      } ${dark ? "text-signal/85" : "text-ink/75"}`}
                     >
                       {intro}
                     </p>
@@ -161,7 +175,9 @@ export function PinnedScene({
                 {readout ? (
                   <div
                     aria-hidden="true"
-                    className="mt-8 hidden items-center gap-4 lg:flex motion-reduce:lg:hidden"
+                    className={`mt-8 hidden items-center gap-4 lg:flex motion-reduce:lg:hidden ${
+                      stack ? "mx-auto max-w-md" : ""
+                    }`}
                   >
                     <span
                       className={`font-mono text-[0.6rem] tracking-[0.16em] ${
@@ -189,7 +205,14 @@ export function PinnedScene({
                 ) : null}
               </div>
 
-              <div ref={hostRef} className="mt-8 lg:col-span-8 lg:mt-0">
+              <div
+                ref={hostRef}
+                className={
+                  stack
+                    ? "w-full"
+                    : "mt-8 lg:col-span-8 lg:mt-0"
+                }
+              >
                 {children}
               </div>
             </div>

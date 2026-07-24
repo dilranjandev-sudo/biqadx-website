@@ -101,7 +101,7 @@ export function ResearchScope() {
 
   return (
     <section ref={sectionRef} className="bg-void" aria-label="Research scope">
-      <Container className="py-20 sm:py-28">
+      <Container className="py-16 sm:py-20">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           {/* Headline column — pins while the plates travel past */}
           <div className="lg:col-span-5">

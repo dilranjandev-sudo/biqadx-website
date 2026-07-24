@@ -30,6 +30,8 @@ export function PlatformAssemblyScene({
   return (
     <PinnedScene
       tone="signal"
+      stack
+      trackVh={300}
       title={title}
       intro={intro}
       readout={{
